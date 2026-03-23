@@ -6,6 +6,8 @@
   <img src="https://img.shields.io/badge/Vite-7.3+-purple.svg" alt="Vite 7.3+">
   <img src="https://img.shields.io/badge/SCSS-1.98+-ff69b4.svg" alt="SCSS 1.98+">
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+  <img src="https://gitee.com/yun_hua_admin/ease-ui/badge/star.svg?theme=dark" >
+  <img src="https://gitee.com/yun_hua_admin/ease-ui/badge/fork.svg?theme=dark">
 </p>
 
 <p align="center">
