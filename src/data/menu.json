@@ -1,0 +1,217 @@
+[
+  {
+    "id": "1",
+    "name": "首页",
+    "key": "home",
+    "icon": "HomeFilled",
+    "path": "/",
+    "component": "home/home"
+  },
+  {
+    "id": "2",
+    "name": "基础组件",
+    "key": "basic",
+    "icon": "Grid",
+    "children": [
+      {
+        "id": "2-1",
+        "name": "按钮 Button",
+        "key": "button",
+        "path": "/basic/button",
+        "component": "basic/button"
+      },
+      {
+        "id": "2-2",
+        "name": "图标 Icon",
+        "key": "icon",
+        "path": "/basic/icon",
+        "component": "basic/icon"
+      },
+      {
+        "id": "2-3",
+        "name": "水印 Watermark",
+        "key": "watermark",
+        "path": "/basic/watermark",
+        "component": "basic/watermark"
+      },
+      {
+        "id": "2-4",
+        "name": "轮播 Carousel",
+        "key": "carousel",
+        "path": "/basic/carousel",
+        "component": "basic/carousel"
+      },
+      {
+        "id": "2-5",
+        "name": "选项卡 Tabs",
+        "key": "tabs",
+        "path": "/basic/tabs",
+        "component": "basic/tabs"
+      },
+      {
+        "id": "2-6",
+        "name": "标签 Tag",
+        "key": "tag",
+        "path": "/basic/tag",
+        "component": "basic/tag"
+      },
+      {
+        "id": "2-7",
+        "name": "表格 Table",
+        "key": "table",
+        "path": "/basic/table",
+        "component": "basic/table"
+      },
+      {
+        "id": "2-8",
+        "name": "下拉菜单 Dropdown",
+        "key": "dropdown",
+        "path": "/basic/dropdown",
+        "component": "basic/dropdown"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "表单组件",
+    "key": "form",
+    "icon": "Document",
+    "children": [
+      {
+        "id": "4-1",
+        "name": "输入框 Input",
+        "key": "input",
+        "path": "/form/input",
+        "component": "form/input"
+      },
+      {
+        "id": "4-2",
+        "name": "下拉选择 Select",
+        "key": "select",
+        "path": "/form/select",
+        "component": "form/select"
+      },
+      {
+        "id": "4-3",
+        "name": "评分 Rate",
+        "key": "rate",
+        "path": "/form/rate",
+        "component": "form/rate"
+      },
+      {
+        "id": "4-4",
+        "name": "日期选择 DatePicker",
+        "key": "date-picker",
+        "path": "/form/date-picker",
+        "component": "form/date-picker"
+      },
+      {
+        "id": "4-5",
+        "name": "时间选择 TimePicker",
+        "key": "time-picker",
+        "path": "/form/time-picker",
+        "component": "form/time-picker"
+      },
+      {
+        "id": "4-6",
+        "name": "表单 Form",
+        "key": "form",
+        "path": "/form/form",
+        "component": "form/form"
+      },
+      {
+        "id": "4-7",
+        "name": "级联选择 Cascader",
+        "key": "cascader",
+        "path": "/form/cascader",
+        "component": "form/cascader"
+      },
+      {
+        "id": "4-8",
+        "name": "日期时间 DateTimePicker",
+        "key": "date-time-picker",
+        "path": "/form/date-time-picker",
+        "component": "form/date-time-picker"
+      },
+      {
+        "id": "4-9",
+        "name": "单选框 Radio",
+        "key": "radio",
+        "path": "/form/radio",
+        "component": "form/radio"
+      },
+      {
+        "id": "4-10",
+        "name": "搜索组件 SearchForm",
+        "key": "search-form",
+        "path": "/form/searchForm",
+        "component": "form/search-form"
+      },
+      {
+        "id": "4-11",
+        "name": "范围选择器 RangePicker",
+        "key": "range-picker",
+        "path": "/form/range-picker",
+        "component": "form/range-picker"
+      },
+      {
+        "id": "4-12",
+        "name": "聊天组件 Chat",
+        "key": "chat",
+        "path": "/form/chat",
+        "component": "form/chat"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "布局组件",
+    "key": "layout",
+    "icon": "SetUp",
+    "children": [
+      {
+        "id": "5-1",
+        "name": "栅格布局 Layout",
+        "key": "grid",
+        "path": "/layout/grid",
+        "component": "layout/grid"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "反馈组件",
+    "key": "feedback",
+    "icon": "Bell",
+    "children": [
+      {
+        "id": "3-1",
+        "name": "弹窗 Modal",
+        "key": "modal",
+        "path": "/feedback/modal",
+        "component": "feedback/modal"
+      },
+      {
+        "id": "3-2",
+        "name": "消息提示 Message",
+        "key": "message",
+        "path": "/feedback/message",
+        "component": "feedback/message"
+      },
+      {
+        "id": "3-3",
+        "name": "步骤条 Steps",
+        "key": "steps",
+        "path": "/feedback/steps",
+        "component": "feedback/steps"
+      },
+      {
+        "id": "3-4",
+        "name": "加载 Loading",
+        "key": "loading",
+        "path": "/feedback/loading",
+        "component": "feedback/loading"
+      }
+    ]
+  }
+]
