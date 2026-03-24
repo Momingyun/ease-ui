@@ -82,6 +82,13 @@
         "key": "avatar",
         "path": "/basic/avatar",
         "component": "basic/avatar"
+      },
+      {
+        "id": "2-11",
+        "name": "时间线 Timeline",
+        "key": "timeline",
+        "path": "/basic/timeline",
+        "component": "basic/timeline"
       }
     ]
   },
