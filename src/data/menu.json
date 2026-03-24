@@ -89,6 +89,13 @@
         "key": "timeline",
         "path": "/basic/timeline",
         "component": "basic/timeline"
+      },
+      {
+        "id": "2-12",
+        "name": "图片 Image",
+        "key": "image",
+        "path": "/basic/image",
+        "component": "basic/image"
       }
     ]
   },

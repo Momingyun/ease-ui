@@ -39,6 +39,7 @@ declare module 'vue' {
     XlyForm: typeof import('./../../components/xly-form/index.vue')['default']
     XlyFormItem: typeof import('./../../components/xly-form/xly-form-item.vue')['default']
     XlyIcon: typeof import('./../../components/xly-icon/index.vue')['default']
+    XlyImage: typeof import('./../../components/xly-image/index.vue')['default']
     XlyInput: typeof import('./../../components/xly-input/index.vue')['default']
     XlyLoading: typeof import('./../../components/xly-loading/index.vue')['default']
     XlyMessage: typeof import('./../../components/xly-message/index.vue')['default']
