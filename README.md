@@ -91,13 +91,48 @@ src/components/xly-button/index.vue
 
 每个组件都源于实际项目需求：
 
-| 组件                        | 解决的痛点                                 |
-|---------------------------|---------------------------------------|
-| **xly-table**             | 表格选择状态管理混乱、列配置无法持久化、分页逻辑重复            |
-| **xly-search-form**       | 搜索区域代码臃肿、展开/收起逻辑重复写、日期范围绑定繁琐          |
-| **xly-date-range-picker** | Element 日期范围返回数组，后端却要分开的 start/end 字段 |
-| **xly-form**              | 表单布局需要写大量 Col/Row，校验规则分散难维护           |
-| **xly-loading**           | 需要简洁的全局加载状态，控制更灵活                     |
+| 组件 | 解决的痛点 |
+|------|-----------|
+| **反馈组件** | |
+| xly-drawer | 侧边滑出面板，替代 Dialog 更适合复杂表单场景，支持四个方向弹出 |
+| xly-modal | 模态弹窗，支持自定义标题、内容、底部按钮，简化 Dialog 使用 |
+| xly-loading | 全局加载状态，命令式 API 比指令更灵活，支持局部/全屏/指定容器 |
+| xly-message | 轻量消息提示，success/warning/danger/info/text 五种类型 |
+| **基础组件** | |
+| xly-avatar | 头像展示，图片加载失败时自动回退到文字/图标，支持三种尺寸 |
+| xly-button | 按钮组件，7种类型满足不同场景，链接模式和幽灵按钮丰富视觉 |
+| xly-card | 卡片容器，阴影、圆角、悬浮效果可控，header/footer 插槽灵活布局 |
+| xly-carousel | 轮播组件，支持自动播放、指示器、箭头导航 |
+| xly-divider | 分割线，水平/垂直方向，内容插槽支持文字标题 |
+| xly-icon | 图标组件，支持 Element Plus 图标库（el: 前缀），统一图标使用 |
+| xly-image | 图片展示，支持多图、预览（缩放/拖拽/旋转）、+N 显示超出数量 |
+| xly-tag | 标签组件，多种类型和效果，支持可删除 |
+| xly-watermark | 水印组件，防止截图泄露，支持文字/图片水印 |
+| xly-steps | 步骤条，展示流程进度，支持点击切换 |
+| xly-timeline | 时间线，垂直展示时间节点，四种状态图标区分进度 |
+| **表单组件** | |
+| xly-form | 智能表单，内置 24 栅格，校验规则下沉字段级，减少 Col/Row 模板 |
+| xly-input | 输入框，支持前缀/后缀图标、字数统计、多种状态 |
+| xly-select | 选择器，支持多选、搜索、可搜索远程数据 |
+| xly-radio | 单选框组，支持按钮样式和填充样式 |
+| xly-cascader | 级联选择，多选时简化数据扁平化处理 |
+| xly-rate | 评分组件，支持半星、只读、辅助文字 |
+| xly-date-picker | 日期选择，format/valueFormat 统一配置 |
+| xly-date-range-picker | 日期范围，start/end 分离绑定，提交表单无需转换 |
+| xly-date-time-picker | 日期时间选择，支持秒级精度 |
+| xly-date-time-range-picker | 日期时间范围，start/end 分离绑定 |
+| xly-time-picker | 时间选择，format 统一配置 |
+| xly-time-range-picker | 时间范围，开始/结束时间联动校验 |
+| xly-search-form | 搜索表单，配置化定义字段，展开收起、回车搜索内置 |
+| **布局组件** | |
+| xly-row | 栅格行，配合 Col 实现 24 栅格布局 |
+| xly-col | 栅格列，span/offset/pull/push 精确控制宽度 |
+| xly-tabs | 标签页，支持卡片/朴素样式，懒加载提升性能 |
+| xly-dropdown | 下拉菜单，触发方式多样，支持嵌套子菜单 |
+| **业务组件** | |
+| xly-table | 超级表格，选择状态管理混乱、分页逻辑重复、列配置无法持久化 |
+| xly-permission | 权限配置，三级/四级/五级树形结构，勾选联动逻辑复杂 |
+| xly-chat | 聊天组件，消息气泡、时间分组、输入状态 |
 
 ### 🎨 样式完全独立
 
@@ -492,15 +527,48 @@ src/components/xly-button/index.vue
 
 ## 📂 组件依赖关系
 
-| 组件                      | 内部依赖                                   | 说明          |
-|-------------------------|----------------------------------------|-------------|
-| `xly-table`             | `xly-button`, `xly-select`, `xly-icon` | 工具栏按钮、分页选择器 |
-| `xly-search-form`       | `xly-form`, `xly-form-item`            | 基于表单封装      |
-| `xly-form`              | 无                                      | 纯逻辑组件       |
-| `xly-date-range-picker` | 无                                      | 独立组件        |
-| `xly-button`            | 无                                      | 完全独立        |
-| `xly-icon`              | 无                                      | 完全独立        |
-
+| 组件 | 内部依赖 | 说明 |
+|------|---------|------|
+| **反馈组件** | | |
+| `xly-drawer` | 无 | 抽屉组件，支持四个方向 |
+| `xly-modal` | 无 | 模态框组件 |
+| `xly-loading` | 无 | 全局加载状态（命令式 API） |
+| `xly-message` | 无 | 消息提示（命令式 API） |
+| **基础组件** | | |
+| `xly-avatar` | 无 | 头像组件，支持图片/文字/图标 |
+| `xly-button` | 无 | 按钮组件，7种类型+链接模式 |
+| `xly-card` | 无 | 卡片组件，支持阴影、圆角、悬浮 |
+| `xly-carousel` | 无 | 轮播组件 |
+| `xly-divider` | 无 | 分割线组件 |
+| `xly-icon` | 无 | 图标组件，支持 el: 前缀 |
+| `xly-image` | 无 | 图片组件，支持预览、缩放 |
+| `xly-tag` | 无 | 标签组件 |
+| `xly-watermark` | 无 | 水印组件 |
+| `xly-steps` | 无 | 步骤条组件 |
+| `xly-timeline` | 无 | 时间线组件 |
+| **表单组件** | | |
+| `xly-form` | 无 | 智能表单，24栅格布局 |
+| `xly-input` | 无 | 输入框组件 |
+| `xly-select` | 无 | 选择器组件 |
+| `xly-radio` | 无 | 单选框组件 |
+| `xly-cascader` | 无 | 级联选择器 |
+| `xly-rate` | 无 | 评分组件 |
+| `xly-date-picker` | 无 | 日期选择器 |
+| `xly-date-range-picker` | 无 | 日期范围选择器（分离式绑定） |
+| `xly-date-time-picker` | 无 | 日期时间选择器 |
+| `xly-date-time-range-picker` | 无 | 日期时间范围选择器 |
+| `xly-time-picker` | 无 | 时间选择器 |
+| `xly-time-range-picker` | 无 | 时间范围选择器 |
+| `xly-search-form` | `xly-form` | 搜索表单，配置化字段 |
+| **布局组件** | | |
+| `xly-row` | 无 | 栅格行组件 |
+| `xly-col` | 无 | 栅格列组件 |
+| `xly-tabs` | 无 | 标签页组件 |
+| `xly-dropdown` | 无 | 下拉菜单组件 |
+| **业务组件** | | |
+| `xly-table` | `xly-button`, `xly-icon` | 超级表格，支持选择、分页、列设置 |
+| `xly-permission` | 无 | 权限配置组件，三/四/五级结构 |
+| `xly-chat` | 无 | 聊天组件 |
 ---
 
 ## 🛠 全局服务
