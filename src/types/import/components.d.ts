@@ -12,10 +12,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DropdownItem: typeof import('./../../components/xly-dropdown/dropdown-item.vue')['default']
+    ElCard: typeof import('element-plus/es')['ElCard']
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElTag: typeof import('element-plus/es')['ElTag']
+    PermissionItem: typeof import('./../../components/xly-permission/permission-item.vue')['default']
     RadioGroup: typeof import('./../../components/xly-radio/radio-group.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -45,6 +49,7 @@ declare module 'vue' {
     XlyLoading: typeof import('./../../components/xly-loading/index.vue')['default']
     XlyMessage: typeof import('./../../components/xly-message/index.vue')['default']
     XlyModal: typeof import('./../../components/xly-modal/index.vue')['default']
+    XlyPermission: typeof import('./../../components/xly-permission/index.vue')['default']
     XlyRadio: typeof import('./../../components/xly-radio/index.vue')['default']
     XlyRate: typeof import('./../../components/xly-rate/index.vue')['default']
     XlyRow: typeof import('./../../components/xly-row/index.vue')['default']

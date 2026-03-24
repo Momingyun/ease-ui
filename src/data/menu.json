@@ -103,6 +103,13 @@
         "key": "card",
         "path": "/basic/card",
         "component": "basic/card"
+      },
+      {
+        "id": "2-14",
+        "name": "权限 Permission",
+        "key": "permission",
+        "path": "/basic/permission",
+        "component": "basic/permission"
       }
     ]
   },
