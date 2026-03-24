@@ -68,6 +68,13 @@
         "key": "dropdown",
         "path": "/basic/dropdown",
         "component": "basic/dropdown"
+      },
+      {
+        "id": "2-9",
+        "name": "分割线 Divider",
+        "key": "divider",
+        "path": "/basic/divider",
+        "component": "basic/divider"
       }
     ]
   },
