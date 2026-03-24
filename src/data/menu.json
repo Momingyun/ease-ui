@@ -211,6 +211,13 @@
         "key": "loading",
         "path": "/feedback/loading",
         "component": "feedback/loading"
+      },
+      {
+        "id": "3-5",
+        "name": "抽屉 Drawer",
+        "key": "drawer",
+        "path": "/feedback/drawer",
+        "component": "feedback/drawer"
       }
     ]
   }
