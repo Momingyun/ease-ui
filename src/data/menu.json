@@ -75,6 +75,13 @@
         "key": "divider",
         "path": "/basic/divider",
         "component": "basic/divider"
+      },
+      {
+        "id": "2-10",
+        "name": "头像 Avatar",
+        "key": "avatar",
+        "path": "/basic/avatar",
+        "component": "basic/avatar"
       }
     ]
   },

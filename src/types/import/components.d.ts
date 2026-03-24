@@ -20,6 +20,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Step: typeof import('./../../components/xly-steps/step.vue')['default']
+    XlyAvatar: typeof import('./../../components/xly-avatar/index.vue')['default']
     XlyButton: typeof import('./../../components/xly-button/index.vue')['default']
     XlyCarousel: typeof import('./../../components/xly-carousel/index.vue')['default']
     XlyCascader: typeof import('./../../components/xly-cascader/index.vue')['default']
