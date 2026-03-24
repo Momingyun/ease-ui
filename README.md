@@ -174,6 +174,7 @@ src/components/xly-button/index.vue
 - 🎨 **视觉统一** - 两个日期选择器 + 分隔符，外观一体化
 - 📏 **尺寸联动** - 支持 `large` / `default` / `small` 三种尺寸
 
+<img src="./doc/2.png">
 ---
 
 ### 📊 超级表格 (xly-table)
@@ -229,6 +230,7 @@ row - key = "id"
 selectable = "true" / >
 ```
 
+<img src="./doc/1.png">
 ---
 
 ### 📝 智能表单系统 (xly-form + xly-form-item)
@@ -301,6 +303,7 @@ rules = "[
 rules = "{ username: [{ required: true }] }" / >
 ```
 
+<img src="./doc/3.png">
 ---
 
 ### 🔍 搜索表单 (xly-search-form)
@@ -346,6 +349,8 @@ rules = "{ username: [{ required: true }] }" / >
   }
 </script>
 ```
+
+<img src="./doc/4.png">
 
 **支持的字段类型：**
 
@@ -397,6 +402,7 @@ rules = "{ username: [{ required: true }] }" / >
 <xly-button shape="round">圆角按钮</xly-button>
 ```
 
+<img src="./doc/5.png">
 ---
 
 ### 🔄 加载状态 (xly-loading)
@@ -420,7 +426,23 @@ xly.$loading.closeAll()
 xly.$loading.container('#table-container')
 ```
 
+<img src="./doc/6.png">
+<img src="./doc/7.png">
 ---
+
+## 📦 其他组件展示
+
+<img src="./doc/8.png">
+<img src="./doc/9.png">
+<img src="./doc/10.png">
+<img src="./doc/11.png">
+<img src="./doc/12.png">
+
+### 用法更简单的下拉选择
+
+<img src="./doc/13.png">
+<img src="./doc/14.png">
+
 
 ## 👥 适合谁用？
 
