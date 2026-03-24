@@ -96,6 +96,13 @@
         "key": "image",
         "path": "/basic/image",
         "component": "basic/image"
+      },
+      {
+        "id": "2-13",
+        "name": "卡片 Card",
+        "key": "card",
+        "path": "/basic/card",
+        "component": "basic/card"
       }
     ]
   },

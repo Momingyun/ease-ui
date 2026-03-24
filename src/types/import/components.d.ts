@@ -23,6 +23,7 @@ declare module 'vue' {
     TimelineItem: typeof import('./../../components/xly-timeline/timeline-item.vue')['default']
     XlyAvatar: typeof import('./../../components/xly-avatar/index.vue')['default']
     XlyButton: typeof import('./../../components/xly-button/index.vue')['default']
+    XlyCard: typeof import('./../../components/xly-card/index.vue')['default']
     XlyCarousel: typeof import('./../../components/xly-carousel/index.vue')['default']
     XlyCascader: typeof import('./../../components/xly-cascader/index.vue')['default']
     XlyChat: typeof import('./../../components/xly-chat/index.vue')['default']
