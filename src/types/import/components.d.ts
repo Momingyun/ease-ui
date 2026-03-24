@@ -31,6 +31,7 @@ declare module 'vue' {
     XlyDateRangePicker: typeof import('./../../components/xly-date-range-picker/index.vue')['default']
     XlyDateTimePicker: typeof import('./../../components/xly-date-time-picker/index.vue')['default']
     XlyDateTimeRangePicker: typeof import('./../../components/xly-date-time-range-picker/index.vue')['default']
+    XlyDrawer: typeof import('./../../components/xly-drawer/index.vue')['default']
     XlyDropdown: typeof import('./../../components/xly-dropdown/index.vue')['default']
     XlyForm: typeof import('./../../components/xly-form/index.vue')['default']
     XlyFormItem: typeof import('./../../components/xly-form/xly-form-item.vue')['default']
