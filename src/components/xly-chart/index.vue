@@ -1,5 +1,10 @@
 <template>
-  <div class="xly-chart" :style="{ width: computedWidth, height: computedHeight }" ref="rootRef">
+  <div
+    class="xly-chart"
+    :class="{ [`legend-${legendPosition}`]: legendPosition === 'left' || legendPosition === 'right' }"
+    :style="{ width: computedWidth, height: computedHeight }"
+    ref="rootRef"
+  >
     <!-- 标题 + 下载按钮 -->
     <div class="xly-chart__header" :class="{ 'has-content': title || subtitle }">
       <div class="xly-chart__header-left">
@@ -168,6 +173,18 @@
                   class="xly-chart__point"
                   @click="onBarLineClick(i)"
                 />
+                <!-- 数据标签 -->
+                <text
+                  v-if="showLabel"
+                  v-for="(val, i) in serie.data"
+                  :key="`ll-${i}`"
+                  :x="getXCenter(i)"
+                  :y="getY(val) - 10"
+                  text-anchor="middle"
+                  dominant-baseline="auto"
+                  class="xly-chart__data-label"
+                  :fill="serie.color || defaultColors[si % defaultColors.length]"
+                >{{ formatValue(val) }}</text>
               </g>
             </g>
           </template>
@@ -190,6 +207,18 @@
                   class="xly-chart__bar"
                   @click="onBarLineClick(i)"
                 />
+                <!-- 数据标签 -->
+                <text
+                  v-if="showLabel"
+                  v-for="(val, i) in serie.data"
+                  :key="`bl-${i}`"
+                  :x="getBarX(i, si) + barWidth / 2"
+                  :y="getY(val) - 5"
+                  text-anchor="middle"
+                  dominant-baseline="auto"
+                  class="xly-chart__data-label"
+                  :fill="serie.color || defaultColors[si % defaultColors.length]"
+                >{{ formatValue(val) }}</text>
               </g>
             </g>
           </template>
@@ -243,6 +272,19 @@
               @mouseleave="onPieLeave"
               @click="onPieClick(i)"
             />
+            <!-- 饼图/环形图数据标签：显示百分比，切片 >5% 才显示避免拥挤 -->
+            <template v-if="showLabel">
+              <text
+                v-for="(slice, i) in pieSlices"
+                :key="`pl-${i}`"
+                v-show="slice.percent >= 5"
+                :x="slice.labelX"
+                :y="slice.labelY"
+                text-anchor="middle"
+                dominant-baseline="middle"
+                class="xly-chart__pie-label"
+              >{{ slice.percent }}%</text>
+            </template>
             <!-- 环形图中心 -->
             <template v-if="type === 'donut'">
               <circle :r="donutInnerRadius" fill="white" />
@@ -441,24 +483,6 @@
         </template>
       </svg>
 
-      <!-- Tooltip -->
-      <div
-        v-if="tooltip.visible"
-        class="xly-chart__tooltip"
-        :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
-      >
-        <div class="xly-chart__tooltip-title">{{ tooltip.title }}</div>
-        <div
-          v-for="item in tooltip.items"
-          :key="item.name"
-          class="xly-chart__tooltip-item"
-        >
-          <span class="xly-chart__tooltip-dot" :style="{ background: item.color }"></span>
-          <span class="xly-chart__tooltip-name">{{ item.name }}</span>
-          <span class="xly-chart__tooltip-val">{{ formatValue(item.value) }}</span>
-        </div>
-      </div>
-
       <!-- 空状态 -->
       <div v-if="isEmpty" class="xly-chart__empty">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -467,6 +491,24 @@
           <rect x="36" y="10" width="8" height="34" rx="2" fill="#e4e4e7"/>
         </svg>
         <p>暂无数据</p>
+      </div>
+    </div>
+
+    <!-- Tooltip：挂在根容器上，避免被 body 的 overflow:hidden 裁剪 -->
+    <div
+      v-if="tooltip.visible"
+      class="xly-chart__tooltip"
+      :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
+    >
+      <div class="xly-chart__tooltip-title">{{ tooltip.title }}</div>
+      <div
+        v-for="item in tooltip.items"
+        :key="item.name"
+        class="xly-chart__tooltip-item"
+      >
+        <span class="xly-chart__tooltip-dot" :style="{ background: item.color }"></span>
+        <span class="xly-chart__tooltip-name">{{ item.name }}</span>
+        <span class="xly-chart__tooltip-val">{{ formatValue(item.value) }}</span>
       </div>
     </div>
   </div>
@@ -532,6 +574,8 @@ const props = withDefaults(defineProps<{
   formatter?: (val: number) => string
   /** 是否动画 */
   animated?: boolean
+  /** 是否在图形上显示数据标签 */
+  showLabel?: boolean
   /** 是否显示下载按钮 */
   showDownload?: boolean
   /** 每个数据点最小宽度（px），超出时启用横向拖拽，0=自动 */
@@ -555,6 +599,7 @@ const props = withDefaults(defineProps<{
   data: () => [],
   showGrid: true,
   showLegend: true,
+  showLabel: false,
   legendPosition: 'bottom',
   areaFill: true,
   barRadius: 4,
@@ -825,6 +870,8 @@ interface PieSlice {
   percent: number
   offsetX: number
   offsetY: number
+  labelX: number
+  labelY: number
   extra?: Record<string, any>
 }
 
@@ -861,6 +908,9 @@ const pieSlices = computed((): PieSlice[] => {
       path = `M 0 0 L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`
     }
 
+    const labelR = props.type === 'donut'
+      ? (donutInnerRadius.value + r) / 2   // 环形图：标签放在环带中间
+      : r * 0.65                            // 饼图：标签放在半径 65% 处
     startAngle = endAngle
     return {
       path,
@@ -870,6 +920,8 @@ const pieSlices = computed((): PieSlice[] => {
       percent: Math.round((item.value / total) * 1000) / 10,
       offsetX: Math.cos(midAngle),
       offsetY: Math.sin(midAngle),
+      labelX: Math.cos(midAngle) * labelR,
+      labelY: Math.sin(midAngle) * labelR,
       extra: pickExtra(item, ['name', 'value', 'color']),
     }
   })
@@ -1198,6 +1250,25 @@ function emitDrill(payload: { label: string; value: number; seriesName?: string;
 // hbar hover 状态
 const activeHBarIndex = ref(-1) // dataIdx
 
+/**
+ * 计算 Tooltip 相对根容器的定位。
+ * 当鼠标靠近根容器右侧时，自动将 tooltip 显示在鼠标左侧，避免被裁剪。
+ */
+function calcTooltipPos(clientX: number, clientY: number, offsetRight = 12, offsetTop = 20) {
+  if (!rootRef.value) return { x: 0, y: 0 }
+  const rootRect = rootRef.value.getBoundingClientRect()
+  const tooltipW = 170 // 预估 tooltip 宽度
+  let rx = clientX - rootRect.left
+  let ry = clientY - rootRect.top - offsetTop
+  // 靠近右边界时翻转到鼠标左侧
+  if (rx + offsetRight + tooltipW > rootRect.width) {
+    rx = rx - tooltipW - offsetRight
+  } else {
+    rx = rx + offsetRight
+  }
+  return { x: Math.max(4, rx), y: Math.max(4, ry) }
+}
+
 function onMouseMove(e: MouseEvent) {
   if (!bodyRef.value) return
   // 拖拽中不触发 tooltip
@@ -1230,10 +1301,11 @@ function onMouseMove(e: MouseEvent) {
       value: s.data[closest] ?? 0,
       color: s.color || defaultColors.value[si % defaultColors.value.length],
     }))
+    const pos = calcTooltipPos(e.clientX, e.clientY)
     tooltip.value = {
       visible: true,
-      x: Math.min(mx + 12, svgWidth.value - 160),
-      y: Math.max(my - 20, 4),
+      x: pos.x,
+      y: pos.y,
       title: xLabels.value[closest],
       items,
     }
@@ -1256,10 +1328,11 @@ function onMouseMove(e: MouseEvent) {
       value: s.data[closestRow] ?? 0,
       color: s.color || defaultColors.value[si % defaultColors.value.length],
     }))
+    const pos = calcTooltipPos(e.clientX, e.clientY)
     tooltip.value = {
       visible: true,
-      x: Math.min(mx + 12, svgWidth.value - 160),
-      y: Math.max(my - 20, 4),
+      x: pos.x,
+      y: pos.y,
       title: labels[closestRow],
       items,
     }
@@ -1329,12 +1402,11 @@ function onWheel(e: WheelEvent) {
 function onPieEnter(i: number, e: MouseEvent) {
   activePieIndex.value = i
   const slice = pieSlices.value[i]
-  if (!bodyRef.value) return
-  const rect = bodyRef.value.getBoundingClientRect()
+  const pos = calcTooltipPos(e.clientX, e.clientY)
   tooltip.value = {
     visible: true,
-    x: e.clientX - rect.left + 12,
-    y: e.clientY - rect.top - 20,
+    x: pos.x,
+    y: pos.y,
     title: slice.name,
     items: [{ name: `${slice.percent}%`, value: slice.value, color: slice.color }],
   }
@@ -1353,12 +1425,11 @@ function onPieClick(i: number) {
 function onFunnelEnter(i: number, e: MouseEvent) {
   activeFunnelIndex.value = i
   const item = funnelItems.value[i]
-  if (!bodyRef.value) return
-  const rect = bodyRef.value.getBoundingClientRect()
+  const pos = calcTooltipPos(e.clientX, e.clientY)
   tooltip.value = {
     visible: true,
-    x: e.clientX - rect.left + 14,
-    y: e.clientY - rect.top - 24,
+    x: pos.x,
+    y: pos.y,
     title: item.name,
     items: [{ name: `占比 ${item.percent}%`, value: item.value, color: item.color }],
   }
@@ -1684,6 +1755,21 @@ $bg-white: #ffffff;
   background: $bg-white;
   box-sizing: border-box;
   user-select: none;
+
+  // legend 在左/右时，整体改为横向排列
+  &.legend-left,
+  &.legend-right {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    // 标题栏独占一行
+    .xly-chart__header {
+      flex: 0 0 100%;
+      order: -2;
+    }
+  }
+  &.legend-right .xly-chart__legend { order: 1; }
+  &.legend-left  .xly-chart__legend { order: -1; }
 }
 
 // 标题
@@ -1842,6 +1928,7 @@ $bg-white: #ffffff;
   flex: 1;
   position: relative;
   min-height: 0;
+  min-width: 0;  // 横向布局时 flex:1 需要 min-width:0 才能正确收缩
   overflow: hidden;
 }
 
@@ -1873,6 +1960,22 @@ $bg-white: #ffffff;
 .xly-chart__point {
   cursor: pointer;
   transition: r 0.15s, fill 0.15s;
+}
+
+// 数据标签（折线/柱状图）
+.xly-chart__data-label {
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+// 饼图/环形图切片标签
+.xly-chart__pie-label {
+  font-size: 11px;
+  font-weight: 700;
+  fill: #fff;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 // 柱子

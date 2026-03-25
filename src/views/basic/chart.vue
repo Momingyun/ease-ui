@@ -4,7 +4,9 @@
     <div class="doc-header">
       <h1 class="doc-title">Chart 图表</h1>
       <p class="doc-desc">
-        基于 SVG 原生实现的轻量级图表组件，无需引入任何第三方依赖。支持折线图、柱状图、饼状图、环形图、漏斗图，内置 Tooltip、图例、响应式、大数据量横向拖拽等功能。
+        基于 SVG
+        原生实现的轻量级图表组件，无需引入任何第三方依赖。支持折线图、柱状图、饼状图、环形图、漏斗图，内置
+        Tooltip、图例、响应式、大数据量横向拖拽等功能。
       </p>
     </div>
 
@@ -22,6 +24,7 @@
               :labels="monthLabels"
               :series="lineSeries"
               :height="300"
+              :show-label="true"
             />
           </XlyCard>
         </div>
@@ -36,6 +39,7 @@
     { name: 'PV', data: [4200, 5800, 4700, 6500, 7200, 6800] },
   ]"
   :height="300"
+  :show-label="true"
 /&gt;</code></pre>
         </div>
       </div>
@@ -44,7 +48,9 @@
     <!-- 不带面积的折线图 -->
     <section class="doc-section">
       <h2 class="doc-section__title">折线图 — 不填充面积</h2>
-      <p class="doc-section__desc">设置 <code>:area-fill="false"</code> 关闭面积填充，显示纯折线。</p>
+      <p class="doc-section__desc">
+        设置 <code>:area-fill="false"</code> 关闭面积填充，显示纯折线。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <XlyCard shadow="never" :bordered="true">
@@ -74,7 +80,9 @@
     <!-- 单数据折线 -->
     <section class="doc-section">
       <h2 class="doc-section__title">单线图 — 自定义颜色</h2>
-      <p class="doc-section__desc">通过 <code>colors</code> 属性自定义颜色，也可在 serie 上单独指定 <code>color</code>。</p>
+      <p class="doc-section__desc">
+        通过 <code>colors</code> 属性自定义颜色，也可在 serie 上单独指定 <code>color</code>。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <XlyCard shadow="never" :bordered="true">
@@ -116,6 +124,7 @@
               :labels="quarterLabels"
               :series="barSeries"
               :height="300"
+              :show-label="true"
             />
           </XlyCard>
         </div>
@@ -130,6 +139,7 @@
     { name: '产品C', data: [60,  88,  70,  95]  },
   ]"
   :height="300"
+  :show-label="true"
 /&gt;</code></pre>
         </div>
       </div>
@@ -168,6 +178,61 @@
       </div>
     </section>
 
+    <!-- show-label：折线 + 柱状 -->
+    <section class="doc-section">
+      <h2 class="doc-section__title">显示数据标签</h2>
+      <p class="doc-section__desc">
+        设置
+        <code>:show-label="true"</code> 在图形上直接标注数值，折线图、柱状图、饼图、环形图均支持。
+      </p>
+      <div class="doc-preview">
+        <div class="doc-preview__body">
+          <div class="chart-row">
+            <XlyCard shadow="never" :bordered="true" class="chart-col">
+              <XlyChart
+                type="line"
+                title="用户增长（含标签）"
+                :labels="dayLabels"
+                :series="singleSeries"
+                :colors="['#8b5cf6']"
+                :show-label="true"
+                :height="240"
+              />
+            </XlyCard>
+            <XlyCard shadow="never" :bordered="true" class="chart-col">
+              <XlyChart
+                type="bar"
+                title="各城市 GMV（含标签）"
+                :labels="cityLabels"
+                :series="citySeries"
+                :colors="['#10b981']"
+                :bar-radius="6"
+                :show-label="true"
+                :height="240"
+              />
+            </XlyCard>
+          </div>
+        </div>
+        <div class="doc-code">
+          <pre><code>&lt;!-- 折线图显示数据标签 --&gt;
+&lt;XlyChart
+  type="line"
+  :series="series"
+  :labels="labels"
+  :show-label="true"
+/&gt;
+
+&lt;!-- 柱状图显示数据标签 --&gt;
+&lt;XlyChart
+  type="bar"
+  :series="series"
+  :labels="labels"
+  :show-label="true"
+/&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== 饼状图 ===== -->
     <section class="doc-section">
       <h2 class="doc-section__title">饼状图 Pie</h2>
@@ -181,6 +246,7 @@
                 title="流量来源"
                 :data="pieData"
                 :height="280"
+                :show-label="true"
               />
             </XlyCard>
             <XlyCard shadow="never" :bordered="true" class="chart-col">
@@ -205,7 +271,8 @@
     { name: '付费广告', value: 1200 },
     { name: '其他',     value: 520  },
   ]"
-  :height="280"
+  :height="280
+  :show-label="true"
 /&gt;</code></pre>
         </div>
       </div>
@@ -236,7 +303,7 @@
                 donut-label="已使用"
                 donut-value="¥18.6w"
                 :height="280"
-                :colors="['#ef4444','#f59e0b','#10b981','#3b82f6']"
+                :colors="['#ef4444', '#f59e0b', '#10b981', '#3b82f6']"
               />
             </XlyCard>
           </div>
@@ -258,10 +325,64 @@
       </div>
     </section>
 
+    <!-- show-label：饼图 + 环形图 -->
+    <section class="doc-section">
+      <h2 class="doc-section__title">饼图 / 环形图数据标签</h2>
+      <p class="doc-section__desc">
+        饼图和环形图开启 <code>:show-label="true"</code> 后，在切片中央显示百分比（切片 &lt; 5%
+        时自动隐藏以避免拥挤）。
+      </p>
+      <div class="doc-preview">
+        <div class="doc-preview__body">
+          <div class="chart-row">
+            <XlyCard shadow="never" :bordered="true" class="chart-col">
+              <XlyChart
+                type="pie"
+                title="流量来源（含标签）"
+                :data="pieData"
+                :show-label="true"
+                :height="280"
+              />
+            </XlyCard>
+            <XlyCard shadow="never" :bordered="true" class="chart-col">
+              <XlyChart
+                type="donut"
+                title="任务完成率（含标签）"
+                :data="taskData"
+                donut-label="已完成"
+                donut-value="72%"
+                :show-label="true"
+                :height="280"
+              />
+            </XlyCard>
+          </div>
+        </div>
+        <div class="doc-code">
+          <pre><code>&lt;!-- 饼图显示数据标签 --&gt;
+&lt;XlyChart
+  type="pie"
+  :data="data"
+  :show-label="true"
+/&gt;
+
+&lt;!-- 环形图显示数据标签 --&gt;
+&lt;XlyChart
+  type="donut"
+  :data="data"
+  donut-label="已完成"
+  donut-value="72%"
+  :show-label="true"
+/&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== 自定义格式化 ===== -->
     <section class="doc-section">
       <h2 class="doc-section__title">自定义格式化</h2>
-      <p class="doc-section__desc">通过 <code>formatter</code> 属性自定义 Y 轴和 Tooltip 的数值显示格式。</p>
+      <p class="doc-section__desc">
+        通过 <code>formatter</code> 属性自定义 Y 轴和 Tooltip 的数值显示格式。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <XlyCard shadow="never" :bordered="true">
@@ -291,12 +412,13 @@
     <section class="doc-section">
       <h2 class="doc-section__title">大数据量 — 横向拖拽</h2>
       <p class="doc-section__desc">
-        设置 <code>:min-item-width="N"</code>，当数据点总宽度超过容器宽度时自动启用横向滚动。
-        支持 <b>鼠标拖拽</b>、<b>底部滚动条</b>、<b>滚轮/触控板</b> 三种方式平移视图，Y 轴和网格始终固定。
+        设置 <code>:min-item-width="N"</code>，当数据点总宽度超过容器宽度时自动启用横向滚动。 支持
+        <b>鼠标拖拽</b>、<b>底部滚动条</b>、<b>滚轮/触控板</b> 三种方式平移视图，Y
+        轴和网格始终固定。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
-          <XlyCard shadow="never" :bordered="true" style="margin-bottom:16px">
+          <XlyCard shadow="never" :bordered="true" style="margin-bottom: 16px">
             <XlyChart
               type="line"
               title="全年每日访问量（365 天）"
@@ -394,7 +516,9 @@
     <!-- ===== 漏斗图 ===== -->
     <section class="doc-section">
       <h2 class="doc-section__title">漏斗图 Funnel</h2>
-      <p class="doc-section__desc">用于展示业务流程各环节的转化情况，层宽度与数值成正比，鼠标悬浮显示具体数值及占比。</p>
+      <p class="doc-section__desc">
+        用于展示业务流程各环节的转化情况，层宽度与数值成正比，鼠标悬浮显示具体数值及占比。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <div class="chart-row">
@@ -412,7 +536,7 @@
                 type="funnel"
                 title="销售流程漏斗"
                 :data="salesFunnelData"
-                :colors="['#6366f1','#8b5cf6','#a78bfa','#c4b5fd','#ddd6fe']"
+                :colors="['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe']"
                 :height="380"
               />
             </XlyCard>
@@ -438,7 +562,9 @@
     <!-- ===== 横向柱状图 ===== -->
     <section class="doc-section">
       <h2 class="doc-section__title">横向柱状图 Horizontal Bar</h2>
-      <p class="doc-section__desc">设置 <code>type="hbar"</code> 即可切换为横向柱状图，适合类别名称较长、方便比较排名的场景。</p>
+      <p class="doc-section__desc">
+        设置 <code>type="hbar"</code> 即可切换为横向柱状图，适合类别名称较长、方便比较排名的场景。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <XlyCard shadow="never" :bordered="true">
@@ -470,7 +596,9 @@
     <!-- ===== 仪表盘 ===== -->
     <section class="doc-section">
       <h2 class="doc-section__title">仪表盘 Gauge</h2>
-      <p class="doc-section__desc">用于展示单一指标的完成度或当前状态，支持自定义量程、单位和分段颜色。</p>
+      <p class="doc-section__desc">
+        用于展示单一指标的完成度或当前状态，支持自定义量程、单位和分段颜色。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <div class="chart-row">
@@ -482,7 +610,7 @@
                 :gauge-min="0"
                 :gauge-max="100"
                 gauge-unit="%"
-                :colors="['#10b981','#f59e0b','#ef4444']"
+                :colors="['#10b981', '#f59e0b', '#ef4444']"
                 :height="260"
               />
             </XlyCard>
@@ -494,7 +622,7 @@
                 :gauge-min="0"
                 :gauge-max="10000"
                 gauge-unit=" 单"
-                :colors="['#3b82f6','#6366f1']"
+                :colors="['#3b82f6', '#6366f1']"
                 :height="260"
               />
             </XlyCard>
@@ -518,7 +646,17 @@
     <!-- ===== 下钻事件 ===== -->
     <section class="doc-section">
       <h2 class="doc-section__title">下钻事件 Drill</h2>
-      <p class="doc-section__desc">所有图表均支持 <code>@drill</code> 事件，点击任意数据元素（柱子、折线点、饼片、漏斗层、横向柱条）即可触发，返回包含 <code>type</code>、<code>label</code>、<code>value</code>、<code>seriesName</code>、<code>index</code>、<code>extra</code> 的对象。其中 <code>extra</code> 为 <code>series</code>（或 <code>data</code>）每项中除内置字段外的所有自定义字段，方便下钻时携带业务 ID 等附加信息。</p>
+      <p class="doc-section__desc">
+        所有图表均支持
+        <code>@drill</code>
+        事件，点击任意数据元素（柱子、折线点、饼片、漏斗层、横向柱条）即可触发，返回包含
+        <code>type</code
+        >、<code>label</code>、<code>value</code>、<code>seriesName</code>、<code>index</code>、<code
+      >extra</code
+      >
+        的对象。其中 <code>extra</code> 为 <code>series</code>（或
+        <code>data</code>）每项中除内置字段外的所有自定义字段，方便下钻时携带业务 ID 等附加信息。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <div v-if="drillLog" class="drill-log">
@@ -558,86 +696,262 @@
     <section class="doc-section">
       <h2 class="doc-section__title">API</h2>
 
-      <h3 class="doc-sub-title">Props</h3>
-      <div class="doc-table-wrap">
-        <table class="doc-table">
+      <h3 class="doc-subtitle">Props</h3>
+      <div class="doc-table">
+        <table>
           <thead>
-            <tr>
-              <th>属性</th>
-              <th>说明</th>
-              <th>类型</th>
-              <th>默认值</th>
-            </tr>
+          <tr>
+            <th>属性</th>
+            <th>说明</th>
+            <th>类型</th>
+            <th>默认值</th>
+          </tr>
           </thead>
           <tbody>
-            <tr><td>type</td><td>图表类型</td><td><code>'line' | 'bar' | 'hbar' | 'pie' | 'donut' | 'funnel' | 'gauge'</code></td><td><code>'line'</code></td></tr>
-            <tr><td>title</td><td>图表标题</td><td><code>string</code></td><td>—</td></tr>
-            <tr><td>subtitle</td><td>副标题</td><td><code>string</code></td><td>—</td></tr>
-            <tr><td>width</td><td>宽度，数字为px，字符串原样</td><td><code>number | string</code></td><td><code>'100%'</code></td></tr>
-            <tr><td>height</td><td>高度，数字为px，字符串原样</td><td><code>number | string</code></td><td><code>300</code></td></tr>
-            <tr><td>labels</td><td>X 轴标签（折线/柱状/横向柱状图）</td><td><code>string[]</code></td><td><code>[]</code></td></tr>
-            <tr><td>series</td><td>数据系列（折线/柱状/横向柱状图）</td><td><code>ChartSerie[]</code></td><td><code>[]</code></td></tr>
-            <tr><td>data</td><td>数据项（饼图/环形图/漏斗图/仪表盘分段）</td><td><code>PieItem[]</code></td><td><code>[]</code></td></tr>
-            <tr><td>show-grid</td><td>是否显示网格线</td><td><code>boolean</code></td><td><code>true</code></td></tr>
-            <tr><td>show-legend</td><td>是否显示图例</td><td><code>boolean</code></td><td><code>true</code></td></tr>
-            <tr><td>legend-position</td><td>图例位置</td><td><code>'top' | 'bottom' | 'left' | 'right'</code></td><td><code>'bottom'</code></td></tr>
-            <tr><td>area-fill</td><td>折线图是否填充面积</td><td><code>boolean</code></td><td><code>true</code></td></tr>
-            <tr><td>colors</td><td>自定义颜色列表</td><td><code>string[]</code></td><td>内置配色</td></tr>
-            <tr><td>bar-radius</td><td>柱子圆角（px）</td><td><code>number</code></td><td><code>4</code></td></tr>
-            <tr><td>donut-label</td><td>环形图中心标签文字</td><td><code>string</code></td><td>—</td></tr>
-            <tr><td>donut-value</td><td>环形图中心数值文字</td><td><code>string</code></td><td>—</td></tr>
-            <tr><td>formatter</td><td>Y轴/Tooltip 数值格式化</td><td><code>(val: number) => string</code></td><td>—</td></tr>
-            <tr><td>show-download</td><td>是否显示右上角下载按钮（支持 PNG / SVG）</td><td><code>boolean</code></td><td><code>true</code></td></tr>
-            <tr><td>min-item-width</td><td>每个数据点最小宽度（px），超出容器时启用横向拖拽，0=自动</td><td><code>number</code></td><td><code>0</code></td></tr>
-            <tr><td>gauge-value</td><td>仪表盘当前值</td><td><code>number</code></td><td><code>0</code></td></tr>
-            <tr><td>gauge-min</td><td>仪表盘最小值</td><td><code>number</code></td><td><code>0</code></td></tr>
-            <tr><td>gauge-max</td><td>仪表盘最大值</td><td><code>number</code></td><td><code>100</code></td></tr>
-            <tr><td>gauge-unit</td><td>仪表盘数值单位（显示在中心数值后）</td><td><code>string</code></td><td>—</td></tr>
+          <tr>
+            <td>type</td>
+            <td>图表类型</td>
+            <td><code>'line' | 'bar' | 'hbar' | 'pie' | 'donut' | 'funnel' | 'gauge'</code></td>
+            <td><code>'line'</code></td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td>图表标题</td>
+            <td><code>string</code></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>subtitle</td>
+            <td>副标题</td>
+            <td><code>string</code></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>宽度，数字为px，字符串原样</td>
+            <td><code>number | string</code></td>
+            <td><code>'100%'</code></td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>高度，数字为px，字符串原样</td>
+            <td><code>number | string</code></td>
+            <td><code>300</code></td>
+          </tr>
+          <tr>
+            <td>labels</td>
+            <td>X 轴标签（折线/柱状/横向柱状图）</td>
+            <td><code>string[]</code></td>
+            <td><code>[]</code></td>
+          </tr>
+          <tr>
+            <td>series</td>
+            <td>数据系列（折线/柱状/横向柱状图）</td>
+            <td><code>ChartSerie[]</code></td>
+            <td><code>[]</code></td>
+          </tr>
+          <tr>
+            <td>data</td>
+            <td>数据项（饼图/环形图/漏斗图/仪表盘分段）</td>
+            <td><code>PieItem[]</code></td>
+            <td><code>[]</code></td>
+          </tr>
+          <tr>
+            <td>show-grid</td>
+            <td>是否显示网格线</td>
+            <td><code>boolean</code></td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td>show-legend</td>
+            <td>是否显示图例</td>
+            <td><code>boolean</code></td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td>show-label</td>
+            <td>是否在图形上显示数据标签（折线/柱状/饼图/环形图）</td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+          </tr>
+          <tr>
+            <td>legend-position</td>
+            <td>图例位置</td>
+            <td><code>'top' | 'bottom' | 'left' | 'right'</code></td>
+            <td><code>'bottom'</code></td>
+          </tr>
+          <tr>
+            <td>area-fill</td>
+            <td>折线图是否填充面积</td>
+            <td><code>boolean</code></td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td>colors</td>
+            <td>自定义颜色列表</td>
+            <td><code>string[]</code></td>
+            <td>内置配色</td>
+          </tr>
+          <tr>
+            <td>bar-radius</td>
+            <td>柱子圆角（px）</td>
+            <td><code>number</code></td>
+            <td><code>4</code></td>
+          </tr>
+          <tr>
+            <td>donut-label</td>
+            <td>环形图中心标签文字</td>
+            <td><code>string</code></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>donut-value</td>
+            <td>环形图中心数值文字</td>
+            <td><code>string</code></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>formatter</td>
+            <td>Y轴/Tooltip 数值格式化</td>
+            <td><code>(val: number) => string</code></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>show-download</td>
+            <td>是否显示右上角下载按钮（支持 PNG / SVG）</td>
+            <td><code>boolean</code></td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td>min-item-width</td>
+            <td>每个数据点最小宽度（px），超出容器时启用横向拖拽，0=自动</td>
+            <td><code>number</code></td>
+            <td><code>0</code></td>
+          </tr>
+          <tr>
+            <td>gauge-value</td>
+            <td>仪表盘当前值</td>
+            <td><code>number</code></td>
+            <td><code>0</code></td>
+          </tr>
+          <tr>
+            <td>gauge-min</td>
+            <td>仪表盘最小值</td>
+            <td><code>number</code></td>
+            <td><code>0</code></td>
+          </tr>
+          <tr>
+            <td>gauge-max</td>
+            <td>仪表盘最大值</td>
+            <td><code>number</code></td>
+            <td><code>100</code></td>
+          </tr>
+          <tr>
+            <td>gauge-unit</td>
+            <td>仪表盘数值单位（显示在中心数值后）</td>
+            <td><code>string</code></td>
+            <td>—</td>
+          </tr>
           </tbody>
         </table>
       </div>
 
-      <h3 class="doc-sub-title" style="margin-top: 24px;">Events</h3>
-      <div class="doc-table-wrap">
-        <table class="doc-table">
+      <h3 class="doc-subtitle">Events</h3>
+      <div class="doc-table">
+        <table>
           <thead>
-            <tr><th>事件名</th><th>说明</th><th>回调参数</th></tr>
+          <tr>
+            <th>事件名</th>
+            <th>说明</th>
+            <th>回调参数</th>
+          </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>drill</td>
-              <td>点击图表元素时触发（支持所有图表类型）</td>
-              <td><code>{ type, label, value, seriesName?, index, extra? }</code><br/><small style="color:#888">extra：series/data 每项中的自定义字段（排除 name/data/value/color/areaFill）</small></td>
-            </tr>
+          <tr>
+            <td><code>drill</code></td>
+            <td>点击图表元素时触发（支持所有图表类型）</td>
+            <td>
+              <code>{ type, label, value, seriesName?, index, extra? }</code><br /><small
+            >extra：series/data 每项中的自定义字段（排除
+              name/data/value/color/areaFill）</small
+            >
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
 
-      <h3 class="doc-sub-title" style="margin-top: 24px;">ChartSerie 类型</h3>
-      <div class="doc-table-wrap">
-        <table class="doc-table">
+      <h3 class="doc-subtitle">ChartSerie 类型</h3>
+      <div class="doc-table">
+        <table>
           <thead>
-            <tr><th>字段</th><th>说明</th><th>类型</th></tr>
+          <tr>
+            <th>字段</th>
+            <th>说明</th>
+            <th>类型</th>
+          </tr>
           </thead>
           <tbody>
-            <tr><td>name</td><td>系列名称（同时用作图例标识）</td><td><code>string</code></td></tr>
-            <tr><td>data</td><td>数值数组，与 labels 一一对应</td><td><code>number[]</code></td></tr>
-            <tr><td>color</td><td>系列颜色（优先于 colors 属性）</td><td><code>string</code></td></tr>
-            <tr><td>areaFill</td><td>是否填充面积（折线图）</td><td><code>boolean</code></td></tr>
+          <tr>
+            <td><code>name</code></td>
+            <td>系列名称（同时用作图例标识）</td>
+            <td><code>string</code></td>
+          </tr>
+          <tr>
+            <td><code>data</code></td>
+            <td>数值数组，与 labels 一一对应</td>
+            <td><code>number[]</code></td>
+          </tr>
+          <tr>
+            <td><code>color</code></td>
+            <td>系列颜色（优先于 colors 属性）</td>
+            <td><code>string</code></td>
+          </tr>
+          <tr>
+            <td><code>areaFill</code></td>
+            <td>是否填充面积（折线图）</td>
+            <td><code>boolean</code></td>
+          </tr>
+          <tr>
+            <td><code>[key: string]</code></td>
+            <td>任意自定义字段，不参与绘制，下钻时通过 extra 取出</td>
+            <td><code>any</code></td>
+          </tr>
           </tbody>
         </table>
       </div>
 
-      <h3 class="doc-sub-title" style="margin-top: 24px;">PieItem 类型</h3>
-      <div class="doc-table-wrap">
-        <table class="doc-table">
+      <h3 class="doc-subtitle">PieItem 类型</h3>
+      <div class="doc-table">
+        <table>
           <thead>
-            <tr><th>字段</th><th>说明</th><th>类型</th></tr>
+          <tr>
+            <th>字段</th>
+            <th>说明</th>
+            <th>类型</th>
+          </tr>
           </thead>
           <tbody>
-            <tr><td>name</td><td>项目名称</td><td><code>string</code></td></tr>
-            <tr><td>value</td><td>数值</td><td><code>number</code></td></tr>
-            <tr><td>color</td><td>颜色（可选，优先于 colors 属性）</td><td><code>string</code></td></tr>
+          <tr>
+            <td><code>name</code></td>
+            <td>项目名称</td>
+            <td><code>string</code></td>
+          </tr>
+          <tr>
+            <td><code>value</code></td>
+            <td>数值</td>
+            <td><code>number</code></td>
+          </tr>
+          <tr>
+            <td><code>color</code></td>
+            <td>颜色（可选，优先于 colors 属性）</td>
+            <td><code>string</code></td>
+          </tr>
+          <tr>
+            <td><code>[key: string]</code></td>
+            <td>任意自定义字段，不参与绘制，下钻时通过 extra 取出</td>
+            <td><code>any</code></td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -651,7 +965,20 @@ import XlyChart from '@/components/xly-chart/index.vue'
 import XlyCard from '@/components/xly-card/index.vue'
 
 // ===== 折线图数据 =====
-const monthLabels = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+const monthLabels = [
+  '1月',
+  '2月',
+  '3月',
+  '4月',
+  '5月',
+  '6月',
+  '7月',
+  '8月',
+  '9月',
+  '10月',
+  '11月',
+  '12月',
+]
 
 const lineSeries = [
   { name: 'UV', data: [1200, 1800, 1400, 2100, 2600, 2300, 2900, 3100, 2700, 3400, 3200, 3800] },
@@ -667,9 +994,7 @@ const stockSeries = [
 
 const dayLabels = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 
-const singleSeries = [
-  { name: '新增用户', data: [120, 145, 98, 160, 132, 178, 156] },
-]
+const singleSeries = [{ name: '新增用户', data: [120, 145, 98, 160, 132, 178, 156] }]
 
 // ===== 柱状图数据 =====
 const quarterLabels = ['Q1', 'Q2', 'Q3', 'Q4']
@@ -682,9 +1007,7 @@ const barSeries = [
 
 const cityLabels = ['北京', '上海', '广州', '深圳', '杭州', '成都']
 
-const citySeries = [
-  { name: 'GMV', data: [512, 476, 328, 394, 256, 218] },
-]
+const citySeries = [{ name: 'GMV', data: [512, 476, 328, 394, 256, 218] }]
 
 // ===== 饼图数据 =====
 const pieData = [
@@ -692,13 +1015,13 @@ const pieData = [
   { name: '直接访问', value: 2810 },
   { name: '社交媒体', value: 1950 },
   { name: '付费广告', value: 1200 },
-  { name: '其他',     value: 520 },
+  { name: '其他', value: 520 },
 ]
 
 const deviceData = [
   { name: '移动端', value: 6200 },
   { name: '桌面端', value: 3800 },
-  { name: '平板',   value: 1000 },
+  { name: '平板', value: 1000 },
 ]
 
 // ===== 环形图数据 =====
@@ -709,15 +1032,21 @@ const taskData = [
 ]
 
 const budgetData = [
-  { name: '研发',   value: 8600 },
-  { name: '市场',   value: 5400 },
-  { name: '运营',   value: 3200 },
-  { name: '其他',   value: 1400 },
+  { name: '研发', value: 8600 },
+  { name: '市场', value: 5400 },
+  { name: '运营', value: 3200 },
+  { name: '其他', value: 1400 },
 ]
 
 // ===== 收入格式化 =====
 const revenueSeries = [
-  { name: '收入', data: [128000, 165000, 142000, 198000, 234000, 218000, 276000, 290000, 258000, 312000, 298000, 358000] },
+  {
+    name: '收入',
+    data: [
+      128000, 165000, 142000, 198000, 234000, 218000, 276000, 290000, 258000, 312000, 298000,
+      358000,
+    ],
+  },
 ]
 
 function currencyFormatter(val: number): string {
@@ -754,7 +1083,7 @@ function randWalk(len: number, start: number, volatility: number): number[] {
   for (let i = 1; i < len; i++) {
     arr.push(Math.max(0, arr[i - 1] + (Math.random() - 0.48) * volatility))
   }
-  return arr.map(v => Math.round(v))
+  return arr.map((v) => Math.round(v))
 }
 
 const dailySeries = [
@@ -770,9 +1099,23 @@ const weeklySeries = [
 ]
 
 // ===== 横向柱状图数据 =====
-const hbarLabels = ['Walnut Brownie', 'Lemon Juice', 'Orange Juice', 'Tea', 'Matcha Cocoa', 'Cheese Brownie', 'Cheese Cocoa', 'Milk Tea', 'Matcha Latte']
+const hbarLabels = [
+  'Walnut Brownie',
+  'Lemon Juice',
+  'Orange Juice',
+  'Tea',
+  'Matcha Cocoa',
+  'Cheese Brownie',
+  'Cheese Cocoa',
+  'Milk Tea',
+  'Matcha Latte',
+]
 const hbarSeries = [
-  { name: '销售额', data: [18000, 105000, 88000, 78000, 22000, 17000, 45000, 80000, 52000], color: '#3b82f6' },
+  {
+    name: '销售额',
+    data: [18000, 105000, 88000, 78000, 22000, 17000, 45000, 80000, 52000],
+    color: '#3b82f6',
+  },
 ]
 function wanFormatter(val: number): string {
   if (val >= 10000) return (val / 10000).toFixed(1) + 'w'
@@ -781,18 +1124,25 @@ function wanFormatter(val: number): string {
 
 // ===== 下钻事件 =====
 const drillLog = ref('')
-function onDrill(payload: { type: string; label: string; value: number; seriesName?: string; index: number; extra?: Record<string, any> }) {
+function onDrill(payload: {
+  type: string
+  label: string
+  value: number
+  seriesName?: string
+  index: number
+  extra?: Record<string, any>
+}) {
   drillLog.value = JSON.stringify(payload)
-  setTimeout(() => { drillLog.value = '' }, 3000)
+  setTimeout(() => {
+    drillLog.value = ''
+  }, 3000)
 }
-
 </script>
 
 <style scoped lang="scss">
 .chart-doc {
   max-width: 960px;
-  margin: 0 auto;
-  padding: 24px;
+  padding: 8px 0 40px;
 }
 
 .doc-header {
@@ -801,71 +1151,116 @@ function onDrill(payload: { type: string; label: string; value: number; seriesNa
 .doc-title {
   font-size: 26px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #1a1a2e;
   margin: 0 0 8px;
+  letter-spacing: -0.3px;
 }
 .doc-desc {
   font-size: 14px;
-  color: #71717a;
-  line-height: 1.7;
+  color: #8e8ea0;
   margin: 0;
+  line-height: 1.6;
 }
 
 .doc-section {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 }
 .doc-section__title {
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #1a1a2e;
   margin: 0 0 8px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #f1f1f4;
+  border-bottom: 1px solid #f2f3f7;
 }
 .doc-section__desc {
-  font-size: 13px;
-  color: #71717a;
+  font-size: 14px;
+  color: #8e8ea0;
   margin: 0 0 16px;
-  line-height: 1.7;
-
+  line-height: 1.6;
   code {
-    background: #f4f5f7;
+    background: #f5f6fa;
+    color: #4f6ef7;
     padding: 2px 6px;
     border-radius: 4px;
-    font-size: 12px;
-    color: #3b82f6;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
   }
-}
-.doc-sub-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-  margin: 16px 0 10px;
+  b {
+    color: #4a4a6a;
+    font-weight: 600;
+  }
 }
 
 .doc-preview {
-  border: 1px solid #e4e4e7;
-  border-radius: 10px;
+  border: 1px solid #f2f3f7;
+  border-radius: 12px;
   overflow: hidden;
+  background: #fff;
 }
 .doc-preview__body {
-  padding: 20px;
-  background: #fafbfc;
+  padding: 24px;
+  background: #fff;
 }
 .doc-code {
-  border-top: 1px solid #e4e4e7;
-  background: #1e1e2e;
-
+  border-top: 1px solid #f2f3f7;
+  background: #fafbfd;
+  padding: 16px 20px;
+  overflow-x: auto;
   pre {
     margin: 0;
-    padding: 16px 20px;
-    overflow-x: auto;
+    padding: 0;
   }
   code {
-    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+    font-size: 13px;
     line-height: 1.7;
-    color: #cdd6f4;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    color: #4a4a6a;
+    white-space: pre;
+  }
+}
+
+.doc-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 20px 0 10px;
+}
+.doc-table {
+  overflow-x: auto;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f2f3f7;
+  }
+  th {
+    background: #fafbfd;
+    font-weight: 600;
+    color: #1a1a2e;
+    white-space: nowrap;
+  }
+  td {
+    color: #4a4a6a;
+  }
+  td:first-child {
+    white-space: nowrap;
+  }
+  code {
+    background: #f5f6fa;
+    color: #4f6ef7;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  }
+  small {
+    font-size: 12px;
   }
 }
 
@@ -878,7 +1273,11 @@ function onDrill(payload: { type: string; label: string; value: number; seriesNa
     grid-template-columns: 1fr;
   }
 }
+.chart-col {
+  min-width: 0;
+}
 
+// 下钻日志提示
 .drill-log {
   display: flex;
   align-items: center;
@@ -892,7 +1291,7 @@ function onDrill(payload: { type: string; label: string; value: number; seriesNa
   color: #166534;
   animation: fade-in 0.2s ease;
   code {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
     font-size: 11px;
   }
 }
@@ -906,53 +1305,13 @@ function onDrill(payload: { type: string; label: string; value: number; seriesNa
   white-space: nowrap;
 }
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.chart-col {
-  min-width: 0;
-}
-
-// API 表格
-.doc-table-wrap {
-  overflow-x: auto;
-}
-.doc-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-
-  th, td {
-    padding: 10px 14px;
-    text-align: left;
-    border-bottom: 1px solid #f1f1f4;
-    line-height: 1.5;
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
   }
-  th {
-    background: #fafbfc;
-    font-weight: 600;
-    color: #4a4a4a;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  td {
-    color: #4a4a4a;
-    &:first-child {
-      font-weight: 500;
-      color: #1a1a1a;
-    }
-    code {
-      background: #f4f5f7;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 11px;
-      color: #3b82f6;
-    }
-  }
-  tr:hover td {
-    background: #fafbfc;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
