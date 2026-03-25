@@ -12,6 +12,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DropdownItem: typeof import('./../../components/xly-dropdown/dropdown-item.vue')['default']
+    ElCard: typeof import('element-plus/es')['ElCard']
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElInput: typeof import('element-plus/es')['ElInput']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElTag: typeof import('element-plus/es')['ElTag']
+    PermissionItem: typeof import('./../../components/xly-permission/permission-item.vue')['default']
     RadioGroup: typeof import('./../../components/xly-radio/radio-group.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -22,6 +30,7 @@ declare module 'vue' {
     XlyCard: typeof import('./../../components/xly-card/index.vue')['default']
     XlyCarousel: typeof import('./../../components/xly-carousel/index.vue')['default']
     XlyCascader: typeof import('./../../components/xly-cascader/index.vue')['default']
+    XlyChart: typeof import('./../../components/xly-chart/index.vue')['default']
     XlyChat: typeof import('./../../components/xly-chat/index.vue')['default']
     XlyChatInput: typeof import('./../../components/xly-chat/xly-chat-input.vue')['default']
     XlyChatMessage: typeof import('./../../components/xly-chat/xly-chat-message.vue')['default']

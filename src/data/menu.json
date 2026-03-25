@@ -110,6 +110,13 @@
         "key": "permission",
         "path": "/basic/permission",
         "component": "basic/permission"
+      },
+      {
+        "id": "2-15",
+        "name": "图表 Chart",
+        "key": "chart",
+        "path": "/basic/chart",
+        "component": "basic/chart"
       }
     ]
   },
