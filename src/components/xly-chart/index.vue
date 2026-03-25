@@ -795,12 +795,28 @@ const stepX = computed(() => {
   return itemWidth.value
 })
 
+/** 折线图两端与 Y轴/右边界之间的留白距离（避免第一/最后数据点贴边） */
+const linePaddingX = computed(() => {
+  if (props.type !== 'line') return 0
+  const dataLen = xLabels.value.length
+  if (dataLen <= 1) return 0
+  // 固定留白 16px，但不超过 itemWidth 的一半
+  return Math.min(16, itemWidth.value * 0.5)
+})
+
 function getXCenter(i: number): number {
   const offsetX = scrollable.value ? -clampedOffsetX.value : 0
   if (props.type === 'bar') {
     const seriesCount = visibleSeries.value.length
     const totalBarW = barWidth.value * seriesCount + barGap.value * (seriesCount - 1)
     return padding.value.left + offsetX + itemWidth.value * i + itemWidth.value / 2 - totalBarW / 2 + barWidth.value / 2
+  }
+  // 折线图：在左右各留半个 stepX 的边距，使首尾两点不贴紧 Y 轴/右边界
+  if (props.type === 'line') {
+    const dataLen = Math.max(xLabels.value.length, 1)
+    if (dataLen <= 1) return padding.value.left + offsetX + plotWidth.value / 2
+    const usableW = plotWidth.value - linePaddingX.value * 2
+    return padding.value.left + linePaddingX.value + offsetX + (usableW / (dataLen - 1)) * i
   }
   return padding.value.left + offsetX + stepX.value * i
 }
@@ -1099,7 +1115,6 @@ const GAUGE_START_DEG = -210
 const GAUGE_SWEEP_DEG = 240
 
 const gaugeCx = computed(() => svgWidth.value / 2)
-const gaugeTrackWBase = 14  // 先用固定值估算留白，再按实际 R 修正
 const gaugeR = computed(() => {
   // 顶部留白 = R + trackW/2 + 24（刻度文字），底部留白 = R*0.5（指针+数值）
   // 解方程：gaugeCy - R - trackW/2 - 24 >= 8（最小上边距）
