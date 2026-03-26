@@ -43,94 +43,110 @@
       },
       {
         "id": "2-5",
-        "name": "选项卡 Tabs",
-        "key": "tabs",
-        "path": "/basic/tabs",
-        "component": "basic/tabs"
-      },
-      {
-        "id": "2-6",
         "name": "标签 Tag",
         "key": "tag",
         "path": "/basic/tag",
         "component": "basic/tag"
       },
       {
-        "id": "2-7",
-        "name": "表格 Table",
-        "key": "table",
-        "path": "/basic/table",
-        "component": "basic/table"
-      },
-      {
-        "id": "2-8",
-        "name": "下拉菜单 Dropdown",
-        "key": "dropdown",
-        "path": "/basic/dropdown",
-        "component": "basic/dropdown"
-      },
-      {
-        "id": "2-9",
+        "id": "2-6",
         "name": "分割线 Divider",
         "key": "divider",
         "path": "/basic/divider",
         "component": "basic/divider"
       },
       {
-        "id": "2-10",
+        "id": "2-7",
         "name": "头像 Avatar",
         "key": "avatar",
         "path": "/basic/avatar",
         "component": "basic/avatar"
       },
       {
-        "id": "2-11",
-        "name": "时间线 Timeline",
-        "key": "timeline",
-        "path": "/basic/timeline",
-        "component": "basic/timeline"
-      },
-      {
-        "id": "2-12",
-        "name": "图片 Image",
-        "key": "image",
-        "path": "/basic/image",
-        "component": "basic/image"
-      },
-      {
-        "id": "2-13",
+        "id": "2-8",
         "name": "卡片 Card",
         "key": "card",
         "path": "/basic/card",
         "component": "basic/card"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "数据展示",
+    "key": "data",
+    "icon": "DataAnalysis",
+    "children": [
+      {
+        "id": "6-1",
+        "name": "表格 Table",
+        "key": "table",
+        "path": "/data/table",
+        "component": "data/table"
       },
       {
-        "id": "2-14",
-        "name": "权限 Permission",
-        "key": "permission",
-        "path": "/basic/permission",
-        "component": "basic/permission"
-      },
-      {
-        "id": "2-15",
+        "id": "6-2",
         "name": "图表 Chart",
         "key": "chart",
-        "path": "/basic/chart",
-        "component": "basic/chart"
+        "path": "/data/chart",
+        "component": "data/chart"
       },
       {
-        "id": "2-16",
+        "id": "6-3",
         "name": "统计数值 Statistic",
         "key": "statistic",
-        "path": "/basic/statistic",
-        "component": "basic/statistic"
+        "path": "/data/statistic",
+        "component": "data/statistic"
       },
       {
-        "id": "2-17",
+        "id": "6-4",
         "name": "描述列表 Descriptions",
         "key": "descriptions",
-        "path": "/basic/descriptions",
-        "component": "basic/descriptions"
+        "path": "/data/descriptions",
+        "component": "data/descriptions"
+      },
+      {
+        "id": "6-5",
+        "name": "图片 Image",
+        "key": "image",
+        "path": "/data/image",
+        "component": "data/image"
+      },
+      {
+        "id": "6-6",
+        "name": "时间线 Timeline",
+        "key": "timeline",
+        "path": "/data/timeline",
+        "component": "data/timeline"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "导航组件",
+    "key": "nav",
+    "icon": "Guide",
+    "children": [
+      {
+        "id": "7-1",
+        "name": "选项卡 Tabs",
+        "key": "tabs",
+        "path": "/nav/tabs",
+        "component": "nav/tabs"
+      },
+      {
+        "id": "7-2",
+        "name": "步骤条 Steps",
+        "key": "steps",
+        "path": "/nav/steps",
+        "component": "nav/steps"
+      },
+      {
+        "id": "7-3",
+        "name": "下拉菜单 Dropdown",
+        "key": "dropdown",
+        "path": "/nav/dropdown",
+        "component": "nav/dropdown"
       }
     ]
   },
@@ -216,28 +232,6 @@
         "key": "range-picker",
         "path": "/form/range-picker",
         "component": "form/range-picker"
-      },
-      {
-        "id": "4-12",
-        "name": "聊天组件 Chat",
-        "key": "chat",
-        "path": "/form/chat",
-        "component": "form/chat"
-      }
-    ]
-  },
-  {
-    "id": "5",
-    "name": "布局组件",
-    "key": "layout",
-    "icon": "SetUp",
-    "children": [
-      {
-        "id": "5-1",
-        "name": "栅格布局 Layout",
-        "key": "grid",
-        "path": "/layout/grid",
-        "component": "layout/grid"
       }
     ]
   },
@@ -263,24 +257,54 @@
       },
       {
         "id": "3-3",
-        "name": "步骤条 Steps",
-        "key": "steps",
-        "path": "/feedback/steps",
-        "component": "feedback/steps"
-      },
-      {
-        "id": "3-4",
         "name": "加载 Loading",
         "key": "loading",
         "path": "/feedback/loading",
         "component": "feedback/loading"
       },
       {
-        "id": "3-5",
+        "id": "3-4",
         "name": "抽屉 Drawer",
         "key": "drawer",
         "path": "/feedback/drawer",
         "component": "feedback/drawer"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "布局组件",
+    "key": "layout",
+    "icon": "SetUp",
+    "children": [
+      {
+        "id": "5-1",
+        "name": "栅格布局 Layout",
+        "key": "grid",
+        "path": "/layout/grid",
+        "component": "layout/grid"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "业务组件",
+    "key": "business",
+    "icon": "Briefcase",
+    "children": [
+      {
+        "id": "8-1",
+        "name": "权限 Permission",
+        "key": "permission",
+        "path": "/business/permission",
+        "component": "business/permission"
+      },
+      {
+        "id": "8-2",
+        "name": "聊天组件 Chat",
+        "key": "chat",
+        "path": "/business/chat",
+        "component": "business/chat"
       }
     ]
   }

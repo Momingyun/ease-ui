@@ -24,17 +24,10 @@ const features = [
 
 const componentGroups = [
   {
-    name: '反馈组件',
-    color: '#f56c6c',
-    bgColor: '#fef0f0',
-    count: 4,
-    items: ['xly-drawer', 'xly-modal', 'xly-loading', 'xly-message'],
-  },
-  {
     name: '基础组件',
     color: '#409eff',
     bgColor: '#ecf5ff',
-    count: 11,
+    count: 8,
     items: [
       'xly-avatar',
       'xly-button',
@@ -42,18 +35,36 @@ const componentGroups = [
       'xly-carousel',
       'xly-divider',
       'xly-icon',
-      'xly-image',
       'xly-tag',
       'xly-watermark',
-      'xly-steps',
+    ],
+  },
+  {
+    name: '数据展示',
+    color: '#7c3aed',
+    bgColor: '#f3f0ff',
+    count: 6,
+    items: [
+      'xly-chart',
+      'xly-descriptions',
+      'xly-image',
+      'xly-statistic',
+      'xly-table',
       'xly-timeline',
     ],
+  },
+  {
+    name: '导航组件',
+    color: '#0891b2',
+    bgColor: '#ecfeff',
+    count: 3,
+    items: ['xly-dropdown', 'xly-steps', 'xly-tabs'],
   },
   {
     name: '表单组件',
     color: '#67c23a',
     bgColor: '#f0f9eb',
-    count: 13,
+    count: 11,
     items: [
       'xly-form',
       'xly-input',
@@ -62,26 +73,32 @@ const componentGroups = [
       'xly-cascader',
       'xly-rate',
       'xly-date-picker',
-      'xly-date-range-picker',
       'xly-date-time-picker',
       'xly-time-picker',
       'xly-search-form',
-      '...',
+      'xly-range-picker',
     ],
+  },
+  {
+    name: '反馈组件',
+    color: '#f56c6c',
+    bgColor: '#fef0f0',
+    count: 4,
+    items: ['xly-drawer', 'xly-modal', 'xly-loading', 'xly-message'],
   },
   {
     name: '布局组件',
     color: '#e6a23c',
     bgColor: '#fdf6ec',
-    count: 4,
-    items: ['xly-row', 'xly-col', 'xly-tabs', 'xly-dropdown'],
+    count: 2,
+    items: ['xly-row', 'xly-col'],
   },
   {
     name: '业务组件',
     color: '#909399',
     bgColor: '#f4f4f5',
-    count: 3,
-    items: ['xly-table', 'xly-permission', 'xly-chat'],
+    count: 2,
+    items: ['xly-chat', 'xly-permission'],
   },
 ]
 
@@ -142,7 +159,7 @@ const painPoints = [
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
-            <span class="stat-num">5</span>
+            <span class="stat-num">7</span>
             <span class="stat-label">个分类</span>
           </div>
           <div class="stat-divider"></div>

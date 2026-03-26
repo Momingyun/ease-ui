@@ -12,7 +12,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DropdownItem: typeof import('./../../components/xly-dropdown/dropdown-item.vue')['default']
-    ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
@@ -20,7 +19,6 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTag: typeof import('element-plus/es')['ElTag']
     Item: typeof import('./../../components/xly-descriptions/item.vue')['default']
-    PermissionItem: typeof import('./../../components/xly-permission/permission-item.vue')['default']
     RadioGroup: typeof import('./../../components/xly-radio/radio-group.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

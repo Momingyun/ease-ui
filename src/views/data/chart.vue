@@ -652,8 +652,8 @@
         事件，点击任意数据元素（柱子、折线点、饼片、漏斗层、横向柱条）即可触发，返回包含
         <code>type</code
         >、<code>label</code>、<code>value</code>、<code>seriesName</code>、<code>index</code>、<code
-      >extra</code
-      >
+          >extra</code
+        >
         的对象。其中 <code>extra</code> 为 <code>series</code>（或
         <code>data</code>）每项中除内置字段外的所有自定义字段，方便下钻时携带业务 ID 等附加信息。
       </p>
@@ -700,158 +700,158 @@
       <div class="doc-table">
         <table>
           <thead>
-          <tr>
-            <th>属性</th>
-            <th>说明</th>
-            <th>类型</th>
-            <th>默认值</th>
-          </tr>
+            <tr>
+              <th>属性</th>
+              <th>说明</th>
+              <th>类型</th>
+              <th>默认值</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>type</td>
-            <td>图表类型</td>
-            <td><code>'line' | 'bar' | 'hbar' | 'pie' | 'donut' | 'funnel' | 'gauge'</code></td>
-            <td><code>'line'</code></td>
-          </tr>
-          <tr>
-            <td>title</td>
-            <td>图表标题</td>
-            <td><code>string</code></td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td>subtitle</td>
-            <td>副标题</td>
-            <td><code>string</code></td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td>width</td>
-            <td>宽度，数字为px，字符串原样</td>
-            <td><code>number | string</code></td>
-            <td><code>'100%'</code></td>
-          </tr>
-          <tr>
-            <td>height</td>
-            <td>高度，数字为px，字符串原样</td>
-            <td><code>number | string</code></td>
-            <td><code>300</code></td>
-          </tr>
-          <tr>
-            <td>labels</td>
-            <td>X 轴标签（折线/柱状/横向柱状图）</td>
-            <td><code>string[]</code></td>
-            <td><code>[]</code></td>
-          </tr>
-          <tr>
-            <td>series</td>
-            <td>数据系列（折线/柱状/横向柱状图）</td>
-            <td><code>ChartSerie[]</code></td>
-            <td><code>[]</code></td>
-          </tr>
-          <tr>
-            <td>data</td>
-            <td>数据项（饼图/环形图/漏斗图/仪表盘分段）</td>
-            <td><code>PieItem[]</code></td>
-            <td><code>[]</code></td>
-          </tr>
-          <tr>
-            <td>show-grid</td>
-            <td>是否显示网格线</td>
-            <td><code>boolean</code></td>
-            <td><code>true</code></td>
-          </tr>
-          <tr>
-            <td>show-legend</td>
-            <td>是否显示图例</td>
-            <td><code>boolean</code></td>
-            <td><code>true</code></td>
-          </tr>
-          <tr>
-            <td>show-label</td>
-            <td>是否在图形上显示数据标签（折线/柱状/饼图/环形图）</td>
-            <td><code>boolean</code></td>
-            <td><code>false</code></td>
-          </tr>
-          <tr>
-            <td>legend-position</td>
-            <td>图例位置</td>
-            <td><code>'top' | 'bottom' | 'left' | 'right'</code></td>
-            <td><code>'bottom'</code></td>
-          </tr>
-          <tr>
-            <td>area-fill</td>
-            <td>折线图是否填充面积</td>
-            <td><code>boolean</code></td>
-            <td><code>true</code></td>
-          </tr>
-          <tr>
-            <td>colors</td>
-            <td>自定义颜色列表</td>
-            <td><code>string[]</code></td>
-            <td>内置配色</td>
-          </tr>
-          <tr>
-            <td>bar-radius</td>
-            <td>柱子圆角（px）</td>
-            <td><code>number</code></td>
-            <td><code>4</code></td>
-          </tr>
-          <tr>
-            <td>donut-label</td>
-            <td>环形图中心标签文字</td>
-            <td><code>string</code></td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td>donut-value</td>
-            <td>环形图中心数值文字</td>
-            <td><code>string</code></td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td>formatter</td>
-            <td>Y轴/Tooltip 数值格式化</td>
-            <td><code>(val: number) => string</code></td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td>show-download</td>
-            <td>是否显示右上角下载按钮（支持 PNG / SVG）</td>
-            <td><code>boolean</code></td>
-            <td><code>true</code></td>
-          </tr>
-          <tr>
-            <td>min-item-width</td>
-            <td>每个数据点最小宽度（px），超出容器时启用横向拖拽，0=自动</td>
-            <td><code>number</code></td>
-            <td><code>0</code></td>
-          </tr>
-          <tr>
-            <td>gauge-value</td>
-            <td>仪表盘当前值</td>
-            <td><code>number</code></td>
-            <td><code>0</code></td>
-          </tr>
-          <tr>
-            <td>gauge-min</td>
-            <td>仪表盘最小值</td>
-            <td><code>number</code></td>
-            <td><code>0</code></td>
-          </tr>
-          <tr>
-            <td>gauge-max</td>
-            <td>仪表盘最大值</td>
-            <td><code>number</code></td>
-            <td><code>100</code></td>
-          </tr>
-          <tr>
-            <td>gauge-unit</td>
-            <td>仪表盘数值单位（显示在中心数值后）</td>
-            <td><code>string</code></td>
-            <td>—</td>
-          </tr>
+            <tr>
+              <td>type</td>
+              <td>图表类型</td>
+              <td><code>'line' | 'bar' | 'hbar' | 'pie' | 'donut' | 'funnel' | 'gauge'</code></td>
+              <td><code>'line'</code></td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td>图表标题</td>
+              <td><code>string</code></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>subtitle</td>
+              <td>副标题</td>
+              <td><code>string</code></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>width</td>
+              <td>宽度，数字为px，字符串原样</td>
+              <td><code>number | string</code></td>
+              <td><code>'100%'</code></td>
+            </tr>
+            <tr>
+              <td>height</td>
+              <td>高度，数字为px，字符串原样</td>
+              <td><code>number | string</code></td>
+              <td><code>300</code></td>
+            </tr>
+            <tr>
+              <td>labels</td>
+              <td>X 轴标签（折线/柱状/横向柱状图）</td>
+              <td><code>string[]</code></td>
+              <td><code>[]</code></td>
+            </tr>
+            <tr>
+              <td>series</td>
+              <td>数据系列（折线/柱状/横向柱状图）</td>
+              <td><code>ChartSerie[]</code></td>
+              <td><code>[]</code></td>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td>数据项（饼图/环形图/漏斗图/仪表盘分段）</td>
+              <td><code>PieItem[]</code></td>
+              <td><code>[]</code></td>
+            </tr>
+            <tr>
+              <td>show-grid</td>
+              <td>是否显示网格线</td>
+              <td><code>boolean</code></td>
+              <td><code>true</code></td>
+            </tr>
+            <tr>
+              <td>show-legend</td>
+              <td>是否显示图例</td>
+              <td><code>boolean</code></td>
+              <td><code>true</code></td>
+            </tr>
+            <tr>
+              <td>show-label</td>
+              <td>是否在图形上显示数据标签（折线/柱状/饼图/环形图）</td>
+              <td><code>boolean</code></td>
+              <td><code>false</code></td>
+            </tr>
+            <tr>
+              <td>legend-position</td>
+              <td>图例位置</td>
+              <td><code>'top' | 'bottom' | 'left' | 'right'</code></td>
+              <td><code>'bottom'</code></td>
+            </tr>
+            <tr>
+              <td>area-fill</td>
+              <td>折线图是否填充面积</td>
+              <td><code>boolean</code></td>
+              <td><code>true</code></td>
+            </tr>
+            <tr>
+              <td>colors</td>
+              <td>自定义颜色列表</td>
+              <td><code>string[]</code></td>
+              <td>内置配色</td>
+            </tr>
+            <tr>
+              <td>bar-radius</td>
+              <td>柱子圆角（px）</td>
+              <td><code>number</code></td>
+              <td><code>4</code></td>
+            </tr>
+            <tr>
+              <td>donut-label</td>
+              <td>环形图中心标签文字</td>
+              <td><code>string</code></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>donut-value</td>
+              <td>环形图中心数值文字</td>
+              <td><code>string</code></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>formatter</td>
+              <td>Y轴/Tooltip 数值格式化</td>
+              <td><code>(val: number) => string</code></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>show-download</td>
+              <td>是否显示右上角下载按钮（支持 PNG / SVG）</td>
+              <td><code>boolean</code></td>
+              <td><code>true</code></td>
+            </tr>
+            <tr>
+              <td>min-item-width</td>
+              <td>每个数据点最小宽度（px），超出容器时启用横向拖拽，0=自动</td>
+              <td><code>number</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td>gauge-value</td>
+              <td>仪表盘当前值</td>
+              <td><code>number</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td>gauge-min</td>
+              <td>仪表盘最小值</td>
+              <td><code>number</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td>gauge-max</td>
+              <td>仪表盘最大值</td>
+              <td><code>number</code></td>
+              <td><code>100</code></td>
+            </tr>
+            <tr>
+              <td>gauge-unit</td>
+              <td>仪表盘数值单位（显示在中心数值后）</td>
+              <td><code>string</code></td>
+              <td>—</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -860,23 +860,23 @@
       <div class="doc-table">
         <table>
           <thead>
-          <tr>
-            <th>事件名</th>
-            <th>说明</th>
-            <th>回调参数</th>
-          </tr>
+            <tr>
+              <th>事件名</th>
+              <th>说明</th>
+              <th>回调参数</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td><code>drill</code></td>
-            <td>点击图表元素时触发（支持所有图表类型）</td>
-            <td>
-              <code>{ type, label, value, seriesName?, index, extra? }</code><br /><small
-            >extra：series/data 每项中的自定义字段（排除
-              name/data/value/color/areaFill）</small
-            >
-            </td>
-          </tr>
+            <tr>
+              <td><code>drill</code></td>
+              <td>点击图表元素时触发（支持所有图表类型）</td>
+              <td>
+                <code>{ type, label, value, seriesName?, index, extra? }</code><br /><small
+                  >extra：series/data 每项中的自定义字段（排除
+                  name/data/value/color/areaFill）</small
+                >
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -885,38 +885,38 @@
       <div class="doc-table">
         <table>
           <thead>
-          <tr>
-            <th>字段</th>
-            <th>说明</th>
-            <th>类型</th>
-          </tr>
+            <tr>
+              <th>字段</th>
+              <th>说明</th>
+              <th>类型</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td><code>name</code></td>
-            <td>系列名称（同时用作图例标识）</td>
-            <td><code>string</code></td>
-          </tr>
-          <tr>
-            <td><code>data</code></td>
-            <td>数值数组，与 labels 一一对应</td>
-            <td><code>number[]</code></td>
-          </tr>
-          <tr>
-            <td><code>color</code></td>
-            <td>系列颜色（优先于 colors 属性）</td>
-            <td><code>string</code></td>
-          </tr>
-          <tr>
-            <td><code>areaFill</code></td>
-            <td>是否填充面积（折线图）</td>
-            <td><code>boolean</code></td>
-          </tr>
-          <tr>
-            <td><code>[key: string]</code></td>
-            <td>任意自定义字段，不参与绘制，下钻时通过 extra 取出</td>
-            <td><code>any</code></td>
-          </tr>
+            <tr>
+              <td><code>name</code></td>
+              <td>系列名称（同时用作图例标识）</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td><code>data</code></td>
+              <td>数值数组，与 labels 一一对应</td>
+              <td><code>number[]</code></td>
+            </tr>
+            <tr>
+              <td><code>color</code></td>
+              <td>系列颜色（优先于 colors 属性）</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td><code>areaFill</code></td>
+              <td>是否填充面积（折线图）</td>
+              <td><code>boolean</code></td>
+            </tr>
+            <tr>
+              <td><code>[key: string]</code></td>
+              <td>任意自定义字段，不参与绘制，下钻时通过 extra 取出</td>
+              <td><code>any</code></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -925,33 +925,33 @@
       <div class="doc-table">
         <table>
           <thead>
-          <tr>
-            <th>字段</th>
-            <th>说明</th>
-            <th>类型</th>
-          </tr>
+            <tr>
+              <th>字段</th>
+              <th>说明</th>
+              <th>类型</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td><code>name</code></td>
-            <td>项目名称</td>
-            <td><code>string</code></td>
-          </tr>
-          <tr>
-            <td><code>value</code></td>
-            <td>数值</td>
-            <td><code>number</code></td>
-          </tr>
-          <tr>
-            <td><code>color</code></td>
-            <td>颜色（可选，优先于 colors 属性）</td>
-            <td><code>string</code></td>
-          </tr>
-          <tr>
-            <td><code>[key: string]</code></td>
-            <td>任意自定义字段，不参与绘制，下钻时通过 extra 取出</td>
-            <td><code>any</code></td>
-          </tr>
+            <tr>
+              <td><code>name</code></td>
+              <td>项目名称</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td><code>value</code></td>
+              <td>数值</td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>color</code></td>
+              <td>颜色（可选，优先于 colors 属性）</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td><code>[key: string]</code></td>
+              <td>任意自定义字段，不参与绘制，下钻时通过 extra 取出</td>
+              <td><code>any</code></td>
+            </tr>
           </tbody>
         </table>
       </div>
