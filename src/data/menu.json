@@ -243,9 +243,16 @@
       {
         "id": "4-12",
         "name": "图片上传 Upload",
-        "key": "upload",
-        "path": "/form/imageUpload",
+        "key": "image-upload",
+        "path": "/form/image-upload",
         "component": "form/image-upload"
+      },
+      {
+        "id": "4-13",
+        "name": "文件上传 FileUpload",
+        "key": "file-upload",
+        "path": "/form/file-upload",
+        "component": "form/file-upload"
       }
     ]
   },
