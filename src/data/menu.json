@@ -68,6 +68,13 @@
         "key": "card",
         "path": "/basic/card",
         "component": "basic/card"
+      },
+      {
+        "id": "2-9",
+        "name": "空状态 Empty",
+        "key": "empty",
+        "path": "/basic/empty",
+        "component": "basic/empty"
       }
     ]
   },

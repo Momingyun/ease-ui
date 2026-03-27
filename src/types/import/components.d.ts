@@ -42,6 +42,7 @@ declare module 'vue' {
     XlyDivider: typeof import('./../../components/xly-divider/index.vue')['default']
     XlyDrawer: typeof import('./../../components/xly-drawer/index.vue')['default']
     XlyDropdown: typeof import('./../../components/xly-dropdown/index.vue')['default']
+    XlyEmpty: typeof import('./../../components/xly-empty/index.vue')['default']
     XlyForm: typeof import('./../../components/xly-form/index.vue')['default']
     XlyFormItem: typeof import('./../../components/xly-form/xly-form-item.vue')['default']
     XlyIcon: typeof import('./../../components/xly-icon/index.vue')['default']
