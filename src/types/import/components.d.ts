@@ -47,6 +47,7 @@ declare module 'vue' {
     XlyFormItem: typeof import('./../../components/xly-form/xly-form-item.vue')['default']
     XlyIcon: typeof import('./../../components/xly-icon/index.vue')['default']
     XlyImage: typeof import('./../../components/xly-image/index.vue')['default']
+    XlyImageUpload: typeof import('./../../components/xly-image-upload/index.vue')['default']
     XlyInput: typeof import('./../../components/xly-input/index.vue')['default']
     XlyLoading: typeof import('./../../components/xly-loading/index.vue')['default']
     XlyMessage: typeof import('./../../components/xly-message/index.vue')['default']
@@ -66,6 +67,7 @@ declare module 'vue' {
     XlyTimeline: typeof import('./../../components/xly-timeline/index.vue')['default']
     XlyTimePicker: typeof import('./../../components/xly-time-picker/index.vue')['default']
     XlyTimeRangePicker: typeof import('./../../components/xly-time-range-picker/index.vue')['default']
+    XlyUpload: typeof import('./../../components/xly-upload/index.vue')['default']
     XlyWatermark: typeof import('./../../components/xly-watermark/index.vue')['default']
   }
 }

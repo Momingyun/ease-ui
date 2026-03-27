@@ -239,6 +239,13 @@
         "key": "range-picker",
         "path": "/form/range-picker",
         "component": "form/range-picker"
+      },
+      {
+        "id": "4-12",
+        "name": "图片上传 Upload",
+        "key": "upload",
+        "path": "/basic/imageUpload",
+        "component": "basic/image-upload"
       }
     ]
   },
