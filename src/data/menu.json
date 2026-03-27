@@ -296,6 +296,13 @@
         "key": "tour",
         "path": "/feedback/tour",
         "component": "feedback/tour"
+      },
+      {
+        "id": "3-6",
+        "name": "进度条 Progress",
+        "key": "progress",
+        "path": "/feedback/progress",
+        "component": "feedback/progress"
       }
     ]
   },

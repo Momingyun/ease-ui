@@ -54,6 +54,7 @@ declare module 'vue' {
     XlyMessage: typeof import('./../../components/xly-message/index.vue')['default']
     XlyModal: typeof import('./../../components/xly-modal/index.vue')['default']
     XlyPermission: typeof import('./../../components/xly-permission/index.vue')['default']
+    XlyProgress: typeof import('./../../components/xly-progress/index.vue')['default']
     XlyRadio: typeof import('./../../components/xly-radio/index.vue')['default']
     XlyRate: typeof import('./../../components/xly-rate/index.vue')['default']
     XlyRow: typeof import('./../../components/xly-row/index.vue')['default']
