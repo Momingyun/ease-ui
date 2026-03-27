@@ -27,13 +27,14 @@ const componentGroups = [
     name: '基础组件',
     color: '#409eff',
     bgColor: '#ecf5ff',
-    count: 8,
+    count: 9,
     items: [
       'xly-avatar',
       'xly-button',
       'xly-card',
       'xly-carousel',
       'xly-divider',
+      'xly-empty',
       'xly-icon',
       'xly-tag',
       'xly-watermark',
@@ -64,7 +65,7 @@ const componentGroups = [
     name: '表单组件',
     color: '#67c23a',
     bgColor: '#f0f9eb',
-    count: 11,
+    count: 13,
     items: [
       'xly-form',
       'xly-input',
@@ -77,14 +78,16 @@ const componentGroups = [
       'xly-time-picker',
       'xly-search-form',
       'xly-range-picker',
+      'xly-image-upload',
+      'xly-file-upload',
     ],
   },
   {
     name: '反馈组件',
     color: '#f56c6c',
     bgColor: '#fef0f0',
-    count: 4,
-    items: ['xly-drawer', 'xly-modal', 'xly-loading', 'xly-message'],
+    count: 5,
+    items: ['xly-drawer', 'xly-modal', 'xly-loading', 'xly-message', 'xly-progress'],
   },
   {
     name: '布局组件',
@@ -154,7 +157,7 @@ const painPoints = [
         </p>
         <div class="hero-stats">
           <div class="stat-item">
-            <span class="stat-num">35</span>
+            <span class="stat-num">40</span>
             <span class="stat-label">个组件</span>
           </div>
           <div class="stat-divider"></div>
@@ -220,7 +223,7 @@ const painPoints = [
     <section class="section">
       <div class="section-header">
         <h2 class="section-title">📦 组件总览</h2>
-        <p class="section-subtitle">共 35 个组件，覆盖中后台常用场景</p>
+        <p class="section-subtitle">共 40 个组件，覆盖中后台常用场景</p>
       </div>
       <div class="component-groups">
         <div v-for="group in componentGroups" :key="group.name" class="group-card">
