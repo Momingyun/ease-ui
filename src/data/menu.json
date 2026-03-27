@@ -244,8 +244,8 @@
         "id": "4-12",
         "name": "图片上传 Upload",
         "key": "upload",
-        "path": "/basic/imageUpload",
-        "component": "basic/image-upload"
+        "path": "/form/imageUpload",
+        "component": "form/image-upload"
       }
     ]
   },
