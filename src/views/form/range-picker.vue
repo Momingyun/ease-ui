@@ -20,10 +20,11 @@
           <div class="doc-result">选中值：{{ dateRange.start }} 至 {{ dateRange.end }}</div>
         </div>
       </div>
-      <div class="doc-code"><pre><code>&lt;template&gt;
+      <div class="doc-code">
+        <pre><code>&lt;template&gt;
   &lt;XlyDateRangePicker
-    v-model:start="beginDate"
-    v-model:end="endDate"
+    v-model:start="start"
+    v-model:end="end"
     start-placeholder="开始日期"
     end-placeholder="结束日期"
   /&gt;
@@ -36,7 +37,8 @@ const dateRange = ref({
   start: '',
   end: ''
 })
-&lt;/script&gt;</code></pre></div>
+&lt;/script&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 日期时间范围选择器 -->
@@ -55,10 +57,11 @@ const dateRange = ref({
           <div class="doc-result">选中值：{{ dateTimeRange.start }} 至 {{ dateTimeRange.end }}</div>
         </div>
       </div>
-      <div class="doc-code"><pre><code>&lt;template&gt;
+      <div class="doc-code">
+        <pre><code>&lt;template&gt;
   &lt;XlyDateTimeRangePicker
-    v-model:start="beginDateTime"
-    v-model:end="endDateTime"
+    v-model:start="start"
+    v-model:end="end"
     :show-seconds="true"
     start-placeholder="开始时间"
     end-placeholder="结束时间"
@@ -72,7 +75,8 @@ const dateTimeRange = ref({
   start: '',
   end: ''
 })
-&lt;/script&gt;</code></pre></div>
+&lt;/script&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 时间范围选择器 -->
@@ -90,10 +94,11 @@ const dateTimeRange = ref({
           <div class="doc-result">选中值：{{ timeRange.start }} 至 {{ timeRange.end }}</div>
         </div>
       </div>
-      <div class="doc-code"><pre><code>&lt;template&gt;
+      <div class="doc-code">
+        <pre><code>&lt;template&gt;
   &lt;XlyTimeRangePicker
-    v-model:start="beginTime"
-    v-model:end="endTime"
+    v-model:start="start"
+    v-model:end="end"
     start-placeholder="开始时间"
     end-placeholder="结束时间"
   /&gt;
@@ -106,34 +111,51 @@ const timeRange = ref({
   start: '',
   end: ''
 })
-&lt;/script&gt;</code></pre></div>
+&lt;/script&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 不同尺寸 -->
     <section class="doc-section">
       <h2 class="doc-section__title">不同尺寸</h2>
-      <p class="doc-section__desc">支持 <code>large</code>、<code>default</code>、<code>small</code> 三种尺寸。</p>
+      <p class="doc-section__desc">
+        支持 <code>large</code>、<code>default</code>、<code>small</code> 三种尺寸。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <div class="size-demo">
             <div class="size-item">
               <span class="size-label">Large</span>
-              <XlyDateRangePicker size="large" v-model:start="sizeRange.largeStart" v-model:end="sizeRange.largeEnd" />
+              <XlyDateRangePicker
+                size="large"
+                v-model:start="sizeRange.largeStart"
+                v-model:end="sizeRange.largeEnd"
+              />
             </div>
             <div class="size-item">
               <span class="size-label">Default</span>
-              <XlyDateRangePicker size="default" v-model:start="sizeRange.defaultStart" v-model:end="sizeRange.defaultEnd" />
+              <XlyDateRangePicker
+                size="default"
+                v-model:start="sizeRange.defaultStart"
+                v-model:end="sizeRange.defaultEnd"
+              />
             </div>
             <div class="size-item">
               <span class="size-label">Small</span>
-              <XlyDateRangePicker size="small" v-model:start="sizeRange.smallStart" v-model:end="sizeRange.smallEnd" />
+              <XlyDateRangePicker
+                size="small"
+                v-model:start="sizeRange.smallStart"
+                v-model:end="sizeRange.smallEnd"
+              />
             </div>
           </div>
         </div>
       </div>
-      <div class="doc-code"><pre><code>&lt;XlyDateRangePicker size="large" .../&gt;
+      <div class="doc-code">
+        <pre><code>&lt;XlyDateRangePicker size="large" .../&gt;
 &lt;XlyDateRangePicker size="default" .../&gt;
-&lt;XlyDateRangePicker size="small" .../&gt;</code></pre></div>
+&lt;XlyDateRangePicker size="small" .../&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 自定义分隔符 -->
@@ -149,11 +171,13 @@ const timeRange = ref({
           />
         </div>
       </div>
-      <div class="doc-code"><pre><code>&lt;XlyDateRangePicker
-  v-model:start="beginDate"
-  v-model:end="endDate"
+      <div class="doc-code">
+        <pre><code>&lt;XlyDateRangePicker
+  v-model:start="start"
+  v-model:end="end"
   separator="-"
-/&gt;</code></pre></div>
+/&gt;</code></pre>
+      </div>
     </section>
 
     <!-- 禁用状态 -->
@@ -169,11 +193,13 @@ const timeRange = ref({
           />
         </div>
       </div>
-      <div class="doc-code"><pre><code>&lt;XlyDateRangePicker
-  v-model:start="beginDate"
-  v-model:end="endDate"
+      <div class="doc-code">
+        <pre><code>&lt;XlyDateRangePicker
+  v-model:start="start"
+  v-model:end="end"
   disabled
-/&gt;</code></pre></div>
+/&gt;</code></pre>
+      </div>
     </section>
 
     <!-- API 文档 -->
@@ -463,19 +489,19 @@ import XlyTimeRangePicker from '@/components/xly-time-range-picker/index.vue'
 // 日期范围
 const dateRange = ref({
   start: '',
-  end: ''
+  end: '',
 })
 
 // 日期时间范围
 const dateTimeRange = ref({
   start: '',
-  end: ''
+  end: '',
 })
 
 // 时间范围
 const timeRange = ref({
   start: '',
-  end: ''
+  end: '',
 })
 
 // 不同尺寸
@@ -485,19 +511,19 @@ const sizeRange = ref({
   defaultStart: '',
   defaultEnd: '',
   smallStart: '',
-  smallEnd: ''
+  smallEnd: '',
 })
 
 // 自定义分隔符
 const customRange = ref({
   start: '',
-  end: ''
+  end: '',
 })
 
 // 禁用状态
 const disabledRange = ref({
   start: '',
-  end: ''
+  end: '',
 })
 </script>
 
