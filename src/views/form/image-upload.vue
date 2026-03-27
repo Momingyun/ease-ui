@@ -24,7 +24,7 @@
       </div>
       <div class="demo-value-display">
         <span class="demo-value-label">当前值：</span>
-        <span class="demo-value-content">{{ JSON.stringify(value1) }}</span>
+        <span class="demo-value-content" v-if="value1&&value1.length">{{ JSON.stringify(value1)?.substring(0, 30) }}..."]</span>
       </div>
     </section>
 
