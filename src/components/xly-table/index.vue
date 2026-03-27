@@ -53,6 +53,10 @@
         <!-- 表头 -->
         <thead class="xly-table__thead">
           <tr>
+            <!-- 树形展开列 -->
+            <th v-if="tree" class="xly-table__th xly-table__th--tree-expand" />
+            <!-- 普通展开列 -->
+            <th v-else-if="expandable" class="xly-table__th xly-table__th--expand" />
             <!-- 选择列 - 多选模式 -->
             <th v-if="selectable && selectionMode === 'multiple'" class="xly-table__th xly-table__th--selection">
               <label class="xly-table__checkbox">
@@ -183,74 +187,203 @@
 
           <!-- 数据行 -->
           <template v-else>
-            <tr
-              v-for="(row, rowIndex) in displayData"
-              :key="rowIndex"
-              class="xly-table__tr"
-              :class="{
-                'is-selected': isRowSelected(row),
-                'is-stripe': stripe && rowIndex % 2 === 1,
-                'is-clickable': rowClickable,
-              }"
-              @click="handleRowClick(row, rowIndex)"
-            >
-              <!-- 选择列 - 多选模式 -->
-              <td v-if="selectable && selectionMode === 'multiple'" class="xly-table__td xly-table__td--selection">
-                <label class="xly-table__checkbox" @click.stop>
-                  <input
-                    type="checkbox"
-                    :checked="isRowSelected(row)"
-                    @change="handleRowSelect(row)"
-                  />
-                  <span class="xly-table__checkbox-inner" />
-                </label>
-              </td>
-              <!-- 选择列 - 单选模式 -->
-              <td v-if="selectable && selectionMode === 'single'" class="xly-table__td xly-table__td--selection">
-                <label class="xly-table__radio" @click.prevent="handleRowSelect(row)">
-                  <span
-                    class="xly-table__radio-inner"
-                    :class="{ 'is-checked': isRowSelected(row) }"
-                  />
-                </label>
-              </td>
-              <!-- 序号列 -->
-              <td v-if="showIndex" class="xly-table__td xly-table__td--index">
-                {{ getRowIndex(rowIndex) }}
-              </td>
-              <!-- 数据列 -->
-              <td
-                v-for="col in visibleColumns"
-                :key="col.prop"
-                class="xly-table__td"
-                :class="[
-                  col.align ? `xly-table__td--${col.align}` : '',
-                  col.fixed ? `xly-table__td--fixed xly-table__td--fixed-${col.fixed}` : '',
-                ]"
-                :style="getColStyle(col)"
-              >
-                <slot
-                  :name="`col-${col.prop}`"
-                  v-bind="{ row, col, value: getCellValue(row, col.prop), index: rowIndex }"
+            <!-- 树形模式渲染 -->
+            <template v-if="tree">
+              <template v-for="node in treeFlatData" :key="node.key">
+                <tr
+                  class="xly-table__tr"
+                  :class="{
+                    'is-selected': isRowSelected(node.row),
+                    'is-tree-node': true,
+                    'is-tree-expanded': node.expanded,
+                  }"
+                  @click="handleTreeNodeClick(node.row); handleRowClick(node.row, 0)"
                 >
-                  <span
-                    class="xly-table__cell-text"
-                    :class="{ 'is-ellipsis': col.ellipsis }"
-                    @mouseenter="
-                      col.ellipsis &&
-                      showCellTooltip($event, String(getCellValue(row, col.prop) ?? ''))
-                    "
-                    @mousemove="col.ellipsis && updateTooltipPosition($event)"
-                    @mouseleave="col.ellipsis && hideCellTooltip()"
-                    >{{ formatCell(row, col) }}</span
+                  <!-- 树形展开列（只在第一列前显示） -->
+                  <td class="xly-table__td xly-table__td--tree-expand">
+                    <span
+                      v-if="node.hasChildren"
+                      class="xly-table__tree-icon"
+                      :class="{ 'is-expanded': node.expanded, 'is-loading': node.loading }"
+                      @click.stop="toggleTreeExpand(node.row)"
+                    >
+                      <svg v-if="!node.loading" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                      <svg v-else class="xly-table__loading-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="20" />
+                      </svg>
+                    </span>
+                  </td>
+                  <!-- 选择列 - 多选模式 -->
+                  <td v-if="selectable && selectionMode === 'multiple'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__checkbox" @click.stop>
+                      <input
+                        type="checkbox"
+                        :checked="isRowSelected(node.row)"
+                        @change="handleRowSelect(node.row)"
+                      />
+                      <span class="xly-table__checkbox-inner" />
+                    </label>
+                  </td>
+                  <!-- 选择列 - 单选模式 -->
+                  <td v-if="selectable && selectionMode === 'single'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__radio" @click.stop="handleRowSelect(node.row)">
+                      <span
+                        class="xly-table__radio-inner"
+                        :class="{ 'is-checked': isRowSelected(node.row) }"
+                      />
+                    </label>
+                  </td>
+                  <!-- 序号列 -->
+                  <td v-if="showIndex" class="xly-table__td xly-table__td--index">
+                    {{ node.treeIndex }}
+                  </td>
+                  <!-- 数据列 -->
+                  <td
+                    v-for="(col, colIndex) in visibleColumns"
+                    :key="col.prop"
+                    class="xly-table__td"
+                    :class="[
+                      col.align ? `xly-table__td--${col.align}` : '',
+                      col.fixed ? `xly-table__td--fixed xly-table__td--fixed-${col.fixed}` : '',
+                      colIndex === 0 ? 'xly-table__td--tree-first' : '',
+                    ]"
+                    :style="getColStyle(col)"
                   >
-                </slot>
-              </td>
-              <!-- 操作列 -->
-              <td v-if="$slots.action" class="xly-table__td xly-table__td--action">
-                <slot name="action" v-bind="{ row, index: rowIndex }" />
-              </td>
-            </tr>
+                    <!-- 第一列需要添加缩进 -->
+                    <template v-if="colIndex === 0">
+                      <span
+                        class="xly-table__tree-indent"
+                        :style="{ paddingLeft: `${node.level * treeIndentSize}px` }"
+                      />
+                      <slot
+                        :name="`col-${col.prop}`"
+                        v-bind="{ row: node.row, col, value: getCellValue(node.row, col.prop), index: 0 }"
+                      >
+                        <span
+                          class="xly-table__cell-text"
+                          :class="{ 'is-ellipsis': col.ellipsis }"
+                          >{{ formatCell(node.row, col) }}</span
+                        >
+                      </slot>
+                    </template>
+                    <template v-else>
+                      <slot
+                        :name="`col-${col.prop}`"
+                        v-bind="{ row: node.row, col, value: getCellValue(node.row, col.prop), index: 0 }"
+                      >
+                        <span
+                          class="xly-table__cell-text"
+                          :class="{ 'is-ellipsis': col.ellipsis }"
+                          >{{ formatCell(node.row, col) }}</span
+                        >
+                      </slot>
+                    </template>
+                  </td>
+                  <!-- 操作列 -->
+                  <td v-if="$slots.action" class="xly-table__td xly-table__td--action">
+                    <slot name="action" v-bind="{ row: node.row, index: 0 }" />
+                  </td>
+                </tr>
+              </template>
+            </template>
+
+            <!-- 普通模式渲染（展开行） -->
+            <template v-else>
+              <template v-for="item in displayDataWithExpand" :key="item.key">
+                <!-- 主数据行 -->
+                <tr
+                  class="xly-table__tr"
+                  :class="{
+                    'is-selected': isRowSelected(item.row),
+                    'is-stripe': stripe && item.index % 2 === 1,
+                    'is-clickable': rowClickable || expandable,
+                  }"
+                  :style="{ cursor: expandable ? 'pointer' : rowClickable ? 'pointer' : 'default' }"
+                  @click="handleExpandClick(item.row, item.index); handleRowClick(item.row, item.index)"
+                >
+                  <!-- 展开列 -->
+                  <td v-if="expandable" class="xly-table__td xly-table__td--expand">
+                    <span
+                      class="xly-table__expand-icon"
+                      :class="{ 'is-expanded': item.expanded }"
+                      @click.stop="toggleRowExpand(item.row, item.index)"
+                    >
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </span>
+                  </td>
+                  <!-- 选择列 - 多选模式 -->
+                  <td v-if="selectable && selectionMode === 'multiple'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__checkbox" @click.stop>
+                      <input
+                        type="checkbox"
+                        :checked="isRowSelected(item.row)"
+                        @change="handleRowSelect(item.row)"
+                      />
+                      <span class="xly-table__checkbox-inner" />
+                    </label>
+                  </td>
+                  <!-- 选择列 - 单选模式 -->
+                  <td v-if="selectable && selectionMode === 'single'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__radio" @click.stop="handleRowSelect(item.row)">
+                      <span
+                        class="xly-table__radio-inner"
+                        :class="{ 'is-checked': isRowSelected(item.row) }"
+                      />
+                    </label>
+                  </td>
+                  <!-- 序号列 -->
+                  <td v-if="showIndex" class="xly-table__td xly-table__td--index">
+                    {{ getRowIndex(item.index) }}
+                  </td>
+                  <!-- 数据列 -->
+                  <td
+                    v-for="col in visibleColumns"
+                    :key="col.prop"
+                    class="xly-table__td"
+                    :class="[
+                      col.align ? `xly-table__td--${col.align}` : '',
+                      col.fixed ? `xly-table__td--fixed xly-table__td--fixed-${col.fixed}` : '',
+                    ]"
+                    :style="getColStyle(col)"
+                  >
+                    <slot
+                      :name="`col-${col.prop}`"
+                      v-bind="{ row: item.row, col, value: getCellValue(item.row, col.prop), index: item.index }"
+                    >
+                      <span
+                        class="xly-table__cell-text"
+                        :class="{ 'is-ellipsis': col.ellipsis }"
+                        @mouseenter="
+                          col.ellipsis &&
+                          showCellTooltip($event, String(getCellValue(item.row, col.prop) ?? ''))
+                        "
+                        @mousemove="col.ellipsis && updateTooltipPosition($event)"
+                        @mouseleave="col.ellipsis && hideCellTooltip()"
+                        >{{ formatCell(item.row, col) }}</span
+                      >
+                    </slot>
+                  </td>
+                  <!-- 操作列 -->
+                  <td v-if="$slots.action" class="xly-table__td xly-table__td--action">
+                    <slot name="action" v-bind="{ row: item.row, index: item.index }" />
+                  </td>
+                </tr>
+
+                <!-- 展开行内容 -->
+                <tr
+                  v-if="item.expanded && hasExpandSlot"
+                  class="xly-table__expand-row"
+                >
+                  <td :colspan="totalColCount" class="xly-table__expand-cell">
+                    <slot name="expand" v-bind="{ row: item.row, index: item.index }" />
+                  </td>
+                </tr>
+              </template>
+            </template>
           </template>
         </tbody>
       </table>
@@ -577,6 +710,28 @@ export interface TableProps {
   showExport?: boolean
   /** 选择模式：multiple 多选，single 单选 */
   selectionMode?: 'multiple' | 'single'
+  /** 是否支持展开行 */
+  expandable?: boolean
+  /** 展开触发方式：icon 点击图标展开，click 点击任意位置展开 */
+  expandTrigger?: 'icon' | 'click'
+  /** 默认展开的行索引数组 */
+  defaultExpandedRows?: number[]
+  /** 是否启用树形数据模式 */
+  tree?: boolean
+  /** 树形数据子节点字段名 */
+  treeChildrenKey?: string
+  /** 树形缩进宽度（px） */
+  treeIndentSize?: number
+  /** 是否懒加载（配合 load 方法使用） */
+  lazy?: boolean
+  /** 懒加载方法：(row) => Promise<children[]> */
+  load?: (row: Record<string, any>) => Promise<Record<string, any>[]>
+  /** 树形数据的唯一标识字段（建议使用 id） */
+  rowKey?: string
+  /** 默认展开的行的 key 数组 */
+  defaultExpandedKeys?: (string | number)[]
+  /** 是否默认展开全部 */
+  defaultExpandAll?: boolean
 }
 
 /* ====================================================
@@ -609,6 +764,16 @@ const props = withDefaults(defineProps<TableProps>(), {
   showRefresh: false,
   showExport: false,
   selectionMode: 'multiple',
+  expandable: false,
+  expandTrigger: 'icon',
+  defaultExpandedRows: () => [],
+  tree: false,
+  treeChildrenKey: 'children',
+  treeIndentSize: 24,
+  lazy: false,
+  rowKey: 'id',
+  defaultExpandedKeys: () => [],
+  defaultExpandAll: false,
 })
 
 const emit = defineEmits<{
@@ -620,6 +785,10 @@ const emit = defineEmits<{
   (e: 'column-order-change', columns: TableColumn[]): void
   (e: 'refresh'): void
   (e: 'export'): void
+  /** 展开状态变化 */
+  (e: 'expand-change', row: Record<string, any>, expanded: boolean): void
+  /** 树形节点展开/收起 */
+  (e: 'tree-expand', row: Record<string, any>, expanded: boolean): void
 }>()
 
 /* ====================================================
@@ -798,6 +967,9 @@ function resetColumnVisibility() {
 ==================================================== */
 const totalColCount = computed(() => {
   let count = visibleColumns.value.length
+  // 树形模式下有树展开列，否则有普通展开列
+  if (props.tree) count++
+  else if (props.expandable) count++
   if (props.selectable) count++
   if (props.showIndex) count++
   return count
@@ -809,7 +981,8 @@ const tableMinWidth = computed(() => {
   for (const col of visibleColumns.value) {
     total += getColumnActualWidth(col)
   }
-  // 额外列：选择列 56px、序号列 56px
+  // 额外列：展开列/树展开列、选择列、序号列
+  if (props.tree || props.expandable) total += 32
   if (props.selectable) total += 56
   if (props.showIndex) total += 56
   // 操作列预估宽度
@@ -882,6 +1055,108 @@ const displayData = computed(() => {
   if (!props.pagination) return sortedData.value
   const start = (currentPage.value - 1) * currentPageSize.value
   return sortedData.value.slice(start, start + currentPageSize.value)
+})
+
+// 展开行处理后的数据
+const displayDataWithExpand = computed(() => {
+  const result: Array<{ row: Record<string, any>; index: number; key: string | number; expanded: boolean }> = []
+  displayData.value.forEach((row, index) => {
+    const key = props.rowKey ? row[props.rowKey] : index
+    const expanded = expandedRows.value.has(index)
+    result.push({ row, index, key, expanded })
+  })
+  return result
+})
+
+// 树形数据扁平化处理
+interface TreeNode {
+  row: Record<string, any>
+  level: number
+  index: number  // 一级数据中的索引（用于排序）
+  treeIndex: string  // 带层级的序号字符串，如 "1", "1-2", "1-2-1"
+  expanded: boolean
+  loading: boolean
+  hasChildren: boolean
+  key: string | number
+}
+
+const treeFlatData = computed<TreeNode[]>(() => {
+  if (!props.tree) {
+    // 非树形模式，返回普通数据
+    return displayData.value.map((row, index) => ({
+      row,
+      level: 0,
+      index,
+      treeIndex: String(index + 1),  // 普通模式：1, 2, 3...
+      expanded: false,
+      loading: false,
+      hasChildren: false,
+      key: props.rowKey ? row[props.rowKey] : index,
+    }))
+  }
+
+  const result: TreeNode[] = []
+  const childrenKey = props.treeChildrenKey
+
+  // 顶层节点计数器（从1开始，用于显示序号1,2,3...）
+  let topLevelCounter = 0
+
+  function traverse(rows: Record<string, any>[], level: number, parentTreeIndex?: string) {
+    rows.forEach((row, idx) => {
+      const key = getTreeRowKey(row)
+      const children = row[childrenKey] as Record<string, any>[] | undefined
+      const hasChildren = Array.isArray(children) && children.length > 0
+      const expanded = !!treeExpandedKeys.value[key]
+      const loading = !!loadingKeys.value[key]
+      const isConfirmedLeaf = !!confirmedLeafKeys.value[key]
+
+      // 判断是否显示展开图标：
+      // 1. 有子节点数据
+      // 2. 懒加载模式且未确认是叶子节点（未加载过或加载过有数据）
+      // 3. 非懒加载模式且无数据则不显示
+      const showExpandIcon = hasChildren || (props.lazy && props.load && !isConfirmedLeaf)
+
+      // 序号索引（用于 getRowIndex 计算）
+      let nodeIndex: number
+      let treeIndex: string
+
+      if (level === 0) {
+        // 顶层节点：1, 2, 3...
+        nodeIndex = ++topLevelCounter
+        treeIndex = String(nodeIndex)
+      } else {
+        // 子节点：从 row._childNum 获取兄弟中的序号
+        const childNum = (row as any)._childNum ?? (idx + 1)
+        nodeIndex = (row as any)._parentIndex ?? 0
+        treeIndex = parentTreeIndex ? `${parentTreeIndex}-${childNum}` : String(childNum)
+      }
+
+      result.push({
+        row,
+        level,
+        index: nodeIndex,
+        treeIndex,  // 带层级的序号字符串，如 "1", "1-2", "1-2-1"
+        expanded,
+        loading,
+        hasChildren: showExpandIcon,
+        key,
+      })
+
+      // 如果已展开且有子节点，递归处理子节点
+      if (expanded && hasChildren) {
+        // 为子节点设置父节点信息
+        children.forEach((child, childIdx) => {
+          ;(child as any)._parentIndex = nodeIndex
+          ;(child as any)._childNum = childIdx + 1
+          ;(child as any)._parentTreeIndex = treeIndex
+        })
+        traverse(children, level + 1, treeIndex)
+      }
+    })
+  }
+
+  traverse(displayData.value, 0)
+  return result
 })
 
 // 每页条数选择器的选项
@@ -992,24 +1267,33 @@ function isRowSelected(row: Record<string, any>) {
   return selectedMap.value.has(getRowKey(row))
 }
 
+// 用于全选的数据源：树形模式下用 treeFlatData，普通模式下用 displayData
+const selectableData = computed(() => {
+  if (props.tree) {
+    // 树形模式：使用所有已扁平化的节点
+    return treeFlatData.value.map(node => node.row)
+  }
+  return displayData.value
+})
+
 const isAllSelected = computed(
-  () => displayData.value.length > 0 && displayData.value.every((r) => selectedMap.value.has(getRowKey(r))),
+  () => selectableData.value.length > 0 && selectableData.value.every((r) => selectedMap.value.has(getRowKey(r))),
 )
 const isIndeterminate = computed(
-  () => displayData.value.some((r) => selectedMap.value.has(getRowKey(r))) && !isAllSelected.value,
+  () => selectableData.value.some((r) => selectedMap.value.has(getRowKey(r))) && !isAllSelected.value,
 )
 
 function handleSelectAll(e: Event) {
   const isChecked = (e.target as HTMLInputElement).checked
   if (isChecked) {
-    displayData.value.forEach((r) => {
+    selectableData.value.forEach((r) => {
       const key = getRowKey(r)
       if (!selectedMap.value.has(key)) {
         selectedMap.value.set(key, r)
       }
     })
   } else {
-    displayData.value.forEach((r) => {
+    selectableData.value.forEach((r) => {
       selectedMap.value.delete(getRowKey(r))
     })
   }
@@ -1038,6 +1322,202 @@ function handleRowClick(row: Record<string, any>, index: number) {
   if (!props.rowClickable) return
   emit('row-click', row, index)
 }
+
+/* ====================================================
+   展开行
+==================================================== */
+// 展开状态 Map
+const expandedRows = ref<Set<number>>(new Set())
+
+// 检查 expand 插槽是否存在
+const hasExpandSlot = computed(() => !!slots.expand)
+
+// 监听默认展开行
+watch(
+  () => props.defaultExpandedRows,
+  (rows) => {
+    expandedRows.value = new Set(rows)
+  },
+  { immediate: true },
+)
+
+// 判断行是否展开
+function isRowExpanded(index: number) {
+  return expandedRows.value.has(index)
+}
+
+// 切换展开状态
+function toggleRowExpand(row: Record<string, any>, index: number) {
+  const expanded = !expandedRows.value.has(index)
+  if (expanded) {
+    expandedRows.value.add(index)
+  } else {
+    expandedRows.value.delete(index)
+  }
+  // 触发 emit
+  emit('expand-change', row, expanded)
+}
+
+// 处理展开行点击
+function handleExpandClick(row: Record<string, any>, index: number) {
+  if (props.expandTrigger === 'click') {
+    toggleRowExpand(row, index)
+  }
+}
+
+// 展开所有行
+function expandAll() {
+  displayData.value.forEach((_, index) => {
+    expandedRows.value.add(index)
+  })
+}
+
+// 收起所有行
+function collapseAll() {
+  expandedRows.value.clear()
+}
+
+/* ====================================================
+   树形数据
+==================================================== */
+// 树形展开状态 - 使用普通对象，避免 Map/Set 的深层响应式追踪问题
+const treeExpandedKeys = ref<Record<string, boolean>>({})
+
+// 懒加载中的节点
+const loadingKeys = ref<Record<string, boolean>>({})
+
+// 已确认的叶子节点（懒加载后返回空数据的节点）
+const confirmedLeafKeys = ref<Record<string, boolean>>({})
+
+// 获取行的唯一标识
+function getTreeRowKey(row: Record<string, any>): string {
+  const key = props.rowKey ? row[props.rowKey] : JSON.stringify(row)
+  return String(key)
+}
+
+// 检查节点是否有子节点
+function hasTreeChildren(row: Record<string, any>): boolean {
+  const children = row[props.treeChildrenKey]
+  return Array.isArray(children) && children.length > 0
+}
+
+// 判断行是否展开
+function isTreeExpanded(row: Record<string, any>): boolean {
+  const key = getTreeRowKey(row)
+  return !!treeExpandedKeys.value[key]
+}
+
+// 切换树节点展开状态
+async function toggleTreeExpand(row: Record<string, any>) {
+  const key = getTreeRowKey(row)
+  const expanded = !treeExpandedKeys.value[key]
+  const childrenKey = props.treeChildrenKey
+  const hasChildren = row[childrenKey] && Array.isArray(row[childrenKey]) && row[childrenKey].length > 0
+
+  if (expanded) {
+    // 展开时，先设置展开状态（避免异步竞态）
+    treeExpandedKeys.value = { ...treeExpandedKeys.value, [key]: true }
+
+    // 检查是否需要懒加载
+    if (props.lazy && props.load && !hasChildren) {
+      // 显示 loading 状态
+      loadingKeys.value = { ...loadingKeys.value, [key]: true }
+      try {
+        const children = await props.load(row)
+        // 如果返回空数组，说明是叶子节点
+        if (!children || children.length === 0) {
+          confirmedLeafKeys.value = { ...confirmedLeafKeys.value, [key]: true }
+          // 收起该节点（叶子节点不需要展开）
+          const { [key]: _, ...rest } = treeExpandedKeys.value
+          treeExpandedKeys.value = rest
+        }
+      } catch (err) {
+        console.error('懒加载失败:', err)
+        // 加载失败，收起该节点
+        const { [key]: _, ...rest } = treeExpandedKeys.value
+        treeExpandedKeys.value = rest
+      } finally {
+        // 清除 loading 状态
+        const { [key]: _, ...rest } = loadingKeys.value
+        loadingKeys.value = rest
+      }
+    }
+  } else {
+    // 收起 - 移除该 key
+    const { [key]: _, ...rest } = treeExpandedKeys.value
+    treeExpandedKeys.value = rest
+  }
+
+  emit('tree-expand', row, expanded)
+}
+
+// 处理树节点点击
+function handleTreeNodeClick(row: Record<string, any>) {
+  // 只有有子节点或支持懒加载的行才能展开
+  if (hasTreeChildren(row) || (props.lazy && props.load)) {
+    toggleTreeExpand(row)
+  }
+}
+
+// 判断节点是否正在加载
+function isTreeLoading(row: Record<string, any>): boolean {
+  const key = getTreeRowKey(row)
+  return !!loadingKeys.value[key]
+}
+
+// 展开指定行（根据 key）
+function expandRow(row: Record<string, any>) {
+  const key = getTreeRowKey(row)
+  treeExpandedKeys.value = { ...treeExpandedKeys.value, [key]: true }
+}
+
+// 收起指定行
+function collapseRow(row: Record<string, any>) {
+  const key = getTreeRowKey(row)
+  const { [key]: _, ...rest } = treeExpandedKeys.value
+  treeExpandedKeys.value = rest
+}
+
+// 展开全部树节点
+function expandAllTree() {
+  const newKeys: Record<string, boolean> = {}
+
+  function traverse(rows: Record<string, any>[]) {
+    rows.forEach((row) => {
+      const key = getTreeRowKey(row)
+      newKeys[key] = true
+      const children = row[props.treeChildrenKey]
+      if (Array.isArray(children) && children.length > 0) {
+        traverse(children)
+      }
+    })
+  }
+
+  traverse(props.data)
+  treeExpandedKeys.value = newKeys
+}
+
+// 收起全部树节点
+function collapseAllTree() {
+  treeExpandedKeys.value = {}
+}
+
+// 初始化树形数据展开状态
+watch(
+  () => props.data,
+  (data) => {
+    if (props.tree && props.defaultExpandAll) {
+      expandAllTree()
+    } else if (props.tree && props.defaultExpandedKeys.length > 0) {
+      const newKeys: Record<string, boolean> = {}
+      props.defaultExpandedKeys.forEach((key) => {
+        newKeys[String(key)] = true
+      })
+      treeExpandedKeys.value = newKeys
+    }
+  },
+  { immediate: true, deep: true },
+)
 
 /* ====================================================
    行序号
@@ -1079,7 +1559,18 @@ function getSelection() {
   return [...selectedRows.value]
 }
 
-defineExpose({ clearSelection, getSelection })
+defineExpose({
+  clearSelection,
+  getSelection,
+  expandAll,
+  collapseAll,
+  // 树形相关
+  expandRow,
+  collapseRow,
+  expandAllTree,
+  collapseAllTree,
+  isTreeExpanded,
+})
 </script>
 
 <style scoped lang="scss">
@@ -1219,8 +1710,10 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &--selection,
-  &--index {
-    width: 56px;
+  &--index,
+  &--expand,
+  &--tree-expand {
+    width: 48px;
     text-align: center;
     color: $text-secondary;
   }
@@ -1321,11 +1814,12 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &--selection,
-  &--index {
+  &--index,
+  &--expand {
     text-align: center;
     color: $text-secondary;
     font-size: 13px;
-    width: 56px;
+    width: 48px;
     font-variant-numeric: tabular-nums;
   }
 
@@ -1940,6 +2434,129 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   &.xly-tooltip-fade-enter-from,
   &.xly-tooltip-fade-leave-to {
     opacity: 0;
+  }
+}
+
+/* ========== 展开图标 ========== */
+.xly-table__expand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: $text-secondary;
+  transition: all 0.25s ease;
+  cursor: pointer;
+
+  svg {
+    transition: transform 0.25s ease;
+    transform: rotate(0deg);
+  }
+
+  &:hover {
+    color: $primary;
+    background: $primary-light;
+  }
+
+  &.is-expanded {
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+/* ========== 树形数据 ========== */
+.xly-table__td--tree-expand {
+  width: 32px;
+  padding: 0 8px;
+  text-align: center;
+}
+
+.xly-table__td--tree-first {
+  display: flex;
+  align-items: center;
+}
+
+.xly-table__tree-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  color: $text-secondary;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  svg {
+    transition: transform 0.2s ease;
+    transform: rotate(0deg);
+  }
+
+  &:hover {
+    color: $primary;
+    background: $primary-light;
+  }
+
+  &.is-expanded svg {
+    transform: rotate(90deg);
+  }
+
+  &.is-loading {
+    pointer-events: none;
+  }
+}
+
+.xly-table__loading-icon {
+  animation: xly-rotate 1s linear infinite;
+}
+
+@keyframes xly-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.xly-table__tree-indent {
+  display: inline-block;
+  width: 0;
+  height: 1px;
+  flex-shrink: 0;
+}
+
+// 树形节点行样式
+.xly-table__tr.is-tree-node {
+  &:hover > td {
+    background: $bg-hover;
+  }
+}
+
+/* ========== 展开行 ========== */
+.xly-table__expand-row {
+  background: #fafafa;
+
+  td {
+    padding: 0 !important;
+    border-bottom: 1px solid $border-color;
+  }
+
+  &:hover > td {
+    background: #f5f5f5;
+  }
+}
+
+.xly-table__expand-cell {
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+
+  // Element Plus 风格的展开内容容器
+  > :deep(*:first-child) {
+    margin: 0;
   }
 }
 </style>
