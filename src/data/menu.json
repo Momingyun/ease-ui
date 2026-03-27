@@ -289,6 +289,13 @@
         "key": "drawer",
         "path": "/feedback/drawer",
         "component": "feedback/drawer"
+      },
+      {
+        "id": "3-5",
+        "name": "操作引导 Tour",
+        "key": "tour",
+        "path": "/feedback/tour",
+        "component": "feedback/tour"
       }
     ]
   },

@@ -68,6 +68,7 @@ declare module 'vue' {
     XlyTimeline: typeof import('./../../components/xly-timeline/index.vue')['default']
     XlyTimePicker: typeof import('./../../components/xly-time-picker/index.vue')['default']
     XlyTimeRangePicker: typeof import('./../../components/xly-time-range-picker/index.vue')['default']
+    XlyTour: typeof import('./../../components/xly-tour/index.vue')['default']
     XlyUpload: typeof import('./../../components/xly-upload/index.vue')['default']
     XlyWatermark: typeof import('./../../components/xly-watermark/index.vue')['default']
   }

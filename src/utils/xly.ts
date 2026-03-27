@@ -2,6 +2,7 @@ import type { App } from 'vue'
 import { XlyMsg } from '@/components/xly-message/message'
 import { setupXlyMessage } from '@/components/xly-message/install'
 import { XlyLoading } from '@/components/xly-loading/loading'
+import { XlyTour } from '@/components/xly-tour/tour'
 
 /**
  * xly 全局工具对象
@@ -21,6 +22,10 @@ import { XlyLoading } from '@/components/xly-loading/loading'
  * loading.close()
  * xly.$loading.fullscreen('加载中...')
  * xly.$loading.container('.my-box', '加载中...')
+ *
+ * // 操作引导
+ * const tour = xly.$tour({ steps: [...] })
+ * tour.finish()
  * ```
  */
 export const xly = {
@@ -28,6 +33,8 @@ export const xly = {
   $msg: XlyMsg,
   /** 加载 */
   $loading: XlyLoading,
+  /** 操作引导 */
+  $tour: XlyTour,
 }
 
 /**
@@ -64,3 +71,4 @@ export function setupXly(app: App) {
 // 类型导出
 export type { MessageOptions } from '@/components/xly-message/message'
 export type { LoadingInstance, LoadingOptions } from '@/components/xly-loading/loading'
+export type { TourInstance, TourOptions } from '@/components/xly-tour/tour'
