@@ -47,7 +47,7 @@
           class="xly-chart__legend-dot"
           :style="{
             background: item.color,
-            borderRadius: type === 'line' ? '50%' : '2px'
+            borderRadius: (type === 'line' || item.isLine) ? '50%' : '2px'
           }"
         ></span>
         <span class="xly-chart__legend-label">{{ item.name }}</span>
@@ -82,22 +82,37 @@
           </clipPath>
         </defs>
 
-        <!-- 折线图 / 柱状图 -->
-        <template v-if="type === 'line' || type === 'bar'">
+        <!-- 折线图 / 柱状图 / 堆叠柱状图 / 折柱混用 -->
+        <template v-if="type === 'line' || type === 'bar' || type === 'stack' || type === 'mixed'">
           <!-- 背景网格 -->
+          <!-- 网格线 -->
           <g v-if="showGrid" class="xly-chart__grid">
-            <line
-              v-for="(tick, i) in yTicks"
-              :key="`hy-${i}`"
-              :x1="padding.left"
-              :y1="getY(tick)"
-              :x2="svgWidth - padding.right"
-              :y2="getY(tick)"
-              class="xly-chart__grid-line"
-            />
+            <!-- mixed 模式：以左轴（柱状）刻度为网格基准 -->
+            <template v-if="type === 'mixed'">
+              <line
+                v-for="(tick, i) in mixedBarYTicks"
+                :key="`hy-${i}`"
+                :x1="padding.left"
+                :y1="getMixedBarY(tick)"
+                :x2="svgWidth - padding.right"
+                :y2="getMixedBarY(tick)"
+                class="xly-chart__grid-line"
+              />
+            </template>
+            <template v-else>
+              <line
+                v-for="(tick, i) in visibleYTicks"
+                :key="`hy-${i}`"
+                :x1="padding.left"
+                :y1="getY(tick)"
+                :x2="svgWidth - padding.right"
+                :y2="getY(tick)"
+                class="xly-chart__grid-line"
+              />
+            </template>
           </g>
 
-          <!-- Y轴 -->
+          <!-- Y轴（左） -->
           <g class="xly-chart__axis-y">
             <line
               :x1="padding.left"
@@ -106,12 +121,47 @@
               :y2="svgHeight - padding.bottom"
               class="xly-chart__axis-line"
             />
-            <g v-for="(tick, i) in yTicks" :key="`yt-${i}`">
+            <!-- mixed 模式：左轴（柱状）刻度 -->
+            <template v-if="type === 'mixed'">
+              <g v-for="(tick, i) in mixedBarYTicks" :key="`myt-${i}`">
+                <text
+                  :x="padding.left - 8"
+                  :y="getMixedBarY(tick)"
+                  class="xly-chart__axis-text"
+                  text-anchor="end"
+                  dominant-baseline="middle"
+                >{{ formatValue(tick) }}</text>
+              </g>
+            </template>
+            <!-- 非 mixed 模式：普通左轴刻度 -->
+            <template v-else>
+              <g v-for="(tick, i) in visibleYTicks" :key="`yt-${i}`">
+                <text
+                  :x="padding.left - 8"
+                  :y="getY(tick)"
+                  class="xly-chart__axis-text"
+                  text-anchor="end"
+                  dominant-baseline="middle"
+                >{{ formatValue(tick) }}</text>
+              </g>
+            </template>
+          </g>
+
+          <!-- 右 Y 轴（折线系列，仅 mixed 模式） -->
+          <g v-if="type === 'mixed'" class="xly-chart__axis-y-right">
+            <line
+              :x1="svgWidth - padding.right"
+              :y1="padding.top"
+              :x2="svgWidth - padding.right"
+              :y2="svgHeight - padding.bottom"
+              class="xly-chart__axis-line"
+            />
+            <g v-for="(tick, i) in mixedLineYTicks" :key="`myrt-${i}`">
               <text
-                :x="padding.left - 8"
-                :y="getY(tick)"
+                :x="svgWidth - padding.right + 8"
+                :y="getMixedLineY(tick)"
                 class="xly-chart__axis-text"
-                text-anchor="end"
+                text-anchor="start"
                 dominant-baseline="middle"
               >{{ formatValue(tick) }}</text>
             </g>
@@ -200,7 +250,7 @@
                   :y="getY(val)"
                   :width="barWidth"
                   :height="svgHeight - padding.bottom - getY(val)"
-                  :fill="serie.color || defaultColors[si % defaultColors.length]"
+                  :fill="getSerieColor(serie, si, i)"
                   :rx="barRadius"
                   :ry="barRadius"
                   :opacity="activeIndex !== -1 && activeIndex !== i ? 0.55 : 1"
@@ -217,7 +267,120 @@
                   text-anchor="middle"
                   dominant-baseline="auto"
                   class="xly-chart__data-label"
-                  :fill="serie.color || defaultColors[si % defaultColors.length]"
+                  :fill="getSerieColor(serie, si, i)"
+                >{{ formatValue(val) }}</text>
+              </g>
+            </g>
+          </template>
+
+          <!-- 堆叠柱状图数据（clip 裁剪） -->
+          <template v-if="type === 'stack'">
+            <g :clip-path="`url(#${clipPathId})`">
+              <g v-for="(serie, si) in visibleSeries" :key="`ss-${si}`">
+                <template v-for="(seg, i) in stackSegments[si]" :key="`sr-${i}`">
+                  <rect
+                    v-if="seg.h > 0"
+                    :x="getStackBarX(i)"
+                    :y="seg.y"
+                    :width="stackBarWidth"
+                    :height="seg.h"
+                    :fill="getStackSegColor(serie, si, i)"
+                    :rx="si === visibleSeries.length - 1 ? barRadius : 0"
+                    :ry="si === visibleSeries.length - 1 ? barRadius : 0"
+                    :opacity="activeIndex !== -1 && activeIndex !== i ? 0.55 : 1"
+                    class="xly-chart__bar"
+                    @click="onBarLineClick(i)"
+                  />
+                  <!-- 数据标签：在每段中间显示各自的值，高度足够时才显示 -->
+                  <text
+                    v-if="showLabel && seg.h > 16"
+                    :x="getStackBarX(i) + stackBarWidth / 2"
+                    :y="seg.y + seg.h / 2"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    class="xly-chart__data-label"
+                    fill="#fff"
+                  >{{ formatValue(seg.val) }}</text>
+                </template>
+              </g>
+            </g>
+          </template>
+
+          <!-- 折柱混用（type="mixed"）：先渲染所有柱状系列，再渲染所有折线系列（折线在上层） -->
+          <template v-if="type === 'mixed'">
+            <g :clip-path="`url(#${clipPathId})`">
+              <!-- 柱状系列（使用左Y轴 getMixedBarY） -->
+              <g v-for="(serie, si) in mixedBarSeries" :key="`mbs-${si}`">
+                <rect
+                  v-for="(val, i) in serie.data"
+                  :key="`mbr-${i}`"
+                  :x="getMixedBarX(i, serie._barIdx!)"
+                  :y="getMixedBarY(val)"
+                  :width="mixedBarWidth"
+                  :height="svgHeight - padding.bottom - getMixedBarY(val)"
+                  :fill="getSerieColor(serie, serie._origIdx!, i)"
+                  :rx="barRadius"
+                  :ry="barRadius"
+                  :opacity="activeIndex !== -1 && activeIndex !== i ? 0.55 : 1"
+                  class="xly-chart__bar"
+                  @click="onBarLineClick(i)"
+                />
+                <!-- 数据标签 -->
+                <text
+                  v-if="showLabel"
+                  v-for="(val, i) in serie.data"
+                  :key="`mbl-${i}`"
+                  :x="getMixedBarX(i, serie._barIdx!) + mixedBarWidth / 2"
+                  :y="getMixedBarY(val) - 5"
+                  text-anchor="middle"
+                  dominant-baseline="auto"
+                  class="xly-chart__data-label"
+                  :fill="getSerieColor(serie, serie._origIdx!, i)"
+                >{{ formatValue(val) }}</text>
+              </g>
+              <!-- 折线系列（使用右Y轴 getMixedLineY，渲染在柱子上层） -->
+              <g v-for="(serie, si) in mixedLineSeries" :key="`mls-${si}`">
+                <!-- 面积填充 -->
+                <path
+                  v-if="serie.areaFill !== false && areaFill"
+                  :d="getMixedLineAreaPath(serie.data)"
+                  :fill="getSerieColor(serie, serie._origIdx!)"
+                  opacity="0.12"
+                />
+                <!-- 折线 -->
+                <path
+                  :d="getMixedLinePath(serie.data)"
+                  :stroke="getSerieColor(serie, serie._origIdx!)"
+                  stroke-width="2.5"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="xly-chart__line"
+                />
+                <!-- 数据点 -->
+                <circle
+                  v-for="(val, i) in serie.data"
+                  :key="`mlp-${i}`"
+                  :cx="getXCenter(i)"
+                  :cy="getMixedLineY(val)"
+                  :r="activeIndex === i ? 6 : 4"
+                  :fill="activeIndex === i ? getSerieColor(serie, serie._origIdx!) : '#fff'"
+                  :stroke="getSerieColor(serie, serie._origIdx!)"
+                  stroke-width="2.5"
+                  class="xly-chart__point"
+                  @click="onBarLineClick(i)"
+                />
+                <!-- 数据标签 -->
+                <text
+                  v-if="showLabel"
+                  v-for="(val, i) in serie.data"
+                  :key="`mll-${i}`"
+                  :x="getXCenter(i)"
+                  :y="getMixedLineY(val) - 10"
+                  text-anchor="middle"
+                  dominant-baseline="auto"
+                  class="xly-chart__data-label"
+                  :fill="getSerieColor(serie, serie._origIdx!)"
                 >{{ formatValue(val) }}</text>
               </g>
             </g>
@@ -522,7 +685,14 @@ export interface ChartSerie {
   name: string
   data: number[]
   color?: string
+  /** 单个柱子/数据点的颜色数组，优先级高于 color，索引与 data 对应 */
+  colors?: string[]
   areaFill?: boolean
+  /**
+   * 折柱混用（type="mixed"）时，指定该系列的展示类型
+   * 'bar' = 柱状，'line' = 折线，默认 'bar'
+   */
+  chartType?: 'line' | 'bar'
   /** 任意额外字段，不参与绘制，仅透传到 drill 事件的 extra 中 */
   [key: string]: any
 }
@@ -535,7 +705,7 @@ export interface PieItem {
   [key: string]: any
 }
 
-type ChartType = 'line' | 'bar' | 'hbar' | 'pie' | 'donut' | 'funnel' | 'gauge'
+type ChartType = 'line' | 'bar' | 'stack' | 'hbar' | 'pie' | 'donut' | 'funnel' | 'gauge' | 'mixed'
 
 const props = withDefaults(defineProps<{
   /** 图表类型 */
@@ -562,8 +732,14 @@ const props = withDefaults(defineProps<{
   legendPosition?: 'top' | 'bottom' | 'left' | 'right'
   /** 折线图面积填充 */
   areaFill?: boolean
-  /** 自定义颜色 */
+  /** 自定义颜色（各系列） */
   colors?: string[]
+  /**
+   * 堆叠柱状图每根柱子每层的精确颜色
+   * stackColors[dataIdx][serieIdx] = color
+   * 优先级高于 serie.color / colors
+   */
+  stackColors?: string[][]
   /** 柱图圆角 */
   barRadius?: number
   /** 环形图中心文字 */
@@ -683,7 +859,8 @@ const svgHeight = computed(() => {
 
 // ========== padding ==========
 const padding = computed(() => {
-  const isLinBar = props.type === 'line' || props.type === 'bar'
+  const isLinBar = props.type === 'line' || props.type === 'bar' || props.type === 'stack'
+  const isMixed = props.type === 'mixed'
   const isHBar = props.type === 'hbar'
   if (isHBar) {
     // 横向柱状图：左边留名称空间，右边留数值空间
@@ -691,11 +868,31 @@ const padding = computed(() => {
     const leftW = Math.min(Math.max(maxLabelLen * 7 + 12, 60), 140)
     return { top: 16, right: 60, bottom: 16, left: leftW }
   }
+  // 根据 Y 轴最大值估算标签字符宽度，避免循环依赖（不用 yMax computed）
+  let leftW = 50
+  let rightW = 24
+  if (isLinBar || isMixed) {
+    const allVals = props.series.flatMap(s => s.data ?? [])
+    const maxVal = allVals.length ? Math.max(...allVals) : 0
+    let labelLen: number
+    if (Math.abs(maxVal) >= 10000) labelLen = (maxVal / 10000).toFixed(1).length + 1
+    else labelLen = maxVal.toFixed(0).length
+    leftW = Math.max(50, labelLen * 7 + 16)
+  }
+  if (isMixed) {
+    // 右 Y 轴（折线系列）也需要空间
+    const lineVals = props.series.filter(s => s.chartType === 'line').flatMap(s => s.data ?? [])
+    const lineMax = lineVals.length ? Math.max(...lineVals.map(Math.abs)) : 0
+    let lineLen: number
+    if (lineMax >= 10000) lineLen = (lineMax / 10000).toFixed(1).length + 1
+    else lineLen = lineMax.toFixed(1).length
+    rightW = Math.max(52, lineLen * 7 + 16)
+  }
   return {
     top: 20,
-    right: 24,
-    bottom: isLinBar ? 40 : 20,
-    left: isLinBar ? 56 : 20,
+    right: rightW,
+    bottom: (isLinBar || isMixed) ? 40 : 20,
+    left: (isLinBar || isMixed) ? leftW : 20,
   }
 })
 
@@ -711,6 +908,15 @@ const allValues = computed(() => {
   return visibleSeries.value.flatMap(s => s.data)
 })
 
+/** 堆叠图每个 X 点的堆叠总值 */
+const stackTotals = computed((): number[] => {
+  if (props.type !== 'stack') return []
+  const len = Math.max(...visibleSeries.value.map(s => s.data.length), 0)
+  return Array.from({ length: len }, (_, i) =>
+    visibleSeries.value.reduce((sum, s) => sum + (s.data[i] ?? 0), 0)
+  )
+})
+
 const yMin = computed(() => {
   if (allValues.value.length === 0) return 0
   const min = Math.min(...allValues.value)
@@ -718,15 +924,68 @@ const yMin = computed(() => {
 })
 
 const yMax = computed(() => {
+  if (props.type === 'stack') {
+    const max = Math.max(...stackTotals.value, 0)
+    return max <= 0 ? 100 : max * 1.15
+  }
   if (allValues.value.length === 0) return 100
   const max = Math.max(...allValues.value)
   return max <= 0 ? 0 : max * 1.15
 })
 
+/**
+ * 生成美观 Y 轴刻度候选值（不依赖 plotHeight，避免循环依赖）
+ * 使用 1/2/5 幂次步长对齐，最多 6 条候选。
+ * 实际渲染时由 visibleYTicks 根据像素间距再过滤。
+ */
 const yTicks = computed(() => {
-  const count = 5
-  const step = (yMax.value - yMin.value) / count
-  return Array.from({ length: count + 1 }, (_, i) => yMin.value + step * i)
+  const PREFER_COUNT = 5   // 期望刻度段数（刻度数 = count+1）
+  const range = yMax.value - yMin.value
+  if (range <= 0) return [0, yMax.value || 100]
+
+  // 找美观步长
+  const rawStep = range / PREFER_COUNT
+  const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)))
+  const normalized = rawStep / magnitude
+  let niceStep: number
+  if (normalized <= 1) niceStep = 1 * magnitude
+  else if (normalized <= 2) niceStep = 2 * magnitude
+  else if (normalized <= 5) niceStep = 5 * magnitude
+  else niceStep = 10 * magnitude
+
+  const ticks: number[] = []
+  // 始终从 0 开始（大多数业务场景 yMin >= 0）
+  const start = yMin.value <= 0 ? 0 : Math.ceil(yMin.value / niceStep) * niceStep
+  for (let v = start; v <= yMax.value * 1.001 + niceStep * 0.01; v = Math.round((v + niceStep) * 1e10) / 1e10) {
+    ticks.push(v)
+    if (ticks.length > 10) break // 安全上限
+  }
+  if (ticks.length < 2) ticks.push(yMax.value)
+  return ticks
+})
+
+/**
+ * 经过像素间距过滤的实际渲染刻度列表（MIN_SPACING = 36px）
+ * plotHeight 在此处安全引用（yTicks 不再依赖 plotHeight）
+ */
+const visibleYTicks = computed(() => {
+  const MIN_SPACING = 36
+  const all = yTicks.value
+  if (all.length === 0) return []
+
+  // getY 此时可用（plotHeight 已确定）
+  const positions = all.map(v => getY(v))
+  const result: number[] = [all[0]]
+  let lastPos = positions[0]
+
+  for (let i = 1; i < all.length; i++) {
+    const pos = positions[i]
+    if (Math.abs(lastPos - pos) >= MIN_SPACING) {
+      result.push(all[i])
+      lastPos = pos
+    }
+  }
+  return result
 })
 
 const plotWidth = computed(() => svgWidth.value - padding.value.left - padding.value.right)
@@ -747,14 +1006,16 @@ const itemWidth = computed(() => {
 const virtualPlotWidth = computed(() => {
   const dataLen = Math.max(xLabels.value.length, 1)
   if (props.type === 'line') {
-    return itemWidth.value * (dataLen - 1)
+    // 包含两端留白，确保第一/最后数据点不贴边
+    const padding2x = Math.min(16, itemWidth.value * 0.5) * 2
+    return itemWidth.value * (dataLen - 1) + padding2x
   }
   return itemWidth.value * dataLen
 })
 
 /** 是否启用横向滚动 */
 const scrollable = computed(() =>
-  (props.type === 'line' || props.type === 'bar') &&
+  (props.type === 'line' || props.type === 'bar' || props.type === 'stack' || props.type === 'mixed') &&
   virtualPlotWidth.value > plotWidth.value + 1
 )
 
@@ -806,17 +1067,18 @@ const linePaddingX = computed(() => {
 
 function getXCenter(i: number): number {
   const offsetX = scrollable.value ? -clampedOffsetX.value : 0
-  if (props.type === 'bar') {
-    const seriesCount = visibleSeries.value.length
-    const totalBarW = barWidth.value * seriesCount + barGap.value * (seriesCount - 1)
-    return padding.value.left + offsetX + itemWidth.value * i + itemWidth.value / 2 - totalBarW / 2 + barWidth.value / 2
+  if (props.type === 'bar' || props.type === 'mixed') {
+    // 返回整组柱子的几何中心，确保鼠标悬停在任意子柱上都能命中
+    return padding.value.left + offsetX + itemWidth.value * i + itemWidth.value / 2
   }
-  // 折线图：在左右各留半个 stepX 的边距，使首尾两点不贴紧 Y 轴/右边界
+  if (props.type === 'stack') {
+    return padding.value.left + offsetX + itemWidth.value * i + itemWidth.value / 2
+  }
+  // 折线图：基于虚拟宽度（含 minItemWidth 扩展）均匀分布，首尾留 linePaddingX 边距
   if (props.type === 'line') {
     const dataLen = Math.max(xLabels.value.length, 1)
     if (dataLen <= 1) return padding.value.left + offsetX + plotWidth.value / 2
-    const usableW = plotWidth.value - linePaddingX.value * 2
-    return padding.value.left + linePaddingX.value + offsetX + (usableW / (dataLen - 1)) * i
+    return padding.value.left + linePaddingX.value + offsetX + stepX.value * i
   }
   return padding.value.left + offsetX + stepX.value * i
 }
@@ -840,6 +1102,36 @@ function getAreaPath(data: number[]): string {
   return `${linePart} L ${getXCenter(data.length - 1)} ${base} L ${getXCenter(0)} ${base} Z`
 }
 
+// ========== 获取系列颜色（支持单个柱子自定义颜色）==========
+/**
+ * 获取某个系列在某个数据索引处的颜色
+ * 优先级：serie.colors[dataIdx] > serie.color > defaultColors[serieIdx]
+ */
+function getSerieColor(serie: ChartSerie, serieIdx: number, dataIdx?: number): string {
+  if (dataIdx !== undefined && serie.colors && serie.colors[dataIdx]) {
+    return serie.colors[dataIdx]
+  }
+  return serie.color || defaultColors.value[serieIdx % defaultColors.value.length]
+}
+
+/**
+ * 堆叠柱状图颜色优先级：
+ * 1. stackColors[dataIdx][serieIdx]  —— 单柱某层精确颜色
+ * 2. serie.colors[dataIdx]           —— 某系列某柱颜色
+ * 3. serie.color                     —— 某系列整体颜色
+ * 4. defaultColors[serieIdx]         —— 全局调色盘
+ */
+function getStackSegColor(serie: ChartSerie, serieIdx: number, dataIdx: number): string {
+  const sc = props.stackColors
+  if (sc && sc[dataIdx] && sc[dataIdx][serieIdx]) {
+    return sc[dataIdx][serieIdx]
+  }
+  if (serie.colors && serie.colors[dataIdx]) {
+    return serie.colors[dataIdx]
+  }
+  return serie.color || defaultColors.value[serieIdx % defaultColors.value.length]
+}
+
 // ========== 柱状图 ==========
 const barGap = computed(() => 4)
 const barWidth = computed(() => {
@@ -854,6 +1146,183 @@ function getBarX(dataIdx: number, serieIdx: number): number {
   const offsetX = scrollable.value ? -clampedOffsetX.value : 0
   const groupStart = padding.value.left + offsetX + itemWidth.value * dataIdx + (itemWidth.value - totalBarW) / 2
   return groupStart + (barWidth.value + barGap.value) * serieIdx
+}
+
+// ========== 堆叠柱状图 ==========
+const stackBarWidth = computed(() => {
+  return Math.max(6, itemWidth.value * 0.55)
+})
+
+function getStackBarX(dataIdx: number): number {
+  const offsetX = scrollable.value ? -clampedOffsetX.value : 0
+  return padding.value.left + offsetX + itemWidth.value * dataIdx + (itemWidth.value - stackBarWidth.value) / 2
+}
+
+/**
+ * 计算堆叠图每个系列每个数据点的 y 起始、高度
+ * 返回 [serieIdx][dataIdx] = { y, h }
+ */
+const stackSegments = computed((): Array<Array<{ y: number; h: number; val: number }>> => {
+  if (props.type !== 'stack') return []
+  const dataLen = Math.max(xLabels.value.length, 0)
+  // 每列的累计底部 Y 坐标（从 baseline 向上叠加）
+  const baseY = svgHeight.value - padding.value.bottom
+  const colBottomY = Array(dataLen).fill(baseY) as number[]
+
+  return visibleSeries.value.map(serie => {
+    return Array.from({ length: dataLen }, (_, i) => {
+      const val = serie.data[i] ?? 0
+      const segH = Math.max(0, getY(0) - getY(val))   // 正值高度
+      const yTop = colBottomY[i] - segH
+      const result = { y: yTop, h: segH, val }
+      colBottomY[i] = yTop  // 下一个系列从这里往上堆
+      return result
+    })
+  })
+})
+
+// ========== 折柱混用 ==========
+/**
+ * 带有 _barIdx（在 bar 系列中的位置）和 _origIdx（在 visibleSeries 中的原始位置）的系列
+ * 用于正确计算柱子偏移和颜色
+ */
+type MixedSerie = ChartSerie & { _barIdx: number; _origIdx: number }
+
+const mixedBarSeries = computed((): MixedSerie[] => {
+  if (props.type !== 'mixed') return []
+  let barIdx = 0
+  return visibleSeries.value.reduce<MixedSerie[]>((acc, s, origIdx) => {
+    if ((s.chartType ?? 'bar') === 'bar') {
+      acc.push({ ...s, _barIdx: barIdx++, _origIdx: origIdx })
+    }
+    return acc
+  }, [])
+})
+
+const mixedLineSeries = computed((): MixedSerie[] => {
+  if (props.type !== 'mixed') return []
+  return visibleSeries.value.reduce<MixedSerie[]>((acc, s, origIdx) => {
+    if (s.chartType === 'line') {
+      acc.push({ ...s, _barIdx: -1, _origIdx: origIdx })
+    }
+    return acc
+  }, [])
+})
+
+const mixedBarGap = computed(() => 4)
+const mixedBarWidth = computed(() => {
+  const barCount = Math.max(mixedBarSeries.value.length, 1)
+  const available = itemWidth.value * 0.65
+  return Math.max(6, (available - mixedBarGap.value * (barCount - 1)) / barCount)
+})
+
+function getMixedBarX(dataIdx: number, barIdx: number): number {
+  const barCount = mixedBarSeries.value.length
+  const totalBarW = mixedBarWidth.value * barCount + mixedBarGap.value * (barCount - 1)
+  const offsetX = scrollable.value ? -clampedOffsetX.value : 0
+  const groupStart = padding.value.left + offsetX + itemWidth.value * dataIdx + (itemWidth.value - totalBarW) / 2
+  return groupStart + (mixedBarWidth.value + mixedBarGap.value) * barIdx
+}
+
+// ========== 折柱混用：双 Y 轴 ==========
+/** 辅助：根据数值数组计算漂亮的 min/max/ticks */
+function calcAxisRange(vals: number[]): { min: number; max: number; ticks: number[] } {
+  if (!vals.length) return { min: 0, max: 100, ticks: [0, 25, 50, 75, 100] }
+  const rawMin = Math.min(...vals)
+  const rawMax = Math.max(...vals)
+  const min = rawMin >= 0 ? 0 : rawMin * 1.1
+  const max = rawMax <= 0 ? (rawMin < 0 ? 0 : 100) : rawMax * 1.15
+  const PREFER = 5
+  const range = max - min || 1
+  const rawStep = range / PREFER
+  const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)))
+  const normalized = rawStep / magnitude
+  let niceStep: number
+  if (normalized <= 1) niceStep = 1 * magnitude
+  else if (normalized <= 2) niceStep = 2 * magnitude
+  else if (normalized <= 5) niceStep = 5 * magnitude
+  else niceStep = 10 * magnitude
+  const ticks: number[] = []
+  const start = min <= 0 ? 0 : Math.ceil(min / niceStep) * niceStep
+  for (let v = start; v <= max * 1.001 + niceStep * 0.01; v = Math.round((v + niceStep) * 1e10) / 1e10) {
+    ticks.push(v)
+    if (ticks.length > 10) break
+  }
+  if (ticks.length < 2) ticks.push(max)
+  return { min, max: ticks[ticks.length - 1] ?? max, ticks }
+}
+
+/** 左 Y 轴（柱状系列专用，mixed 模式） */
+const mixedBarAxis = computed(() => {
+  if (props.type !== 'mixed') return null
+  const vals = mixedBarSeries.value.flatMap(s => s.data)
+  return calcAxisRange(vals)
+})
+
+/** 右 Y 轴（折线系列专用，mixed 模式） */
+const mixedLineAxis = computed(() => {
+  if (props.type !== 'mixed') return null
+  const vals = mixedLineSeries.value.flatMap(s => s.data)
+  return calcAxisRange(vals)
+})
+
+/** mixed 模式：把值映射到 SVG Y 坐标（柱状轴） */
+function getMixedBarY(val: number): number {
+  if (!mixedBarAxis.value) return getY(val)
+  const { min, max } = mixedBarAxis.value
+  const range = max - min || 1
+  return padding.value.top + plotHeight.value * (1 - (val - min) / range)
+}
+
+/** mixed 模式：把值映射到 SVG Y 坐标（折线轴） */
+function getMixedLineY(val: number): number {
+  if (!mixedLineAxis.value) return getY(val)
+  const { min, max } = mixedLineAxis.value
+  const range = max - min || 1
+  return padding.value.top + plotHeight.value * (1 - (val - min) / range)
+}
+
+/** mixed 模式：经过像素间距过滤的左 Y 轴刻度 */
+const mixedBarYTicks = computed((): number[] => {
+  const axis = mixedBarAxis.value
+  if (!axis) return []
+  return filterTicksBySpacing(axis.ticks, getMixedBarY)
+})
+
+/** mixed 模式：经过像素间距过滤的右 Y 轴刻度 */
+const mixedLineYTicks = computed((): number[] => {
+  const axis = mixedLineAxis.value
+  if (!axis) return []
+  return filterTicksBySpacing(axis.ticks, getMixedLineY)
+})
+
+function filterTicksBySpacing(ticks: number[], getYFn: (v: number) => number): number[] {
+  if (!ticks.length) return []
+  const MIN_SPACING = 36
+  const positions = ticks.map(getYFn)
+  const result: number[] = [ticks[0]]
+  let lastPos = positions[0]
+  for (let i = 1; i < ticks.length; i++) {
+    if (Math.abs(lastPos - positions[i]) >= MIN_SPACING) {
+      result.push(ticks[i])
+      lastPos = positions[i]
+    }
+  }
+  return result
+}
+
+/** 折线路径（mixed 模式，用折线 Y 轴） */
+function getMixedLinePath(data: number[]): string {
+  if (!data.length) return ''
+  return data.map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getMixedLineY(val)}`).join(' ')
+}
+
+/** 面积路径（mixed 模式，用折线 Y 轴） */
+function getMixedLineAreaPath(data: number[]): string {
+  if (!data.length) return ''
+  const linePart = data.map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getMixedLineY(val)}`).join(' ')
+  const base = svgHeight.value - padding.value.bottom
+  return `${linePart} L ${getXCenter(data.length - 1)} ${base} L ${getXCenter(0)} ${base} Z`
 }
 
 // ========== 饼图计算 ==========
@@ -1073,7 +1542,7 @@ const hbarItems = computed((): HBarItem[] => {
       result.push({
         label,
         value: val,
-        color: serie.color || defaultColors.value[si % defaultColors.value.length],
+        color: getSerieColor(serie, si, di),
         seriesName: serie.name,
         serieIdx: si,
         dataIdx: di,
@@ -1220,13 +1689,17 @@ const legendItems = computed(() => {
     return (props.data ?? []).map((d, i) => ({
       name: d.name,
       color: d.color || defaultColors.value[i % defaultColors.value.length],
+      isLine: false,
     }))
   }
   if (props.type === 'gauge') return []
-  return props.series.map((s, i) => ({
-    name: s.name,
-    color: s.color || defaultColors.value[i % defaultColors.value.length],
-  }))
+  return props.series.map((s, i) => {
+    let color = s.color || defaultColors.value[i % defaultColors.value.length]
+    if (props.type === 'stack' && props.stackColors?.[0]?.[i]) {
+      color = props.stackColors[0][i]
+    }
+    return { name: s.name, color, isLine: props.type === 'line' || s.chartType === 'line' }
+  })
 })
 
 function toggleSeries(name: string) {
@@ -1292,7 +1765,7 @@ function onMouseMove(e: MouseEvent) {
   const mx = e.clientX - rect.left
   const my = e.clientY - rect.top
 
-  if (props.type === 'line' || props.type === 'bar') {
+  if (props.type === 'line' || props.type === 'bar' || props.type === 'stack') {
     // 找最近的 x 坐标（屏幕坐标系）
     let closest = -1
     let minDist = Infinity
@@ -1304,7 +1777,7 @@ function onMouseMove(e: MouseEvent) {
         closest = i
       }
     })
-    if (closest < 0 || minDist > 40 || getXCenter(closest) < padding.value.left || getXCenter(closest) > svgWidth.value - padding.value.right) {
+    if (closest < 0 || minDist > itemWidth.value / 2 || getXCenter(closest) < padding.value.left || getXCenter(closest) > svgWidth.value - padding.value.right) {
       activeIndex.value = -1
       tooltip.value.visible = false
       return
@@ -1314,7 +1787,7 @@ function onMouseMove(e: MouseEvent) {
     const items = visibleSeries.value.map((s, si) => ({
       name: s.name,
       value: s.data[closest] ?? 0,
-      color: s.color || defaultColors.value[si % defaultColors.value.length],
+      color: props.type === 'stack' ? getStackSegColor(s, si, closest) : getSerieColor(s, si, closest),
     }))
     const pos = calcTooltipPos(e.clientX, e.clientY)
     tooltip.value = {
@@ -1341,7 +1814,7 @@ function onMouseMove(e: MouseEvent) {
     const items = visibleSeries.value.map((s, si) => ({
       name: s.name,
       value: s.data[closestRow] ?? 0,
-      color: s.color || defaultColors.value[si % defaultColors.value.length],
+      color: getSerieColor(s, si, closestRow),
     }))
     const pos = calcTooltipPos(e.clientX, e.clientY)
     tooltip.value = {
@@ -2142,7 +2615,6 @@ $bg-white: #ffffff;
   opacity: 0.6;
 }
 
-// 仪表盘
 .xly-chart__gauge-progress {
   transition: d 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
