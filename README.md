@@ -1,4 +1,4 @@
-# Ease UI
+﻿# Ease UI
 
 <p align="center">
   <img src="https://img.shields.io/badge/Vue-3.5+-brightgreen.svg" alt="Vue 3.5+">
@@ -10,6 +10,12 @@
 
 <p align="center">
   <b>🚀 即插即用的 Vue 3 业务组件库，让中后台开发回归简单</b>
+</p>
+
+<p align="center">
+  <a href="./CHANGELOG.md">📋 更新记录</a> &nbsp;|&nbsp;
+  <a href="http://1.14.65.79">🌐 在线预览</a> &nbsp;|&nbsp;
+  <a href="https://gitee.com/yun_hua_admin/ease-ui">⭐ Gitee 仓库</a>
 </p>
 
 <p align="center">
@@ -658,6 +664,21 @@ ease-ui/
     </tr>
   </table>
 </p>
+
+---
+
+## 📋 更新记录
+
+最新变更请查看 [CHANGELOG.md](./CHANGELOG.md)。
+
+| 版本 | 日期 | 主要更新 |
+|------|------|---------|
+| - | 2026-03-28 | 修复 Dart Sass `darken()` 废弃用法；xly-chart 折柱混用升级双 Y 轴 |
+| - | 2026-03-27 | 新增 xly-image-upload、xly-file-upload、xly-empty；xly-table 展开行功能 |
+| - | 2026-03-26 | 新增 xly-statistic、xly-descriptions；菜单调整为 7 分类 |
+| - | 2026-03-25 | 新增 xly-card、xly-permission、xly-chart；首页重构 |
+| - | 2026-03-24 | 新增 xly-drawer、xly-divider、xly-avatar、xly-timeline、xly-image |
+| - | 2026-03-23 | xly-table 工具栏优化，新增刷新/导出功能 |
 
 ---
 
