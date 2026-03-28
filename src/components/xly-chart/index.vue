@@ -2314,7 +2314,7 @@ $bg-white: #ffffff;
   &:hover {
     background: #f4f5f7;
     color: $text-primary;
-    border-color: darken($border-color, 5%);
+    border-color: #d9d9db; // darken($border-color, 5%) → $border-color=#e4e4e7
   }
   &:active {
     background: #ebebee;

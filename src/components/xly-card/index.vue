@@ -147,7 +147,7 @@ $radius-sm: 6px;
     &:hover {
       transform: translateY(-3px);
       box-shadow: $shadow-hover;
-      border-color: darken($border-light, 5%);
+      border-color: #e5e5e8; // darken($border-light, 5%) → $border-light=#f1f1f4
     }
   }
 
