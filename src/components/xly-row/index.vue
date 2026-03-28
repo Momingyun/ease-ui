@@ -8,6 +8,8 @@
 import { computed, provide } from 'vue'
 import { ROW_GUTTER_KEY } from './types'
 
+defineOptions({ name: 'XlyRow' })
+
 interface RowProps {
   /** 栅格间隔，支持像素值或响应式对象 { xs, sm, md, lg, xl } */
   gutter?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number }

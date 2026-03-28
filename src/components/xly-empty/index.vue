@@ -27,6 +27,8 @@
 <script setup lang="ts">
 import { computed, h } from 'vue'
 
+defineOptions({ name: 'XlyEmpty' })
+
 export type EmptyType = 'default' | 'data' | 'search' | 'network' | 'permission' | 'list'
 export type EmptySize = 'small' | 'default' | 'large'
 

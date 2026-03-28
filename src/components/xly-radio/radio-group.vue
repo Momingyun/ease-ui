@@ -14,6 +14,8 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
 
+defineOptions({ name: 'XlyRadioGroup' })
+
 export interface RadioGroupProps {
   /** 绑定值 */
   modelValue?: string | number | boolean

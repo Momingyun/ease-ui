@@ -109,6 +109,8 @@ import XlyChatInput, {
 } from './xly-chat-input.vue'
 import XlyIcon from '../xly-icon/index.vue'
 
+defineOptions({ name: 'XlyChat' })
+
 export interface ChatProps {
   /** 消息列表 */
   messages: ChatMessage[]

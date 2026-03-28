@@ -44,6 +44,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
+defineOptions({ name: 'XlyDrawer' })
+
 type DrawerDirection = 'left' | 'right' | 'top' | 'bottom'
 
 const props = withDefaults(defineProps<{

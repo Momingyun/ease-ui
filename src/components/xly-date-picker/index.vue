@@ -122,6 +122,8 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { Calendar, Close, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 
+defineOptions({ name: 'XlyDatePicker' })
+
 export interface DatePickerProps {
   modelValue?: string
   type?: 'date' | 'month' | 'year'

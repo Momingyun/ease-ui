@@ -8,6 +8,8 @@
 import { computed, inject, ref } from 'vue'
 import { type GutterInjection, ROW_GUTTER_KEY } from '@/components/xly-row/types'
 
+defineOptions({ name: 'XlyCol' })
+
 interface ColProps {
   /** 栅格占位格数（0-24） */
   span?: number

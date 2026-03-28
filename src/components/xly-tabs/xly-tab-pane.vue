@@ -7,6 +7,8 @@
 <script setup lang="ts">
 import { inject, computed, onMounted, onUnmounted } from 'vue'
 
+defineOptions({ name: 'XlyTabPane' })
+
 export interface TabPaneProps {
   /** 选项卡标识，对应 Tabs 的 modelValue */
   name: string | number

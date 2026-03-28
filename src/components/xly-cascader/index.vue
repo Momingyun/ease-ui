@@ -134,6 +134,8 @@
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import XlyIcon from '@/components/xly-icon/index.vue'
 
+defineOptions({ name: 'XlyCascader' })
+
 export interface CascaderNode {
   [key: string]: any
 }

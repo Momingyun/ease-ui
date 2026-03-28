@@ -220,6 +220,8 @@
 import { ref, computed, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { Calendar, Close, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 
+defineOptions({ name: 'XlyDateTimePicker' })
+
 export interface DateTimePickerProps {
   modelValue?: string
   placeholder?: string

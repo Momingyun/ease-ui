@@ -71,6 +71,8 @@
 import { computed, ref, onMounted, watch } from 'vue'
 import XlyIcon from '../xly-icon/index.vue'
 
+defineOptions({ name: 'XlyStatistic' })
+
 // 千分位格式化
 const formatNumber = (num: number, precision: number = 0): string => {
   if (isNaN(num)) return '0'

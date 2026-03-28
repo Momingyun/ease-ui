@@ -120,6 +120,8 @@
 import { computed } from 'vue'
 import XlyIcon from '../xly-icon/index.vue'
 
+defineOptions({ name: 'XlyProgress' })
+
 type ProgressStatus = 'normal' | 'success' | 'exception' | 'warning' | 'active'
 type ProgressType = 'line' | 'circle' | 'dashboard'
 

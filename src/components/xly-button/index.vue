@@ -40,6 +40,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+defineOptions({ name: 'XlyButton' })
+
 /** 按钮类型 */
 type ButtonType = 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text' | 'ghost'
 /** 按钮尺寸 */

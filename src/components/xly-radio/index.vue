@@ -32,6 +32,8 @@
 <script setup lang="ts">
 import { computed, inject, type ComputedRef } from 'vue'
 
+defineOptions({ name: 'XlyRadio' })
+
 export interface RadioProps {
   /** 选中时的值 */
   label?: string | number | boolean

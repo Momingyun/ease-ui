@@ -176,6 +176,8 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { Clock, Close } from '@element-plus/icons-vue'
 
+defineOptions({ name: 'XlyTimePicker' })
+
 export interface TimePickerProps {
   modelValue?: string
   placeholder?: string

@@ -53,6 +53,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
+defineOptions({ name: 'XlyRate' })
+
 export interface RateProps {
   modelValue?: number
   max?: number

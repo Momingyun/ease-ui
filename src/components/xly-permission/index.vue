@@ -143,6 +143,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+defineOptions({ name: 'XlyPermission' })
+
 export interface Permission {
   [key: string]: any
 }

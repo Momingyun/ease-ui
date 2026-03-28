@@ -89,6 +89,8 @@
 import { ref, computed } from 'vue'
 import XlyIcon from '@/components/xly-icon/index.vue'
 
+defineOptions({ name: 'XlyInput' })
+
 export interface InputProps {
   modelValue?: string | number
   type?: 'text' | 'password' | 'textarea' | 'number' | 'tel' | 'email' | 'url'

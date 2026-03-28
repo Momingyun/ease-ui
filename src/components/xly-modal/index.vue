@@ -52,6 +52,8 @@
 import { computed, ref, watch } from 'vue'
 import XlyButton from '@/components/xly-button/index.vue'
 
+defineOptions({ name: 'XlyModal' })
+
 type ModalSize = 'small' | 'default' | 'large' | 'fullscreen'
 type ModalTransition = 'zoom' | 'slide-up' | 'slide-down' | 'fade'
 type ModalPlacement =

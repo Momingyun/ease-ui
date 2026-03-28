@@ -586,6 +586,8 @@ import XlySelect from '@/components/xly-select/index.vue'
 import XlyButton from '@/components/xly-button/index.vue'
 import XlyIcon from '@/components/xly-icon/index.vue'
 
+defineOptions({ name: 'XlyTable' })
+
 const slots = useSlots()
 
 /* ====================================================

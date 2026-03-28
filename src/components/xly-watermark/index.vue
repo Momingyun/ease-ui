@@ -8,6 +8,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, nextTick, computed } from 'vue'
 
+defineOptions({ name: 'XlyWatermark' })
+
 export interface WatermarkOptions {
   /** 水印文字内容，支持多行（数组形式） */
   content?: string | string[]

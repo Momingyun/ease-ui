@@ -37,6 +37,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
+defineOptions({ name: 'XlyDropdown' })
+
 const props = withDefaults(defineProps<{
   /** 触发器文本（简化用法） */
   label?: string

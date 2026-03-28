@@ -30,6 +30,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+defineOptions({ name: 'XlyAvatar' })
+
 type AvatarSize = 'small' | 'default' | 'large'
 type AvatarShape = 'circle' | 'square'
 

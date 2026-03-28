@@ -75,6 +75,8 @@
 <script setup lang="ts">
 import { positions, groupedList, type MessageItem, handleMouseEnter, handleMouseLeave, XlyMsg } from './message'
 
+defineOptions({ name: 'XlyMessage' })
+
 defineExpose(XlyMsg)
 </script>
 

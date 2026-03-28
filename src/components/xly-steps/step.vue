@@ -53,6 +53,8 @@
 import { computed, inject, onMounted, onUnmounted, type Ref, type ComputedRef } from 'vue'
 import XlyIcon from '@/components/xly-icon/index.vue'
 
+defineOptions({ name: 'XlyStep' })
+
 export interface StepProps {
   /** 步骤标题 */
   title?: string

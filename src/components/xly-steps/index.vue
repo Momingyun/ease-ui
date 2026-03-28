@@ -11,6 +11,8 @@
 <script setup lang="ts">
 import { provide, computed, useSlots, ref, onMounted, onUpdated } from 'vue'
 
+defineOptions({ name: 'XlySteps' })
+
 export type StepStatus = 'wait' | 'process' | 'finish' | 'success' | 'error'
 
 export interface StepsProps {

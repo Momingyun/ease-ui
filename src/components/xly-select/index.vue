@@ -108,6 +108,8 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import XlyIcon from '@/components/xly-icon/index.vue'
 
+defineOptions({ name: 'XlySelect' })
+
 export interface SelectOption {
   [key: string]: any
 }

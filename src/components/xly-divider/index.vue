@@ -12,6 +12,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+defineOptions({ name: 'XlyDivider' })
+
 type DividerDirection = 'horizontal' | 'vertical'
 type DividerContentPosition = 'left' | 'center' | 'right'
 

@@ -9,6 +9,8 @@ import { computed, provide, ref } from 'vue'
 import type { FormRule, Rule } from './utils'
 import { validateForm } from './utils'
 
+defineOptions({ name: 'XlyForm' })
+
 export interface FormProps {
   model: Record<string, any>
   rules?: Record<string, Rule[]>

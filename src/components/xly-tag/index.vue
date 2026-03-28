@@ -31,6 +31,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
+defineOptions({ name: 'XlyTag' })
+
 export type TagType = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 export type TagSize = 'large' | 'default' | 'small'
 export type TagEffect = 'light' | 'plain' | 'dark'

@@ -66,6 +66,8 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ name: 'XlyTabs' })
+
 import {
   ref,
   reactive,

@@ -44,6 +44,8 @@ import { type Component, computed, type CSSProperties, markRaw } from 'vue'
 import * as EpIcons from '@element-plus/icons-vue'
 import { getSvgContent } from './svg-map'
 
+defineOptions({ name: 'XlyIcon' })
+
 export interface XlyIconProps {
   /**
    * 图标名称，通过前缀区分类型：

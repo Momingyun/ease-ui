@@ -188,6 +188,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
+defineOptions({ name: 'XlyCarousel' })
+
 /** 轮播模式 */
 type CarouselMode = 'slide' | '3d'
 /** 轮播方向 */
