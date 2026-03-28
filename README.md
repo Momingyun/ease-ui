@@ -670,16 +670,6 @@ ease-ui/
 ## 📋 更新记录
 
 最新变更请查看 [CHANGELOG.md](./CHANGELOG.md)。
-
-| 版本 | 日期 | 主要更新 |
-|------|------|---------|
-| - | 2026-03-28 | 修复 Dart Sass `darken()` 废弃用法；xly-chart 折柱混用升级双 Y 轴 |
-| - | 2026-03-27 | 新增 xly-image-upload、xly-file-upload、xly-empty；xly-table 展开行功能 |
-| - | 2026-03-26 | 新增 xly-statistic、xly-descriptions；菜单调整为 7 分类 |
-| - | 2026-03-25 | 新增 xly-card、xly-permission、xly-chart；首页重构 |
-| - | 2026-03-24 | 新增 xly-drawer、xly-divider、xly-avatar、xly-timeline、xly-image |
-| - | 2026-03-23 | xly-table 工具栏优化，新增刷新/导出功能 |
-
 ---
 
 ## 📄 许可证
