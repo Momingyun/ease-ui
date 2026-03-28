@@ -3,6 +3,7 @@ import { XlyMsg } from '@/components/xly-message/message'
 import { setupXlyMessage } from '@/components/xly-message/install'
 import { XlyLoading } from '@/components/xly-loading/loading'
 import { XlyTour } from '@/components/xly-tour/tour'
+import { XlyBadge } from '@/components/xly-badge/badge'
 
 /**
  * xly 全局工具对象
@@ -35,6 +36,8 @@ export const xly = {
   $loading: XlyLoading,
   /** 操作引导 */
   $tour: XlyTour,
+  /** 徽标 */
+  $badge: XlyBadge,
 }
 
 /**
@@ -72,3 +75,4 @@ export function setupXly(app: App) {
 export type { MessageOptions } from '@/components/xly-message/message'
 export type { LoadingInstance, LoadingOptions } from '@/components/xly-loading/loading'
 export type { TourInstance, TourOptions } from '@/components/xly-tour/tour'
+export type { BadgeInstance, BadgeOptions } from '@/components/xly-badge/badge'

@@ -25,6 +25,7 @@ declare module 'vue' {
     Step: typeof import('./../../components/xly-steps/step.vue')['default']
     TimelineItem: typeof import('./../../components/xly-timeline/timeline-item.vue')['default']
     XlyAvatar: typeof import('./../../components/xly-avatar/index.vue')['default']
+    XlyBadge: typeof import('./../../components/xly-badge/index.vue')['default']
     XlyButton: typeof import('./../../components/xly-button/index.vue')['default']
     XlyCard: typeof import('./../../components/xly-card/index.vue')['default']
     XlyCarousel: typeof import('./../../components/xly-carousel/index.vue')['default']
@@ -70,6 +71,7 @@ declare module 'vue' {
     XlyTimePicker: typeof import('./../../components/xly-time-picker/index.vue')['default']
     XlyTimeRangePicker: typeof import('./../../components/xly-time-range-picker/index.vue')['default']
     XlyTour: typeof import('./../../components/xly-tour/index.vue')['default']
+    XlyUpload: typeof import('./../../components/xly-upload/index.vue')['default']
     XlyWatermark: typeof import('./../../components/xly-watermark/index.vue')['default']
   }
 }

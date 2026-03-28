@@ -75,6 +75,13 @@
         "key": "empty",
         "path": "/basic/empty",
         "component": "basic/empty"
+      },
+      {
+        "id": "2-10",
+        "name": "徽标 Badge",
+        "key": "badge",
+        "path": "/basic/badge",
+        "component": "basic/badge"
       }
     ]
   },
