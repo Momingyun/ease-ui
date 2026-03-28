@@ -7,7 +7,7 @@
   </span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -18,7 +18,7 @@ const props = defineProps({
   position: { type: String, default: 'top-right' },
   showZero: Boolean,
   color: String,
-  circle: Boolean
+  circle: Boolean,
 })
 
 const shouldShow = computed(() => {
@@ -44,13 +44,13 @@ const colorMap = {
   success: '#67c23a',
   warning: '#e6a23c',
   danger: '#f56c6c',
-  info: '#909399'
+  info: '#909399',
 }
 
 const badgeColor = computed(() => props.color || colorMap[props.type] || colorMap.danger)
 
 const textStyle = computed(() => ({
-  backgroundColor: badgeColor.value
+  backgroundColor: badgeColor.value,
 }))
 </script>
 
@@ -78,15 +78,31 @@ const textStyle = computed(() => ({
   font-weight: bold;
   color: #fff;
   border: 2px solid #fff;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
 }
 
 /* 位置 */
-.xly-badge .top-right { top: 0; right: 0; transform: translate(50%, -50%); }
-.xly-badge .top-left { top: 0; left: 0; transform: translate(-50%, -50%); }
-.xly-badge .bottom-right { bottom: 0; right: 0; transform: translate(50%, 50%); }
-.xly-badge .bottom-left { bottom: 0; left: 0; transform: translate(-50%, 50%); }
+.xly-badge .top-right {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.xly-badge .top-left {
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.xly-badge .bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+.xly-badge .bottom-left {
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+}
 
 /* 圆形 */
 .xly-badge .badge-mark.circle .badge-text {
