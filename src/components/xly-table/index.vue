@@ -386,6 +386,56 @@
             </template>
           </template>
         </tbody>
+
+        <!-- 合计行（不支持选择/选中） -->
+        <tfoot v-if="hasSummary" class="xly-table__tfoot">
+          <tr class="xly-table__summary-row">
+            <!-- 树形/展开占位列 -->
+            <td v-if="tree || expandable" class="xly-table__td xly-table__td--summary-placeholder" />
+            <!-- 选择列占位：合计行不参与选择，显示为空格占位 -->
+            <td v-if="selectable" class="xly-table__td xly-table__td--summary-placeholder xly-table__td--no-select" />
+            <!-- 序号列 → 显示"合计"标签 -->
+            <td v-if="showIndex" class="xly-table__td xly-table__td--summary-label">
+              {{ summaryLabel }}
+            </td>
+            <!-- 数据列 -->
+            <td
+              v-for="(col, colIdx) in visibleColumns"
+              :key="col.prop"
+              class="xly-table__td xly-table__td--summary"
+              :class="[
+                col.align ? `xly-table__td--${col.align}` : '',
+                col.fixed ? `xly-table__td--fixed xly-table__td--fixed-${col.fixed}` : '',
+              ]"
+              :style="getColStyle(col)"
+            >
+              <!-- 没有序号列时，第一列显示合计标签 -->
+              <template v-if="!showIndex && colIdx === 0">
+                <span class="xly-table__summary-title">{{ summaryLabel }}</span>
+                <span v-if="summaryRow[col.prop]?.value" class="xly-table__summary-sep"> / </span>
+                <template v-if="summaryRow[col.prop]?.value">
+                  <span
+                    v-if="summaryMixed && (summaryRow[col.prop].type === 'sum' || summaryRow[col.prop].type === 'avg')"
+                    :class="['xly-table__summary-badge', `xly-table__summary-badge--${summaryRow[col.prop].type}`]"
+                  >{{ summaryRow[col.prop].type === 'sum' ? '合计' : '均值' }}</span>
+                  <span>{{ summaryRow[col.prop].value }}</span>
+                </template>
+              </template>
+              <template v-else>
+                <template v-if="summaryRow[col.prop]?.type === 'sum' || summaryRow[col.prop]?.type === 'avg'">
+                  <span
+                    v-if="summaryMixed"
+                    :class="['xly-table__summary-badge', `xly-table__summary-badge--${summaryRow[col.prop].type}`]"
+                  >{{ summaryRow[col.prop].type === 'sum' ? '合计' : '均值' }}</span>
+                  <span>{{ summaryRow[col.prop].value }}</span>
+                </template>
+                <template v-else>
+                  {{ summaryRow[col.prop]?.value }}
+                </template>
+              </template>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
 
@@ -649,6 +699,10 @@ export interface TableColumn {
   prefix?: string
   /** 列内容后缀 */
   suffix?: string
+  /** 合计方式：'sum' 求和 | 'avg' 平均值 | false 不参与合计（默认不参与） */
+  summary?: 'sum' | 'avg' | false
+  /** 合计行该列显示的自定义文字（优先于 summary 计算值） */
+  summaryText?: string
 }
 
 export interface TableProps {
@@ -734,6 +788,10 @@ export interface TableProps {
   defaultExpandedKeys?: (string | number)[]
   /** 是否默认展开全部 */
   defaultExpandAll?: boolean
+  /** 是否显示合计行 */
+  showSummary?: boolean
+  /** 合计行首列（或首个非数据列）显示的文字，默认"合计" */
+  summaryLabel?: string
 }
 
 /* ====================================================
@@ -776,6 +834,8 @@ const props = withDefaults(defineProps<TableProps>(), {
   rowKey: 'id',
   defaultExpandedKeys: () => [],
   defaultExpandAll: false,
+  showSummary: false,
+  summaryLabel: '合计',
 })
 
 const emit = defineEmits<{
@@ -1022,6 +1082,78 @@ const totalColCount = computed(() => {
   if (props.selectable) count++
   if (props.showIndex) count++
   return count
+})
+
+/* ====================================================
+   合计行
+==================================================== */
+/**
+ * 计算合计行每列的显示值
+ * 返回 Map<prop, displayText>
+ * - summaryText 存在 → 直接显示自定义文字
+ * - summary = 'sum'  → 对当前 data 求和
+ * - summary = 'avg'  → 对当前 data 求平均（保留两位小数）
+ * - 其余 → 空字符串
+ */
+interface SummaryCell {
+  /** 计算类型：'sum' | 'avg' | 'custom' | '' */
+  type: 'sum' | 'avg' | 'custom' | ''
+  /** 显示的文字 */
+  value: string
+}
+
+const summaryRow = computed<Record<string, SummaryCell>>(() => {
+  const result: Record<string, SummaryCell> = {}
+  if (!props.showSummary) return result
+
+  const rows = props.data ?? []
+
+  for (const col of visibleColumns.value) {
+    // 优先使用用户自定义文字
+    if (col.summaryText !== undefined) {
+      result[col.prop] = { type: 'custom', value: col.summaryText }
+      continue
+    }
+
+    if (col.summary === 'sum') {
+      const total = rows.reduce((acc, row) => {
+        const v = parseFloat(row[col.prop])
+        return acc + (isNaN(v) ? 0 : v)
+      }, 0)
+      const value = Number.isInteger(total) ? String(total) : total.toFixed(2)
+      result[col.prop] = { type: 'sum', value }
+    } else if (col.summary === 'avg') {
+      if (rows.length === 0) {
+        result[col.prop] = { type: 'avg', value: '-' }
+      } else {
+        const total = rows.reduce((acc, row) => {
+          const v = parseFloat(row[col.prop])
+          return acc + (isNaN(v) ? 0 : v)
+        }, 0)
+        const avg = total / rows.length
+        const value = Number.isInteger(avg) ? String(avg) : avg.toFixed(2)
+        result[col.prop] = { type: 'avg', value }
+      }
+    } else {
+      result[col.prop] = { type: '', value: '' }
+    }
+  }
+
+  return result
+})
+
+/** 合计行是否有任何列设置了 summary 或 summaryText */
+const hasSummary = computed(() => {
+  if (!props.showSummary) return false
+  return visibleColumns.value.some(
+    (col) => col.summary === 'sum' || col.summary === 'avg' || col.summaryText !== undefined,
+  )
+})
+
+/** 是否同时存在 sum 和 avg 列 —— 混用时才显示类型标签 */
+const summaryMixed = computed(() => {
+  const cols = visibleColumns.value
+  return cols.some((c) => c.summary === 'sum') && cols.some((c) => c.summary === 'avg')
 })
 
 // 计算表格最小宽度（所有列宽度之和 + 额外列宽度），确保列宽不被压缩
@@ -2453,6 +2585,81 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 .xly-table__th--fixed {
   z-index: 3;
+}
+
+/* ========== 合计行 ========== */
+.xly-table__tfoot {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.xly-table__summary-row {
+  background: var(--xly-table-summary-bg, #f5f7fa);
+  border-top: 2px solid $border-color;
+
+  .xly-table__td {
+    font-weight: 600;
+    font-size: 13px;
+    color: $text-primary;
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+
+  // 合计行中的固定列也需要 sticky + 正确背景色（覆盖默认 #fff）
+  .xly-table__td--fixed {
+    background: var(--xly-table-summary-bg, #f5f7fa);
+    z-index: 2;
+  }
+}
+
+.xly-table__td--summary-label {
+  color: $text-secondary;
+  font-weight: 600;
+  text-align: center;
+}
+
+.xly-table__td--summary-placeholder {
+  // 占位单元格，不显示内容
+}
+
+// 合计行的选择列：禁止一切交互，光标改为默认
+.xly-table__td--no-select {
+  pointer-events: none;
+  cursor: default;
+  user-select: none;
+}
+
+.xly-table__summary-title {
+  color: $text-secondary;
+  font-weight: 500;
+}
+
+.xly-table__summary-sep {
+  color: $text-secondary;
+  margin: 0 2px;
+}
+
+// 合计行类型标签：区分"合计"和"均值"
+.xly-table__summary-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-right: 5px;
+  vertical-align: middle;
+
+  &--sum {
+    color: #1677ff;
+    background: #e6f0ff;
+  }
+
+  &--avg {
+    color: #07a35a;
+    background: #e6f9f0;
+  }
 }
 
 /* ========== Ellipsis Tooltip ========== */

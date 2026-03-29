@@ -104,7 +104,9 @@ const columns = [
     <section class="doc-section">
       <h2 class="doc-section__title">单选模式</h2>
       <p class="doc-section__desc">
-        设置 <code>selection-mode="single"</code> 启用单选模式，此时只能选择一行数据，再次选择会替换当前选中行。
+        设置
+        <code>selection-mode="single"</code>
+        启用单选模式，此时只能选择一行数据，再次选择会替换当前选中行。
       </p>
       <div class="doc-preview">
         <div
@@ -234,7 +236,8 @@ const columns = [
     <section class="doc-section">
       <h2 class="doc-section__title">前缀和后缀</h2>
       <p class="doc-section__desc">
-        通过 <code>prefix</code> 和 <code>suffix</code> 属性为列内容添加前缀和后缀，方便显示单位、货币符号等。
+        通过 <code>prefix</code> 和
+        <code>suffix</code> 属性为列内容添加前缀和后缀，方便显示单位、货币符号等。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body" style="flex-direction: column; align-items: stretch">
@@ -361,6 +364,8 @@ async function handleServerPageSizeChange(pageSize: number) {
             :data="bigData.slice(0, 15)"
             :max-height="280"
             stripe
+            showSummary
+            summary-label="平均年龄"
             show-index
           />
         </div>
@@ -368,7 +373,9 @@ async function handleServerPageSizeChange(pageSize: number) {
           <pre><code>&lt;xly-table
   :columns="columns"
   :data="data"
-  :max-height="300"
+  :max-height="280"
+  showSummary
+  summary-label="平均年龄"
 /&gt;</code></pre>
         </div>
       </div>
@@ -479,7 +486,8 @@ async function handleServerPageSizeChange(pageSize: number) {
       <h2 class="doc-section__title">工具栏按钮</h2>
       <p class="doc-section__desc">
         通过 <code>show-refresh</code> 显示刷新按钮，<code>show-export</code> 显示导出按钮，
-        <code>show-column-settings</code> 显示列设置按钮。按钮采用图标形式，通过对应事件处理业务逻辑。
+        <code>show-column-settings</code>
+        显示列设置按钮。按钮采用图标形式，通过对应事件处理业务逻辑。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body" style="flex-direction: column; align-items: stretch">
@@ -601,9 +609,7 @@ function handleColumnOrderChange(newColumns: TableColumn[]) {
                     <span class="child-progress">{{ child.progress }}</span>
                   </div>
                 </div>
-                <div v-else class="children-empty">
-                  暂无子项目
-                </div>
+                <div v-else class="children-empty">暂无子项目</div>
               </div>
             </template>
           </xly-table>
@@ -625,8 +631,9 @@ function handleColumnOrderChange(newColumns: TableColumn[]) {
     <section class="doc-section">
       <h2 class="doc-section__title">树形数据</h2>
       <p class="doc-section__desc">
-        设置 <code>tree</code> 开启树形数据模式，数据中包含 <code>children</code> 字段（可通过 <code>tree-children-key</code> 自定义），
-        自动渲染为树形结构。支持 <code>default-expand-all</code> 默认展开全部，
+        设置 <code>tree</code> 开启树形数据模式，数据中包含 <code>children</code> 字段（可通过
+        <code>tree-children-key</code> 自定义）， 自动渲染为树形结构。支持
+        <code>default-expand-all</code> 默认展开全部，
         <code>default-expanded-keys</code> 指定默认展开的节点。
       </p>
       <div class="doc-preview">
@@ -800,6 +807,8 @@ const columns = [
               :data="enhancedBigData.slice(0, 10)"
               stripe
               border
+              show-summary
+              summary-label="合计"
               show-column-settings
               :page-size="10"
             />
@@ -814,6 +823,8 @@ const columns = [
   :data="data"
   stripe
   border
+  show-summary
+  summary-label="合计"
   show-column-settings
 /&gt;
 
@@ -833,10 +844,51 @@ const columns = [
   { prop: 'zipcode',    name: '邮编',       width: 100 },
   { prop: 'joinDate',   name: '入职日期',   width: 120 },
   { prop: 'leaveDate',  name: '离职日期',   width: 120 },
-  { prop: 'salary',     name: '薪资',       width: 120, align: 'right' },
-  { prop: 'bonus',      name: '奖金',       width: 100, align: 'right' },
-  { prop: 'performance', name: '绩效评分',  width: 100, fixed: 'right'，align: 'center' },
+  { prop: 'salary',     name: '薪资',       width: 120, align: 'right',summary: 'sum', },
+  { prop: 'bonus',      name: '奖金',       width: 100, align: 'right',summary: 'sum', },
+  { prop: 'performance', name: '绩效评分',  width: 100, fixed: 'right'，align: 'center',summary: 'sum' },
   { prop: 'status',     name: '状态',       width: 100, fixed: 'right' },
+]</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 合计行 -->
+    <section class="doc-section">
+      <h2 class="doc-section__title">合计行</h2>
+      <p class="doc-section__desc">
+        通过 <code>show-summary</code> 开启合计行。在列配置中用 <code>summary: 'sum'</code> 或
+        <code>summary: 'avg'</code> 指定统计方式，也可通过
+        <code>summaryText</code> 自定义该列的显示文字。 合计行固定在表格底部，支持与列固定功能联动。
+      </p>
+      <div class="doc-preview">
+        <div class="doc-preview__body" style="flex-direction: column; align-items: stretch">
+          <xly-table
+            :columns="summaryColumns"
+            :data="summaryData"
+            show-summary
+            summary-label="合计"
+            border
+            :pagination="false"
+          />
+        </div>
+        <div class="doc-code">
+          <pre><code>&lt;xly-table
+  :columns="columns"
+  :data="data"
+  show-summary
+  summary-label="合计"
+/&gt;
+
+const columns = [
+  { prop: 'name',    name: '姓名',   width: 120 },
+  { prop: 'dept',    name: '部门',   width: 120 },
+  { prop: 'salary',  name: '薪资',   width: 120, align: 'right', summary: 'sum' },
+  { prop: 'bonus',   name: '奖金',   width: 120, align: 'right', summary: 'sum' },
+  { prop: 'score',   name: '绩效评分', width: 120, align: 'right', summary: 'avg' },
+  { prop: 'status',  name: '状态',   width: 100,
+    summaryText: '—'    // 自定义显示文字，不参与计算
+  },
 ]</code></pre>
         </div>
       </div>
@@ -1026,6 +1078,18 @@ const columns = [
               <td><code>number[]</code></td>
               <td><code>[]</code></td>
             </tr>
+            <tr>
+              <td><code>show-summary</code></td>
+              <td>是否显示合计行</td>
+              <td><code>boolean</code></td>
+              <td><code>false</code></td>
+            </tr>
+            <tr>
+              <td><code>summary-label</code></td>
+              <td>合计行首列显示的文字</td>
+              <td><code>string</code></td>
+              <td><code>'合计'</code></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -1105,6 +1169,18 @@ const columns = [
               <td><code>drag</code></td>
               <td>是否可拖动排序</td>
               <td><code>boolean</code></td>
+            </tr>
+            <tr>
+              <td><code>summary</code></td>
+              <td>
+                合计方式：<code>'sum'</code> 求和 / <code>'avg'</code> 平均值，不设置则不参与合计
+              </td>
+              <td><code>'sum' | 'avg' | false</code></td>
+            </tr>
+            <tr>
+              <td><code>summaryText</code></td>
+              <td>合计行该列显示的自定义文字（优先于 summary 计算值）</td>
+              <td><code>string</code></td>
             </tr>
           </tbody>
         </table>
@@ -1347,7 +1423,7 @@ const expandExampleCode = `<span class="code-tag">&lt;xly-table</span>
 /* -------------------- 基础列 -------------------- */
 const basicColumns: TableColumn[] = [
   { prop: 'name', name: '姓名', width: 100 },
-  { prop: 'age', name: '年龄', width: 80, align: 'center' },
+  { prop: 'age', name: '年龄', width: 80, align: 'center',summary: 'avg' },
   { prop: 'dept', name: '部门', width: 140 },
   { prop: 'email', name: '邮箱', minWidth: 180, ellipsis: true },
   { prop: 'city', name: '城市', width: 100 },
@@ -1520,8 +1596,18 @@ async function handleLazyLoad(row: Record<string, any>): Promise<Record<string, 
     } else if (subNum === '2') {
       // 分部2：返回 2 个小组（可继续展开）
       children = [
-        { id: `${row.id}-team1`, name: `${row.name}-小组1`, manager: '小组负责人A', memberCount: Math.floor(Math.random() * 10) + 3 },
-        { id: `${row.id}-team2`, name: `${row.name}-小组2`, manager: '小组负责人B', memberCount: Math.floor(Math.random() * 10) + 3 },
+        {
+          id: `${row.id}-team1`,
+          name: `${row.name}-小组1`,
+          manager: '小组负责人A',
+          memberCount: Math.floor(Math.random() * 10) + 3,
+        },
+        {
+          id: `${row.id}-team2`,
+          name: `${row.name}-小组2`,
+          manager: '小组负责人B',
+          memberCount: Math.floor(Math.random() * 10) + 3,
+        },
       ]
     }
   }
@@ -1660,6 +1746,7 @@ const paginationColumns: TableColumn[] = [
 
 const bigData = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
+  age: Math.floor(Math.random() * 40) + 20,
   name: ['张三', '李四', '王五', '赵六', '钱七', '孙八', '周九', '吴十'][i % 8],
   dept: ['技术部', '产品部', '设计部', '运营部', '市场部'][i % 5],
   email: `user${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.comuser${i + 1}@example.com`,
@@ -1734,6 +1821,7 @@ const scrollColumns: TableColumn[] = [
     name: '薪资',
     width: 120,
     align: 'right',
+    summary: 'sum',
     formatter: (_, v) => (v ? `¥${Number(v).toLocaleString()}` : '—'),
   },
   {
@@ -1741,10 +1829,35 @@ const scrollColumns: TableColumn[] = [
     name: '奖金',
     width: 100,
     align: 'right',
+    summary: 'sum',
     formatter: (_, v) => (v ? `¥${Number(v).toLocaleString()}` : '—'),
   },
-  { prop: 'performance', name: '绩效评分', width: 100,fixed: 'right',  align: 'center' },
+  {
+    prop: 'performance',
+    name: '绩效评分',
+    width: 100,
+    fixed: 'right',
+    align: 'center',
+    summary: 'sum',
+  },
   { prop: 'status', name: '状态', width: 100, fixed: 'right', align: 'center' },
+]
+
+/* -------------------- 合计行 -------------------- */
+const summaryColumns: TableColumn[] = [
+  { prop: 'name', name: '姓名', width: 120 },
+  { prop: 'dept', name: '部门', width: 120 },
+  { prop: 'salary', name: '薪资（元）', width: 140, align: 'right', summary: 'sum' },
+  { prop: 'bonus', name: '奖金（元）', width: 140, align: 'right', summary: 'sum' },
+  { prop: 'score', name: '绩效评分', width: 120, align: 'right', summary: 'avg' },
+  { prop: 'status', name: '状态', width: 100, align: 'center', summaryText: '—' },
+]
+const summaryData = [
+  { name: '张三', dept: '研发部', salary: 18000, bonus: 3000, score: 92, status: '在职' },
+  { name: '李四', dept: '产品部', salary: 15000, bonus: 2500, score: 85, status: '在职' },
+  { name: '王五', dept: '研发部', salary: 22000, bonus: 4000, score: 96, status: '在职' },
+  { name: '赵六', dept: '运营部', salary: 12000, bonus: 1500, score: 78, status: '离职' },
+  { name: '钱七', dept: '研发部', salary: 20000, bonus: 3500, score: 90, status: '在职' },
 ]
 
 // 为 bigData 添加更多字段

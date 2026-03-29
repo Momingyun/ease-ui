@@ -22,6 +22,14 @@
 
 ## [2026-03-29]
 
+### 🐛 修复
+- **xly-table** 列设置拖拽排序后立即还原的问题
+    - 原因：监听 `props.columns` 时使用了 `deep: true`，导致 `handleDrop` 修改 `localColumns` 后触发 watch 将其重置回 props 的顺序
+    - 修复：改为只监听列 prop 列表的变化（浅比对），内部拖拽排序和 visible 切换不再触发重置
+- **xly-table** 多列 `fixed: 'left'` 时互相遮挡的问题
+    - 原因：CSS 中固定列统一 `left: 0`，多个 fixed-left 列全叠在起点位置
+    - 修复：新增 `fixedOffsets` 计算属性，动态计算每个固定列的 `left`/`right` 偏移量（累加前/后各固定列宽度），通过内联 style 注入
+
 ### ✨ 新增
 - **xly-badge**（徽标组件）`src/components/xly-badge/index.vue`
     - 比市面上的用法更简单：只需传入 `value` 即可自动显示徽标
@@ -34,14 +42,12 @@
     - 支持 `show-zero` 强制显示 0
     - **命令式调用**：`xly.$badge.open(el, options)` 动态添加/更新/移除徽标
     - **圆形徽标**：新增 `circle` 属性，切换圆形/椭圆形态
-### 🐛 修复
-- **xly-table** 列设置拖拽排序后立即还原的问题
-    - 原因：监听 `props.columns` 时使用了 `deep: true`，导致 `handleDrop` 修改 `localColumns` 后触发 watch 将其重置回 props 的顺序
-    - 修复：改为只监听列 prop 列表的变化（浅比对），内部拖拽排序和 visible 切换不再触发重置
-- **xly-table** 多列 `fixed: 'left'` 时互相遮挡的问题
-    - 原因：CSS 中固定列统一 `left: 0`，多个 fixed-left 列全叠在起点位置
-    - 修复：新增 `fixedOffsets` 计算属性，动态计算每个固定列的 `left`/`right` 偏移量（累加前/后各固定列宽度），通过内联 style 注入
-
+- **xly-table** 合计行功能（`show-summary`）
+    - `show-summary`：开启/关闭合计行
+    - `summary-label`：合计行首列显示文字（默认"合计"）
+    - `TableColumn.summary`：列统计方式，`'sum'` 求和 / `'avg'` 平均值
+    - `TableColumn.summaryText`：自定义合计行该列显示文字（优先于计算值）
+    - 合计行固定在表格底部（`<tfoot position: sticky>`），支持与列固定联动
 ---
 
 ## [2026-03-28]
