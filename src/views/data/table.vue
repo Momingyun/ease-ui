@@ -835,7 +835,7 @@ const columns = [
   { prop: 'leaveDate',  name: '离职日期',   width: 120 },
   { prop: 'salary',     name: '薪资',       width: 120, align: 'right' },
   { prop: 'bonus',      name: '奖金',       width: 100, align: 'right' },
-  { prop: 'performance', name: '绩效评分',  width: 100, align: 'center' },
+  { prop: 'performance', name: '绩效评分',  width: 100, fixed: 'right'，align: 'center' },
   { prop: 'status',     name: '状态',       width: 100, fixed: 'right' },
 ]</code></pre>
         </div>
@@ -1743,7 +1743,7 @@ const scrollColumns: TableColumn[] = [
     align: 'right',
     formatter: (_, v) => (v ? `¥${Number(v).toLocaleString()}` : '—'),
   },
-  { prop: 'performance', name: '绩效评分', width: 100, align: 'center' },
+  { prop: 'performance', name: '绩效评分', width: 100,fixed: 'right',  align: 'center' },
   { prop: 'status', name: '状态', width: 100, fixed: 'right', align: 'center' },
 ]
 

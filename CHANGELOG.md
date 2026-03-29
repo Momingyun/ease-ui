@@ -6,7 +6,7 @@
 
 ## [Unreleased]
 
-> 待发布的功能和修复
+> 待发布和计划中的功能和修复
 
 ### ✨ 新增
 - **xly-editor**（富文本编辑组件）`src/components/xly-editor/index.vue`
@@ -34,6 +34,13 @@
     - 支持 `show-zero` 强制显示 0
     - **命令式调用**：`xly.$badge.open(el, options)` 动态添加/更新/移除徽标
     - **圆形徽标**：新增 `circle` 属性，切换圆形/椭圆形态
+### 🐛 修复
+- **xly-table** 列设置拖拽排序后立即还原的问题
+    - 原因：监听 `props.columns` 时使用了 `deep: true`，导致 `handleDrop` 修改 `localColumns` 后触发 watch 将其重置回 props 的顺序
+    - 修复：改为只监听列 prop 列表的变化（浅比对），内部拖拽排序和 visible 切换不再触发重置
+- **xly-table** 多列 `fixed: 'left'` 时互相遮挡的问题
+    - 原因：CSS 中固定列统一 `left: 0`，多个 fixed-left 列全叠在起点位置
+    - 修复：新增 `fixedOffsets` 计算属性，动态计算每个固定列的 `left`/`right` 偏移量（累加前/后各固定列宽度），通过内联 style 注入
 
 ---
 

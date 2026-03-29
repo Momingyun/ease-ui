@@ -832,16 +832,6 @@ const containerStyle = computed(() => {
 /* ====================================================
    列配置工具
 ==================================================== */
-function getColStyle(col: TableColumn) {
-  const style: Record<string, string> = {}
-  if (col.width) {
-    style.width = typeof col.width === 'number' ? `${col.width}px` : col.width
-    style.maxWidth = style.width // 限制最大宽度，确保 ellipsis 生效
-  }
-  if (col.minWidth)
-    style.minWidth = typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth
-  return style
-}
 
 // 获取列的实际宽度（用于动态计算）
 function getColumnActualWidth(col: TableColumn): number {
@@ -855,16 +845,73 @@ function getColumnActualWidth(col: TableColumn): number {
   return 0 // 0 表示 auto
 }
 
+/**
+ * 计算固定列的 left/right 偏移量（sticky 定位需要）
+ *
+ * 注意：selection / index / expand 等前置列是普通列（无 sticky），
+ * 它们会随表格一起横向滚动，不占用固定列的偏移空间。
+ * 固定列偏移只在同方向的固定列之间累加。
+ */
+const fixedOffsets = computed<Record<string, number>>(() => {
+  const offsets: Record<string, number> = {}
+  const cols = visibleColumns.value
+
+  // ---- fixed-left：从左到右，在 fixed-left 列之间累加偏移 ----
+  let leftOffset = 0
+  for (const col of cols) {
+    if (col.fixed === 'left') {
+      offsets[col.prop] = leftOffset
+      leftOffset += getColumnActualWidth(col)
+    }
+  }
+
+  // ---- fixed-right：从右到左，在 fixed-right 列之间累加偏移 ----
+  let rightOffset = 0
+  for (let i = cols.length - 1; i >= 0; i--) {
+    const col = cols[i]
+    if (col.fixed === 'right') {
+      offsets[col.prop] = rightOffset
+      rightOffset += getColumnActualWidth(col)
+    }
+  }
+
+  return offsets
+})
+
+function getColStyle(col: TableColumn) {
+  const style: Record<string, string> = {}
+  if (col.width) {
+    style.width = typeof col.width === 'number' ? `${col.width}px` : col.width
+    style.maxWidth = style.width // 限制最大宽度，确保 ellipsis 生效
+  }
+  if (col.minWidth)
+    style.minWidth = typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth
+
+  // 固定列：注入 left / right 偏移，确保多列固定时不互相遮挡
+  if (col.fixed === 'left') {
+    style.left = `${fixedOffsets.value[col.prop] ?? 0}px`
+  } else if (col.fixed === 'right') {
+    style.right = `${fixedOffsets.value[col.prop] ?? 0}px`
+  }
+
+  return style
+}
+
 // 本地列配置（用于响应式修改）
 const localColumns = ref<TableColumn[]>([])
 
 // 监听 props.columns 变化，同步到本地
+// 注意：不使用 deep: true，避免内部拖拽排序/visible 修改触发重置
+// 使用 prop 列表的 JSON 序列化做浅层比对，只有真正的外部变更才重置
 watch(
-  () => props.columns,
-  (cols) => {
-    localColumns.value = [...cols.map((col) => ({ ...col }))]
+  () => {
+    // 只监听列的 prop 列表和列数，而不深度监听每个列的属性变化
+    return props.columns.map((c) => c.prop).join(',') + ':' + props.columns.length
   },
-  { immediate: true, deep: true },
+  () => {
+    localColumns.value = [...props.columns.map((col) => ({ ...col }))]
+  },
+  { immediate: true },
 )
 
 // 可见列计算属性
@@ -2389,8 +2436,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.xly-table__th--fixed-left,
   &.xly-table__td--fixed-left {
-    left: 0;
-
+    // left 值由 JS 动态计算注入（fixedOffsets），支持多列 fixed-left 依次排列
     &::after {
       right: -1px;
     }
@@ -2398,8 +2444,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.xly-table__th--fixed-right,
   &.xly-table__td--fixed-right {
-    right: 0;
-
+    // right 值由 JS 动态计算注入（fixedOffsets），支持多列 fixed-right 依次排列
     &::after {
       left: -1px;
     }
