@@ -82,6 +82,13 @@
         "key": "badge",
         "path": "/basic/badge",
         "component": "basic/badge"
+      },
+      {
+        "id": "2-11",
+        "name": "列表 List",
+        "key": "list",
+        "path": "/basic/list",
+        "component": "basic/list"
       }
     ]
   },

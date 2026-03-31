@@ -12,9 +12,6 @@
 - **xly-editor**（富文本编辑组件）`src/components/xly-editor/index.vue`
     - 基于 Quill 编辑器，支持富文本输入
     - 支持工具栏自定义、字数统计、图片上传等
-- **xly-list**（列表组件）`src/components/xly-list/index.vue`
-    - 简洁的列表展示组件
-    - 支持自定义渲染、加载状态、空状态
 - **xly-worktab**（工作标签页组件）`src/components/xly-worktab/index.vue`
     - 类似浏览器标签页的组件
 
@@ -44,6 +41,15 @@
     - 支持禁用状态、加载状态
     - 支持标签文字显示
     - 悬停时显示聚焦效果
+
+- **xly-list**（列表组件）`src/components/xly-list/index.vue`
+    - 支持 `list` 数据源绑定
+    - 支持自定义字段：`title-field`、`description-field`、`avatar`、`extra-field`
+    - 支持 `bordered` 边框、`hoverable` 悬停效果
+    - 支持 `loading` 加载状态、`show-empty` 空状态组件
+    - 支持 `header`/`footer` 头部底部插槽
+    - 支持默认插槽自定义渲染
+    - 演示页面：`src/views/basic/list.vue`
 ---
 
 ## [2026-03-29]
