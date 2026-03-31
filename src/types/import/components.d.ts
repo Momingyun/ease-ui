@@ -63,6 +63,7 @@ declare module 'vue' {
     XlySelect: typeof import('./../../components/xly-select/index.vue')['default']
     XlyStatistic: typeof import('./../../components/xly-statistic/index.vue')['default']
     XlySteps: typeof import('./../../components/xly-steps/index.vue')['default']
+    XlySwitch: typeof import('./../../components/xly-switch/index.vue')['default']
     XlyTable: typeof import('./../../components/xly-table/index.vue')['default']
     XlyTabPane: typeof import('./../../components/xly-tabs/xly-tab-pane.vue')['default']
     XlyTabs: typeof import('./../../components/xly-tabs/index.vue')['default']
@@ -71,6 +72,7 @@ declare module 'vue' {
     XlyTimePicker: typeof import('./../../components/xly-time-picker/index.vue')['default']
     XlyTimeRangePicker: typeof import('./../../components/xly-time-range-picker/index.vue')['default']
     XlyTour: typeof import('./../../components/xly-tour/index.vue')['default']
+    XlyVideo: typeof import('./../../components/xly-video/index.vue')['default']
     XlyWatermark: typeof import('./../../components/xly-watermark/index.vue')['default']
   }
 }

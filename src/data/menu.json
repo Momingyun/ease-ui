@@ -132,6 +132,13 @@
         "key": "timeline",
         "path": "/data/timeline",
         "component": "data/timeline"
+      },
+      {
+        "id": "6-7",
+        "name": "视频 Video",
+        "key": "video",
+        "path": "/data/video",
+        "component": "data/video"
       }
     ]
   },
@@ -232,6 +239,13 @@
         "key": "radio",
         "path": "/form/radio",
         "component": "form/radio"
+      },
+      {
+        "id": "4-14",
+        "name": "开关 Switch",
+        "key": "switch",
+        "path": "/form/switch",
+        "component": "form/switch"
       },
       {
         "id": "4-10",
