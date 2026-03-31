@@ -368,6 +368,13 @@
         "key": "chat",
         "path": "/business/chat",
         "component": "business/chat"
+      },
+      {
+        "id": "8-3",
+        "name": "用户选择器",
+        "key": "user-picker",
+        "path": "/business/user-picker",
+        "component": "business/user-picker"
       }
     ]
   }

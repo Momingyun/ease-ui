@@ -50,6 +50,13 @@
     - 支持 `header`/`footer` 头部底部插槽
     - 支持默认插槽自定义渲染
     - 演示页面：`src/views/basic/list.vue`
+- **xly-user-picker**（用户选择器组件）`src/components/xly-user-picker/index.vue`
+    - 支持单选/多选模式
+    - 支持搜索过滤
+    - 支持最大选择数量限制
+    - 支持显示用户头像和部门信息
+    - 支持禁用状态
+    - 支持 `isDisabled` 函数自定义禁用逻辑
 ---
 
 ## [2026-03-29]

@@ -27,31 +27,34 @@ const componentGroups = [
     name: '基础组件',
     color: '#409eff',
     bgColor: '#ecf5ff',
-    count: 9,
+    count: 11,
     items: [
-      'xly-avatar',
       'xly-button',
-      'xly-card',
-      'xly-carousel',
-      'xly-divider',
-      'xly-empty',
       'xly-icon',
       'xly-tag',
+      'xly-divider',
+      'xly-avatar',
+      'xly-card',
       'xly-watermark',
+      'xly-carousel',
+      'xly-empty',
+      'xly-badge',
+      'xly-list',
     ],
   },
   {
     name: '数据展示',
     color: '#7c3aed',
     bgColor: '#f3f0ff',
-    count: 6,
+    count: 7,
     items: [
+      'xly-table',
       'xly-chart',
+      'xly-statistic',
       'xly-descriptions',
       'xly-image',
-      'xly-statistic',
-      'xly-table',
       'xly-timeline',
+      'xly-video',
     ],
   },
   {
@@ -59,49 +62,50 @@ const componentGroups = [
     color: '#0891b2',
     bgColor: '#ecfeff',
     count: 3,
-    items: ['xly-dropdown', 'xly-steps', 'xly-tabs'],
+    items: ['xly-tabs', 'xly-steps', 'xly-dropdown'],
   },
   {
     name: '表单组件',
     color: '#67c23a',
     bgColor: '#f0f9eb',
-    count: 13,
+    count: 14,
     items: [
-      'xly-form',
       'xly-input',
       'xly-select',
       'xly-radio',
       'xly-cascader',
       'xly-rate',
+      'xly-switch',
       'xly-date-picker',
-      'xly-date-time-picker',
       'xly-time-picker',
+      'xly-date-time-picker',
       'xly-search-form',
       'xly-range-picker',
       'xly-image-upload',
       'xly-file-upload',
+      'xly-upload',
     ],
   },
   {
     name: '反馈组件',
     color: '#f56c6c',
     bgColor: '#fef0f0',
-    count: 5,
-    items: ['xly-drawer', 'xly-modal', 'xly-loading', 'xly-message', 'xly-progress'],
+    count: 6,
+    items: ['xly-modal', 'xly-drawer', 'xly-loading', 'xly-message', 'xly-tour', 'xly-progress'],
   },
   {
     name: '布局组件',
     color: '#e6a23c',
     bgColor: '#fdf6ec',
-    count: 2,
-    items: ['xly-row', 'xly-col'],
+    count: 1,
+    items: ['xly-grid'],
   },
   {
     name: '业务组件',
     color: '#909399',
     bgColor: '#f4f4f5',
-    count: 2,
-    items: ['xly-chat', 'xly-permission'],
+    count: 3,
+    items: ['xly-permission', 'xly-chat', 'xly-user-picker'],
   },
 ]
 
@@ -157,7 +161,7 @@ const painPoints = [
         </p>
         <div class="hero-stats">
           <div class="stat-item">
-            <span class="stat-num">40</span>
+            <span class="stat-num">45</span>
             <span class="stat-label">个组件</span>
           </div>
           <div class="stat-divider"></div>
@@ -179,10 +183,18 @@ const painPoints = [
 
         <!-- 开源地址 -->
         <div class="hero-links">
-          <span class="link-label">开源地址：</span>
-          <a href="https://gitee.com/yun_hua_admin/ease-ui" target="_blank" class="link-url">
-            https://gitee.com/yun_hua_admin/ease-ui
-          </a>
+          <div class="link-item">
+            <span class="link-platform">Gitee：</span>
+            <a href="https://gitee.com/yun_hua_admin/ease-ui" target="_blank" class="link-url">
+              https://gitee.com/yun_hua_admin/ease-ui
+            </a>
+          </div>
+          <div class="link-item">
+            <span class="link-platform">GitHub：</span>
+            <a href="https://github.com/Momingyun/ease-ui" target="_blank" class="link-url">
+              https://github.com/Momingyun/ease-ui
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -223,7 +235,7 @@ const painPoints = [
     <section class="section">
       <div class="section-header">
         <h2 class="section-title">📦 组件总览</h2>
-        <p class="section-subtitle">共 40 个组件，覆盖中后台常用场景</p>
+        <p class="section-subtitle">共 45 个组件，覆盖中后台常用场景</p>
       </div>
       <div class="component-groups">
         <div v-for="group in componentGroups" :key="group.name" class="group-card">
@@ -397,12 +409,18 @@ $radius-sm: 8px;
 
 .hero-links {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin-top: 20px;
 
-  .link-label {
+  .link-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .link-platform {
     font-size: 14px;
     color: $text-secondary;
   }
@@ -646,7 +664,7 @@ $radius-sm: 8px;
       padding: 1px 6px;
       border-radius: 4px;
       color: $primary;
-      font-family: 'Consolas', monospace;
+      font-family: 'Consolas', 'Monaco', monospace;
     }
   }
 }
