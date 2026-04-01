@@ -371,7 +371,7 @@
       },
       {
         "id": "8-3",
-        "name": "用户选择器",
+        "name": "用户选择器 UserPicker",
         "key": "user-picker",
         "path": "/business/user-picker",
         "component": "business/user-picker"

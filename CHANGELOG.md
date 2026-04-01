@@ -17,6 +17,16 @@
 
 ---
 
+## [2026-04-01]
+
+### 🐛 修复
+- **xly-permission**（权限配置组件）修复禁用项仍可被全选/父节点勾选选中的问题
+    - `nodeMap` 使用统一的 `getItemDisabled` 函数判断禁用状态（之前仅支持 `isDisabled` 函数和 `disabledKey`，缺少 `disabledField`/`disabledValue` 支持）
+    - `onRootToggle` 全选时跳过禁用叶子节点
+    - `onNodeToggle` 勾选/取消父节点时跳过禁用叶子节点
+    - `rootState` 仅计算非禁用叶子节点，修复全选复选框在有禁用项时始终半选的问题
+    - 修复取消全选无效的问题（else 分支逻辑错误）
+  
 ## [2026-03-31]
 
 ### ✨ 新增

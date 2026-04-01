@@ -212,13 +212,11 @@ const nodeMap = computed<Record<string | number, TreeNode>>(() => {
     for (const item of items) {
       const id = item[props.idKey]
       const children = item[props.childrenKey] || []
-      // 优先使用 isDisabled 函数，否则使用 disabledKey
-      const isDisabledByKey = !!item[props.disabledKey]
-      const isDisabledByFn = props.isDisabled ? props.isDisabled(item, level) : false
+      const isItemDisabled = getItemDisabled(item, level)
       map[id] = {
         id,
         label: item[props.labelKey] || String(id),
-        disabled: props.isDisabled ? isDisabledByFn : isDisabledByKey,
+        disabled: isItemDisabled,
         parent: parentId,
         children: children.map((c: Permission) => c[props.idKey]),
       }
@@ -308,9 +306,17 @@ const onNodeToggle = (nodeId: string | number, checked: boolean) => {
   const currentSet = new Set(props.modelValue)
 
   if (checked) {
-    getLeafDescendants(nodeId).forEach((leaf) => currentSet.add(leaf))
+    getLeafDescendants(nodeId).forEach((leaf) => {
+      if (!nodeMap.value[leaf].disabled) {
+        currentSet.add(leaf)
+      }
+    })
   } else {
-    getLeafDescendants(nodeId).forEach((leaf) => currentSet.delete(leaf))
+    getLeafDescendants(nodeId).forEach((leaf) => {
+      if (!nodeMap.value[leaf].disabled) {
+        currentSet.delete(leaf)
+      }
+    })
     currentSet.delete(nodeId)
     // 清理不再需要的祖先
     const remainingLeaves = leafIds.value.filter((id) => currentSet.has(id))
@@ -329,20 +335,23 @@ const onNodeToggle = (nodeId: string | number, checked: boolean) => {
   emitUpdate([...fillAncestors(currentSet)])
 }
 
+const enabledLeafIds = computed(() => {
+  return leafIds.value.filter((id) => !nodeMap.value[id].disabled)
+})
+
 const rootState = computed<CheckState>(() => {
-  const allLeaves = leafIds.value
-  if (allLeaves.length === 0) return 'none'
-  const checkedCount = allLeaves.filter((id) => props.modelValue.includes(id)).length
+  const enabled = enabledLeafIds.value
+  if (enabled.length === 0) return 'none'
+  const checkedCount = enabled.filter((id) => props.modelValue.includes(id)).length
   if (checkedCount === 0) return 'none'
-  if (checkedCount === allLeaves.length) return 'checked'
+  if (checkedCount === enabled.length) return 'checked'
   return 'half'
 })
 
 const onRootToggle = (checked: boolean) => {
   if (checked) {
-    const allIds: (string | number)[] = []
-    for (const id in nodeMap.value) allIds.push(nodeMap.value[id].id)
-    emitUpdate(allIds)
+    const result = fillAncestors(new Set(enabledLeafIds.value))
+    emitUpdate([...result])
   } else {
     emitUpdate([])
   }
