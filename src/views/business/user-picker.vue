@@ -1,10 +1,11 @@
-
 <template>
-  <div class="doc-container">
-    <h1 class="doc-title">UserPicker 用户选择器</h1>
-    <p class="doc-desc">
-      模拟用户选择的组件，支持单选/多选模式，可自定义返回值类型。组件内部默认使用模拟数据，可通过组件 <code>getMockUsers</code> 方法修改接入真实接口。
-    </p>
+  <div class="user-picker-doc">
+    <div class="doc-header">
+      <h1 class="doc-title">UserPicker 用户选择器</h1>
+      <p class="doc-desc">
+        模拟用户选择的组件，支持单选/多选模式，可自定义返回值类型。组件内部默认使用模拟数据，可通过组件 <code>getMockUsers</code> 方法修改接入真实接口。
+      </p>
+    </div>
 
     <!-- 基础用法 -->
     <section class="doc-section">
@@ -20,9 +21,9 @@
           <span class="doc-value__label">v-model:</span>
           <code>{{ JSON.stringify(singleUser) }}</code>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyUserPicker v-model="userId" placeholder="请选择用户" /&gt;</code></pre>
+        <div class="doc-code">
+          <pre><code>&lt;XlyUserPicker v-model="userId" placeholder="请选择用户" /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
@@ -40,9 +41,9 @@
           <span class="doc-value__label">v-model:</span>
           <code>{{ JSON.stringify(multiUsers) }}</code>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyUserPicker v-model="userIds" multiple placeholder="请选择用户" /&gt;</code></pre>
+        <div class="doc-code">
+          <pre><code>&lt;XlyUserPicker v-model="userIds" multiple placeholder="请选择用户" /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
@@ -60,9 +61,9 @@
           <span class="doc-value__label">v-model:</span>
           <code>{{ JSON.stringify(maxUsers) }}</code>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyUserPicker v-model="userIds" multiple :max="3" placeholder="最多选择3个用户" /&gt;</code></pre>
+        <div class="doc-code">
+          <pre><code>&lt;XlyUserPicker v-model="userIds" multiple :max="3" placeholder="最多选择3个用户" /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
@@ -80,9 +81,9 @@
           <span class="doc-value__label">v-model:</span>
           <code>{{ JSON.stringify(stringUsers) }}</code>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyUserPicker v-model="userIdsStr" multiple return-type="string" placeholder="返回逗号字符串" /&gt;</code></pre>
+        <div class="doc-code">
+          <pre><code>&lt;XlyUserPicker v-model="userIdsStr" multiple return-type="string" placeholder="返回逗号字符串" /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
@@ -106,15 +107,15 @@
           <span class="doc-value__label">v-model:</span>
           <code>{{ JSON.stringify(extraUsers) }}</code>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyUserPicker
+        <div class="doc-code">
+          <pre><code>&lt;XlyUserPicker
   v-model="userIds"
   multiple
   show-extra
   extra-key="department"
   placeholder="显示部门信息"
 /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
@@ -132,21 +133,21 @@
           <span class="doc-value__label">v-model:</span>
           <code>{{ JSON.stringify(singleUser) }}</code>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyUserPicker v-model="userId" disabled placeholder="禁用状态" /&gt;</code></pre>
+        <div class="doc-code">
+          <pre><code>&lt;XlyUserPicker v-model="userId" disabled placeholder="禁用状态" /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
     <!-- 二开指南 -->
     <section class="doc-section">
-      <h2 class="doc-section__title">🎯 二开指南</h2>
+      <h2 class="doc-section__title">二开指南</h2>
       <p class="doc-section__desc">
         组件默认使用内部模拟数据。如需接入真实接口，直接打开组件源码修改 <code>getMockUsers</code> 函数即可。
       </p>
       <div class="doc-code">
         <pre><code>// 打开 src/components/xly-user-picker/index.vue
-// 找到 getMockUsers 函数，替换为你的真实接口
+// 找到 getMockUsers 函数，替换为你的真实接口调用
 
 /**
  * 获取用户数据（默认使用模拟数据）
@@ -169,7 +170,7 @@ async function getMockUsers(keyword?: string): Promise&lt;UserItem[]&gt; {
 }</code></pre>
       </div>
 
-      <h3 class="doc-section__subtitle">函数签名</h3>
+      <h3 class="doc-subtitle">函数签名</h3>
       <div class="doc-table">
         <table>
           <thead>
@@ -196,7 +197,7 @@ async function getMockUsers(keyword?: string): Promise&lt;UserItem[]&gt; {
     <section class="doc-section">
       <h2 class="doc-section__title">API</h2>
 
-      <h3 class="doc-section__subtitle">Props</h3>
+      <h3 class="doc-subtitle">Props</h3>
       <div class="doc-table">
         <table>
           <thead>
@@ -284,7 +285,7 @@ async function getMockUsers(keyword?: string): Promise&lt;UserItem[]&gt; {
         </table>
       </div>
 
-      <h3 class="doc-section__subtitle">Events</h3>
+      <h3 class="doc-subtitle">Events</h3>
       <div class="doc-table">
         <table>
           <thead>
@@ -314,7 +315,7 @@ async function getMockUsers(keyword?: string): Promise&lt;UserItem[]&gt; {
         </table>
       </div>
 
-      <h3 class="doc-section__subtitle">Expose</h3>
+      <h3 class="doc-subtitle">Expose</h3>
       <div class="doc-table">
         <table>
           <thead>
@@ -364,96 +365,52 @@ const extraUsers = ref<(number | string)[]>([])
 </script>
 
 <style scoped lang="scss">
-.doc-container {
-  padding: 24px;
-  max-width: 900px;
+.user-picker-doc {
+  padding: 8px 0 40px;
 }
 
+.doc-header { margin-bottom: 36px; }
 .doc-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin: 0 0 12px;
+  font-size: 26px; font-weight: 700; color: #1a1a2e;
+  margin: 0 0 8px; letter-spacing: -0.3px;
 }
-
 .doc-desc {
-  font-size: 15px;
-  color: #606266;
-  line-height: 1.7;
-  margin: 0 0 32px;
-
+  font-size: 14px; color: #8e8ea0; margin: 0; line-height: 1.6;
   code {
+    background: #f5f6fa; color: #4f6ef7; padding: 2px 6px;
+    border-radius: 4px; font-size: 13px;
     font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
-    background: #f0f2f5;
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: #4f6ef7;
-    font-size: 13px;
   }
 }
 
-.doc-section {
-  margin-bottom: 40px;
-
-  &__title {
-    font-size: 20px;
-    font-weight: 600;
-    color: #1a1a2e;
-    margin: 0 0 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #f2f3f7;
-  }
-
-  &__subtitle {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a1a2e;
-    margin: 24px 0 12px;
-  }
-
-  &__desc {
-    font-size: 14px;
-    color: #606266;
-    line-height: 1.6;
-    margin: 0 0 16px;
-
-    code {
-      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
-      background: #f0f2f5;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: #4f6ef7;
-      font-size: 13px;
-    }
+.doc-section { margin-bottom: 32px; }
+.doc-section__title {
+  font-size: 18px; font-weight: 600; color: #1a1a2e;
+  margin: 0 0 8px; padding-bottom: 10px; border-bottom: 1px solid #f2f3f7;
+}
+.doc-section__desc {
+  font-size: 14px; color: #8e8ea0; margin: 0 0 16px; line-height: 1.6;
+  code {
+    background: #f5f6fa; color: #4f6ef7; padding: 2px 6px;
+    border-radius: 4px; font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
   }
 }
 
 .doc-preview {
-  border: 1px solid #f2f3f7;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 16px;
+  border: 1px solid #f2f3f7; border-radius: 12px;
+  overflow: hidden; background: #fff;
 }
-
 .doc-preview__body {
-  padding: 20px;
-  background: #fff;
+  padding: 24px;
 }
-
 .doc-code {
-  background: #1a1a2e;
-  border-radius: 8px;
-  padding: 16px 20px;
-  overflow-x: auto;
-
-  pre {
-    margin: 0;
-    code {
-      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #a9b7c6;
-    }
+  border-top: 1px solid #f2f3f7; background: #fafbfd;
+  padding: 16px 20px; overflow-x: auto;
+  pre { margin: 0; padding: 0; }
+  code {
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+    font-size: 13px; line-height: 1.7; color: #4a4a6a; white-space: pre;
   }
 }
 
@@ -476,18 +433,16 @@ const extraUsers = ref<(number | string)[]>([])
   color: #4f6ef7;
 }
 
+.doc-subtitle { font-size: 15px; font-weight: 600; color: #1a1a2e; margin: 20px 0 10px; }
 .doc-table { overflow-x: auto;
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #f2f3f7; white-space: nowrap; }
   th { background: #fafbfd; font-weight: 600; color: #1a1a2e; }
-
+  td { color: #4a4a6a; }
   code {
+    background: #f5f6fa; color: #4f6ef7; padding: 2px 6px;
+    border-radius: 4px; font-size: 13px;
     font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
-    background: #f0f2f5;
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: #4f6ef7;
-    font-size: 12px;
   }
 }
 </style>

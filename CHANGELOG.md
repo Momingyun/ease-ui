@@ -12,13 +12,18 @@
 - **xly-editor**（富文本编辑组件）`src/components/xly-editor/index.vue`
     - 基于 Quill 编辑器，支持富文本输入
     - 支持工具栏自定义、字数统计、图片上传等
-- **xly-worktab**（工作标签页组件）`src/components/xly-worktab/index.vue`
-    - 类似浏览器标签页的组件
 
 ---
 
 ## [2026-04-01]
-
+- **xly-worktab**（多标签页组件）`src/components/xly-worktab/index.vue`
+    - 路由切换自动添加标签页，显示菜单名称
+    - 支持关闭当前/左侧/右侧/其他/全部标签页
+    - 支持右键菜单操作
+    - 支持横向滚动、滚轮滚动、自动滚动到激活标签
+    - 固定标签（affix）不可关闭
+    - 标签打开/关闭动画过渡
+    - 配合 KeepAlive 实现页面缓存
 ### 🐛 修复
 - **xly-permission**（权限配置组件）修复禁用项仍可被全选/父节点勾选选中的问题
     - `nodeMap` 使用统一的 `getItemDisabled` 函数判断禁用状态（之前仅支持 `isDisabled` 函数和 `disabledKey`，缺少 `disabledField`/`disabledValue` 支持）

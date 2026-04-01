@@ -346,6 +346,13 @@
         "key": "grid",
         "path": "/layout/grid",
         "component": "layout/grid"
+      },
+      {
+        "id": "5-2",
+        "name": "多标签页 WorkTab",
+        "key": "worktab",
+        "path": "/layout/worktab",
+        "component": "layout/worktab"
       }
     ]
   },

@@ -312,132 +312,128 @@ const startUpload = () =&gt; {
     </section>
 
     <!-- API 文档 -->
-    <section class="doc-section doc-section--api">
-      <h2 class="doc-section__title doc-section__title--api">API 文档</h2>
+    <section class="doc-section">
+      <h2 class="doc-section__title">API</h2>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">Attributes</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>参数</th>
-                <th>说明</th>
-                <th>类型</th>
-                <th>可选值</th>
-                <th>默认值</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>percentage</td>
-                <td>进度百分比（0-100）</td>
-                <td>number</td>
-                <td>—</td>
-                <td>0</td>
-              </tr>
-              <tr>
-                <td>indeterminate</td>
-                <td>是否为不确定进度（动画效果）</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>false</td>
-              </tr>
-              <tr>
-                <td>status</td>
-                <td>进度条状态</td>
-                <td>string</td>
-                <td>normal / success / exception / warning / active</td>
-                <td>normal</td>
-              </tr>
-              <tr>
-                <td>type</td>
-                <td>进度条类型</td>
-                <td>string</td>
-                <td>line / circle / dashboard</td>
-                <td>line</td>
-              </tr>
-              <tr>
-                <td>showInfo</td>
-                <td>是否显示进度文字</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>text</td>
-                <td>自定义文本</td>
-                <td>string</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>strokeWidth</td>
-                <td>轨道高度（line 类型，单位 px）</td>
-                <td>number</td>
-                <td>—</td>
-                <td>6</td>
-              </tr>
-              <tr>
-                <td>color</td>
-                <td>进度条颜色</td>
-                <td>string / function</td>
-                <td>—</td>
-                <td>#4f6ef7</td>
-              </tr>
-              <tr>
-                <td>trackColor</td>
-                <td>轨道背景色</td>
-                <td>string</td>
-                <td>—</td>
-                <td>#e8e8e8</td>
-              </tr>
-              <tr>
-                <td>circleSize</td>
-                <td>圆形进度条尺寸（circle/dashboard 类型，单位 px）</td>
-                <td>number</td>
-                <td>—</td>
-                <td>120</td>
-              </tr>
-              <tr>
-                <td>animated</td>
-                <td>是否开启环形进度条动画（circle/dashboard 类型）</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>customClass</td>
-                <td>自定义类名</td>
-                <td>string</td>
-                <td>—</td>
-                <td>—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">Attributes</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>参数</th>
+              <th>说明</th>
+              <th>类型</th>
+              <th>可选值</th>
+              <th>默认值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>percentage</td>
+              <td>进度百分比（0-100）</td>
+              <td>number</td>
+              <td>—</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>indeterminate</td>
+              <td>是否为不确定进度（动画效果）</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>status</td>
+              <td>进度条状态</td>
+              <td>string</td>
+              <td>normal / success / exception / warning / active</td>
+              <td>normal</td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>进度条类型</td>
+              <td>string</td>
+              <td>line / circle / dashboard</td>
+              <td>line</td>
+            </tr>
+            <tr>
+              <td>showInfo</td>
+              <td>是否显示进度文字</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>自定义文本</td>
+              <td>string</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>strokeWidth</td>
+              <td>轨道高度（line 类型，单位 px）</td>
+              <td>number</td>
+              <td>—</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <td>color</td>
+              <td>进度条颜色</td>
+              <td>string / function</td>
+              <td>—</td>
+              <td>#4f6ef7</td>
+            </tr>
+            <tr>
+              <td>trackColor</td>
+              <td>轨道背景色</td>
+              <td>string</td>
+              <td>—</td>
+              <td>#e8e8e8</td>
+            </tr>
+            <tr>
+              <td>circleSize</td>
+              <td>圆形进度条尺寸（circle/dashboard 类型，单位 px）</td>
+              <td>number</td>
+              <td>—</td>
+              <td>120</td>
+            </tr>
+            <tr>
+              <td>animated</td>
+              <td>是否开启环形进度条动画（circle/dashboard 类型）</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>customClass</td>
+              <td>自定义类名</td>
+              <td>string</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">Events</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>事件名</th>
-                <th>说明</th>
-                <th>参数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>change</td>
-                <td>进度变化时触发</td>
-                <td>(percentage: number)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">Events</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>事件名</th>
+              <th>说明</th>
+              <th>参数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>change</td>
+              <td>进度变化时触发</td>
+              <td>(percentage: number)</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </div>
@@ -491,142 +487,60 @@ function resetProgress() {
 <style scoped lang="scss">
 .progress-doc {
   padding: 8px 0 40px;
-  max-width: 900px;
 }
 
-.doc-header {
-  margin-bottom: 40px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
+.doc-header { margin-bottom: 36px; }
 .doc-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 12px;
+  font-size: 26px; font-weight: 700; color: #1a1a2e;
+  margin: 0 0 8px; letter-spacing: -0.3px;
 }
-
 .doc-desc {
-  font-size: 16px;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.6;
+  font-size: 14px; color: #8e8ea0; margin: 0; line-height: 1.6;
 }
 
-.doc-section {
-  margin-bottom: 48px;
-}
-
+.doc-section { margin-bottom: 32px; }
 .doc-section__title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 8px;
+  font-size: 18px; font-weight: 600; color: #1a1a2e;
+  margin: 0 0 8px; padding-bottom: 10px; border-bottom: 1px solid #f2f3f7;
 }
-
-.doc-section__title--api {
-  font-size: 24px;
-  margin-bottom: 24px;
-}
-
 .doc-section__desc {
-  font-size: 14px;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.6;
-
+  font-size: 14px; color: #8e8ea0; margin: 0 0 16px; line-height: 1.6;
   code {
-    background: #f3f4f6;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'SF Mono', monospace;
-    font-size: 13px;
-    color: #4f6ef7;
+    background: #f5f6fa; color: #4f6ef7; padding: 2px 6px;
+    border-radius: 4px; font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
   }
 }
 
 .doc-preview {
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f2f3f7; border-radius: 12px;
+  overflow: hidden; background: #fff;
 }
-
 .doc-preview__body {
-  padding: 32px 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 12px; padding: 24px;
 }
-
 .doc-preview__body--column {
   flex-direction: column;
   align-items: stretch;
   gap: 20px;
 }
-
 .doc-code {
-  margin-top: 16px;
-  background-color: #1f2937;
-  border-radius: 12px;
-  overflow: hidden;
-
-  pre {
-    margin: 0;
-    padding: 20px;
-    overflow-x: auto;
-    font-size: 13px;
-    line-height: 1.6;
+  border-top: 1px solid #f2f3f7; background: #fafbfd;
+  padding: 16px 20px; overflow-x: auto;
+  pre { margin: 0; padding: 0; }
+  code {
     font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
-    color: #e5e7eb;
-    background-color: #1f2937;
+    font-size: 13px; line-height: 1.7; color: #4a4a6a; white-space: pre;
   }
 }
 
-.doc-table {
-  overflow-x: auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-
-  th, td {
-    text-align: left;
-    padding: 12px 16px;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: #374151;
-  }
-
-  td {
-    color: #4b5563;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
-  }
-}
-
-.doc-subtitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #111827;
-  margin: 24px 0 16px;
-}
-
-.api-block {
-  margin-bottom: 32px;
+.doc-subtitle { font-size: 15px; font-weight: 600; color: #1a1a2e; margin: 20px 0 10px; }
+.doc-table { overflow-x: auto;
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #f2f3f7; white-space: nowrap; }
+  th { background: #fafbfd; font-weight: 600; color: #1a1a2e; }
+  td { color: #4a4a6a; }
 }
 
 // 进度条演示

@@ -1,5 +1,5 @@
 <template>
-  <div class="component-doc">
+  <div class="tour-doc">
     <div class="doc-header">
       <h1 class="doc-title">操作引导 Tour</h1>
       <p class="doc-desc">用于引导用户了解页面功能，支持高亮目标元素、步骤导航、自定义位置和主题色。</p>
@@ -7,10 +7,8 @@
 
     <!-- 基础用法 -->
     <section class="doc-section">
-      <div class="section-header">
-        <h2 class="doc-section__title">基础用法</h2>
-        <p class="doc-section__desc">通过 <code>v-model</code> 控制引导显示，配置 <code>steps</code> 定义引导步骤。</p>
-      </div>
+      <h2 class="doc-section__title">基础用法</h2>
+      <p class="doc-section__desc">通过 <code>v-model</code> 控制引导显示，配置 <code>steps</code> 定义引导步骤。</p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <div class="tour-demo-area">
@@ -33,9 +31,8 @@
             </button>
           </div>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;template&gt;
+        <div class="doc-code">
+          <pre><code>&lt;template&gt;
   &lt;div ref="step1Target"&gt;目标元素 1&lt;/div&gt;
   &lt;div ref="step2Target"&gt;目标元素 2&lt;/div&gt;
   &lt;div ref="step3Target"&gt;目标元素 3&lt;/div&gt;
@@ -49,15 +46,14 @@
     ]"
   /&gt;
 &lt;/template&gt;</code></pre>
+        </div>
       </div>
     </section>
 
     <!-- 不同位置 -->
     <section class="doc-section">
-      <div class="section-header">
-        <h2 class="doc-section__title">气泡位置</h2>
-        <p class="doc-section__desc">通过 <code>placement</code> 属性控制气泡出现位置，支持 top / bottom / left / right 四个方向，空间不足时自动翻转。</p>
-      </div>
+      <h2 class="doc-section__title">气泡位置</h2>
+      <p class="doc-section__desc">通过 <code>placement</code> 属性控制气泡出现位置，支持 top / bottom / left / right 四个方向，空间不足时自动翻转。</p>
       <div class="doc-preview">
         <div class="doc-preview__body doc-preview__body--column">
           <div class="placement-demo">
@@ -85,9 +81,8 @@
             </button>
           </div>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyTour
+        <div class="doc-code">
+          <pre><code>&lt;XlyTour
   :steps="[
     { target: el, title: '上方', placement: 'top', description: '气泡在目标上方' },
     { target: el, title: '下方', placement: 'bottom', description: '气泡在目标下方' },
@@ -95,15 +90,14 @@
     { target: el, title: '右方', placement: 'right', description: '气泡在目标右侧' }
   ]"
 /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
     <!-- 自定义主题 -->
     <section class="doc-section">
-      <div class="section-header">
-        <h2 class="doc-section__title">自定义主题</h2>
-        <p class="doc-section__desc">通过 <code>color</code> 属性自定义主题色，影响按钮和步骤索引。</p>
-      </div>
+      <h2 class="doc-section__title">自定义主题</h2>
+      <p class="doc-section__desc">通过 <code>color</code> 属性自定义主题色，影响按钮和步骤索引。</p>
       <div class="doc-preview">
         <div class="doc-preview__body doc-preview__body--column">
           <div class="color-demo-area">
@@ -120,22 +114,20 @@
             </button>
           </div>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyTour
+        <div class="doc-code">
+          <pre><code>&lt;XlyTour
   v-model="visible"
   color="#10b981"
   :steps="steps"
 /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
     <!-- 命令式调用 -->
     <section class="doc-section">
-      <div class="section-header">
-        <h2 class="doc-section__title">命令式调用</h2>
-        <p class="doc-section__desc">通过 <code>xly.$tour</code> 快速启动引导，无需在模板中写组件。统一入口：<code>import { xly } from '@/utils/xly'</code></p>
-      </div>
+      <h2 class="doc-section__title">命令式调用</h2>
+      <p class="doc-section__desc">通过 <code>xly.$tour</code> 快速启动引导，无需在模板中写组件。统一入口：<code>import { xly } from '@/utils/xly'</code></p>
       <div class="doc-preview">
         <div class="doc-preview__body doc-preview__body--column">
           <div class="imperative-demo">
@@ -156,9 +148,8 @@
             </button>
           </div>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>import { xly } from '@/utils/xly'
+        <div class="doc-code">
+          <pre><code>import { xly } from '@/utils/xly'
 
 // 命令式启动引导
 xly.$tour({
@@ -168,15 +159,14 @@ xly.$tour({
   ],
   color: '#4f6ef7'
 })</code></pre>
+        </div>
       </div>
     </section>
 
     <!-- 无遮罩模式 -->
     <section class="doc-section">
-      <div class="section-header">
-        <h2 class="doc-section__title">无遮罩模式</h2>
-        <p class="doc-section__desc">设置 <code>:mask="false"</code> 可关闭遮罩高亮，适用于轻量提示场景。</p>
-      </div>
+      <h2 class="doc-section__title">无遮罩模式</h2>
+      <p class="doc-section__desc">设置 <code>:mask="false"</code> 可关闭遮罩高亮，适用于轻量提示场景。</p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <div ref="noMaskTarget" class="tour-demo-box tour-demo-box--blue">
@@ -186,376 +176,364 @@ xly.$tour({
             开始引导
           </button>
         </div>
-      </div>
-      <div class="doc-code">
-        <pre><code>&lt;XlyTour v-model="visible" :mask="false" :steps="steps" /&gt;</code></pre>
+        <div class="doc-code">
+          <pre><code>&lt;XlyTour v-model="visible" :mask="false" :steps="steps" /&gt;</code></pre>
+        </div>
       </div>
     </section>
 
     <!-- API 文档 -->
-    <section class="doc-section doc-section--api">
-      <h2 class="doc-section__title doc-section__title--api">API 文档</h2>
+    <section class="doc-section">
+      <h2 class="doc-section__title">API</h2>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">Attributes</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>参数</th>
-                <th>说明</th>
-                <th>类型</th>
-                <th>可选值</th>
-                <th>默认值</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>v-model / modelValue</td>
-                <td>是否显示引导</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>false</td>
-              </tr>
-              <tr>
-                <td>steps</td>
-                <td>引导步骤列表</td>
-                <td>TourStep[]</td>
-                <td>—</td>
-                <td>[]</td>
-              </tr>
-              <tr>
-                <td>placement</td>
-                <td>默认气泡位置</td>
-                <td>string</td>
-                <td>top / bottom / left / right</td>
-                <td>bottom</td>
-              </tr>
-              <tr>
-                <td>gap</td>
-                <td>气泡与目标间距 (px)</td>
-                <td>number</td>
-                <td>—</td>
-                <td>12</td>
-              </tr>
-              <tr>
-                <td>mask</td>
-                <td>是否显示遮罩</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>maskColor</td>
-                <td>遮罩颜色</td>
-                <td>string</td>
-                <td>—</td>
-                <td>rgba(0,0,0,0.45)</td>
-              </tr>
-              <tr>
-                <td>arrow</td>
-                <td>是否显示箭头</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>closeBtn</td>
-                <td>是否显示关闭按钮</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>showIndex</td>
-                <td>是否显示步骤索引</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>prevBtn</td>
-                <td>是否显示上一步按钮</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>nextText</td>
-                <td>"下一步"按钮文字</td>
-                <td>string</td>
-                <td>—</td>
-                <td>下一步</td>
-              </tr>
-              <tr>
-                <td>prevText</td>
-                <td>"上一步"按钮文字</td>
-                <td>string</td>
-                <td>—</td>
-                <td>上一步</td>
-              </tr>
-              <tr>
-                <td>finishText</td>
-                <td>"完成"按钮文字</td>
-                <td>string</td>
-                <td>—</td>
-                <td>完成</td>
-              </tr>
-              <tr>
-                <td>color</td>
-                <td>主题色</td>
-                <td>string</td>
-                <td>—</td>
-                <td>#4f6ef7</td>
-              </tr>
-              <tr>
-                <td>maxWidth</td>
-                <td>气泡最大宽度</td>
-                <td>number / string</td>
-                <td>—</td>
-                <td>360</td>
-              </tr>
-              <tr>
-                <td>startStep</td>
-                <td>起始步骤 (0-indexed)</td>
-                <td>number</td>
-                <td>—</td>
-                <td>0</td>
-              </tr>
-              <tr>
-                <td>closeOnOverlay</td>
-                <td>点击遮罩是否关闭</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>scrollIntoView</td>
-                <td>自动滚动到目标元素</td>
-                <td>boolean</td>
-                <td>—</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>zIndex</td>
-                <td>z-index</td>
-                <td>number</td>
-                <td>—</td>
-                <td>9000</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">Attributes</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>参数</th>
+              <th>说明</th>
+              <th>类型</th>
+              <th>可选值</th>
+              <th>默认值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>v-model / modelValue</td>
+              <td>是否显示引导</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>false</td>
+            </tr>
+            <tr>
+              <td>steps</td>
+              <td>引导步骤列表</td>
+              <td>TourStep[]</td>
+              <td>—</td>
+              <td>[]</td>
+            </tr>
+            <tr>
+              <td>placement</td>
+              <td>默认气泡位置</td>
+              <td>string</td>
+              <td>top / bottom / left / right</td>
+              <td>bottom</td>
+            </tr>
+            <tr>
+              <td>gap</td>
+              <td>气泡与目标间距 (px)</td>
+              <td>number</td>
+              <td>—</td>
+              <td>12</td>
+            </tr>
+            <tr>
+              <td>mask</td>
+              <td>是否显示遮罩</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>maskColor</td>
+              <td>遮罩颜色</td>
+              <td>string</td>
+              <td>—</td>
+              <td>rgba(0,0,0,0.45)</td>
+            </tr>
+            <tr>
+              <td>arrow</td>
+              <td>是否显示箭头</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>closeBtn</td>
+              <td>是否显示关闭按钮</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>showIndex</td>
+              <td>是否显示步骤索引</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>prevBtn</td>
+              <td>是否显示上一步按钮</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>nextText</td>
+              <td>"下一步"按钮文字</td>
+              <td>string</td>
+              <td>—</td>
+              <td>下一步</td>
+            </tr>
+            <tr>
+              <td>prevText</td>
+              <td>"上一步"按钮文字</td>
+              <td>string</td>
+              <td>—</td>
+              <td>上一步</td>
+            </tr>
+            <tr>
+              <td>finishText</td>
+              <td>"完成"按钮文字</td>
+              <td>string</td>
+              <td>—</td>
+              <td>完成</td>
+            </tr>
+            <tr>
+              <td>color</td>
+              <td>主题色</td>
+              <td>string</td>
+              <td>—</td>
+              <td>#4f6ef7</td>
+            </tr>
+            <tr>
+              <td>maxWidth</td>
+              <td>气泡最大宽度</td>
+              <td>number / string</td>
+              <td>—</td>
+              <td>360</td>
+            </tr>
+            <tr>
+              <td>startStep</td>
+              <td>起始步骤 (0-indexed)</td>
+              <td>number</td>
+              <td>—</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>closeOnOverlay</td>
+              <td>点击遮罩是否关闭</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>scrollIntoView</td>
+              <td>自动滚动到目标元素</td>
+              <td>boolean</td>
+              <td>—</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>zIndex</td>
+              <td>z-index</td>
+              <td>number</td>
+              <td>—</td>
+              <td>9000</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">TourStep 配置</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>参数</th>
-                <th>说明</th>
-                <th>类型</th>
-                <th>默认值</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>target</td>
-                <td>目标元素选择器或 DOM 元素</td>
-                <td>string | HTMLElement</td>
-                <td>必填</td>
-              </tr>
-              <tr>
-                <td>title</td>
-                <td>标题</td>
-                <td>string</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>description</td>
-                <td>描述文本</td>
-                <td>string</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>placement</td>
-                <td>气泡位置（可覆盖全局）</td>
-                <td>string</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>gap</td>
-                <td>间距（可覆盖全局）</td>
-                <td>number</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>highlight</td>
-                <td>是否高亮该元素</td>
-                <td>boolean</td>
-                <td>true</td>
-              </tr>
-              <tr>
-                <td>highlightRadius</td>
-                <td>高亮圆角（大于 0 则为圆形）</td>
-                <td>number</td>
-                <td>—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">TourStep 配置</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>参数</th>
+              <th>说明</th>
+              <th>类型</th>
+              <th>默认值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>target</td>
+              <td>目标元素选择器或 DOM 元素</td>
+              <td>string | HTMLElement</td>
+              <td>必填</td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td>标题</td>
+              <td>string</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>description</td>
+              <td>描述文本</td>
+              <td>string</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>placement</td>
+              <td>气泡位置（可覆盖全局）</td>
+              <td>string</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>gap</td>
+              <td>间距（可覆盖全局）</td>
+              <td>number</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>highlight</td>
+              <td>是否高亮该元素</td>
+              <td>boolean</td>
+              <td>true</td>
+            </tr>
+            <tr>
+              <td>highlightRadius</td>
+              <td>高亮圆角（大于 0 则为圆形）</td>
+              <td>number</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">命令式 API (xly.$tour)</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>方法名</th>
-                <th>说明</th>
-                <th>参数</th>
-                <th>返回值</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>$tour</td>
-                <td>启动引导</td>
-                <td>TourOptions</td>
-                <td>TourInstance</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">命令式 API (xly.$tour)</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>方法名</th>
+              <th>说明</th>
+              <th>参数</th>
+              <th>返回值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$tour</td>
+              <td>启动引导</td>
+              <td>TourOptions</td>
+              <td>TourInstance</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">TourInstance 方法</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>方法名</th>
-                <th>说明</th>
-                <th>参数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>start</td>
-                <td>开始引导（可指定起始步骤）</td>
-                <td>stepIndex?: number</td>
-              </tr>
-              <tr>
-                <td>next</td>
-                <td>下一步</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>prev</td>
-                <td>上一步</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>goTo</td>
-                <td>跳到指定步骤</td>
-                <td>index: number</td>
-              </tr>
-              <tr>
-                <td>finish</td>
-                <td>结束引导</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>close</td>
-                <td>关闭引导</td>
-                <td>—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">TourInstance 方法</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>方法名</th>
+              <th>说明</th>
+              <th>参数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>start</td>
+              <td>开始引导（可指定起始步骤）</td>
+              <td>stepIndex?: number</td>
+            </tr>
+            <tr>
+              <td>next</td>
+              <td>下一步</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>prev</td>
+              <td>上一步</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>goTo</td>
+              <td>跳到指定步骤</td>
+              <td>index: number</td>
+            </tr>
+            <tr>
+              <td>finish</td>
+              <td>结束引导</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>close</td>
+              <td>关闭引导</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">Events</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>事件名</th>
-                <th>说明</th>
-                <th>回调参数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>change</td>
-                <td>当前步骤变化</td>
-                <td>current: number</td>
-              </tr>
-              <tr>
-                <td>finish</td>
-                <td>引导完成（最后一步点击完成）</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>close</td>
-                <td>点击关闭按钮</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>skip</td>
-                <td>点击遮罩跳过</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>next</td>
-                <td>点击下一步</td>
-                <td>current: number</td>
-              </tr>
-              <tr>
-                <td>prev</td>
-                <td>点击上一步</td>
-                <td>current: number</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">Events</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>事件名</th>
+              <th>说明</th>
+              <th>回调参数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>change</td>
+              <td>当前步骤变化</td>
+              <td>current: number</td>
+            </tr>
+            <tr>
+              <td>finish</td>
+              <td>引导完成（最后一步点击完成）</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>close</td>
+              <td>点击关闭按钮</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>skip</td>
+              <td>点击遮罩跳过</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>next</td>
+              <td>点击下一步</td>
+              <td>current: number</td>
+            </tr>
+            <tr>
+              <td>prev</td>
+              <td>点击上一步</td>
+              <td>current: number</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="api-block">
-        <h3 class="doc-subtitle">Slots</h3>
-        <div class="doc-table">
-          <table>
-            <thead>
-              <tr>
-                <th>插槽名</th>
-                <th>说明</th>
-                <th>作用域参数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>default</td>
-                <td>自定义描述区域</td>
-                <td>{ current, step, total }</td>
-              </tr>
-              <tr>
-                <td>prev</td>
-                <td>自定义上一步按钮区域</td>
-                <td>{ current, step, total }</td>
-              </tr>
-              <tr>
-                <td>next</td>
-                <td>自定义下一步按钮区域</td>
-                <td>{ current, step, total }</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h3 class="doc-subtitle">Slots</h3>
+      <div class="doc-table">
+        <table>
+          <thead>
+            <tr>
+              <th>插槽名</th>
+              <th>说明</th>
+              <th>作用域参数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>default</td>
+              <td>自定义描述区域</td>
+              <td>{ current, step, total }</td>
+            </tr>
+            <tr>
+              <td>prev</td>
+              <td>自定义上一步按钮区域</td>
+              <td>{ current, step, total }</td>
+            </tr>
+            <tr>
+              <td>next</td>
+              <td>自定义下一步按钮区域</td>
+              <td>{ current, step, total }</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -734,147 +712,61 @@ function onTourChange(current: number) {
 </script>
 
 <style scoped lang="scss">
-.component-doc {
+.tour-doc {
   padding: 8px 0 40px;
-  max-width: 900px;
 }
 
-.doc-header {
-  margin-bottom: 40px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
+.doc-header { margin-bottom: 36px; }
 .doc-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 12px;
+  font-size: 26px; font-weight: 700; color: #1a1a2e;
+  margin: 0 0 8px; letter-spacing: -0.3px;
 }
-
 .doc-desc {
-  font-size: 16px;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.6;
+  font-size: 14px; color: #8e8ea0; margin: 0; line-height: 1.6;
 }
 
-.doc-section {
-  margin-bottom: 48px;
-}
-
-.section-header {
-  margin-bottom: 20px;
-}
-
+.doc-section { margin-bottom: 32px; }
 .doc-section__title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 8px;
+  font-size: 18px; font-weight: 600; color: #1a1a2e;
+  margin: 0 0 8px; padding-bottom: 10px; border-bottom: 1px solid #f2f3f7;
 }
-
-.doc-section__title--api {
-  font-size: 24px;
-  margin-bottom: 24px;
-}
-
 .doc-section__desc {
-  font-size: 14px;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.6;
-
+  font-size: 14px; color: #8e8ea0; margin: 0 0 16px; line-height: 1.6;
   code {
-    background: #f3f4f6;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'SF Mono', monospace;
-    font-size: 13px;
-    color: #4f6ef7;
+    background: #f5f6fa; color: #4f6ef7; padding: 2px 6px;
+    border-radius: 4px; font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
   }
 }
 
 .doc-preview {
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f2f3f7; border-radius: 12px;
+  overflow: hidden; background: #fff;
 }
-
 .doc-preview__body {
-  padding: 32px 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 12px; padding: 24px;
 }
-
 .doc-preview__body--column {
   flex-direction: column;
   align-items: stretch;
 }
-
 .doc-code {
-  margin-top: 16px;
-  background-color: #1f2937;
-  border-radius: 12px;
-  overflow: hidden;
-
-  pre {
-    margin: 0;
-    padding: 20px;
-    overflow-x: auto;
-    font-size: 13px;
-    line-height: 1.6;
+  border-top: 1px solid #f2f3f7; background: #fafbfd;
+  padding: 16px 20px; overflow-x: auto;
+  pre { margin: 0; padding: 0; }
+  code {
     font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
-    color: #e5e7eb;
-    background-color: #1f2937;
+    font-size: 13px; line-height: 1.7; color: #4a4a6a; white-space: pre;
   }
 }
 
-.doc-table {
-  overflow-x: auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-
-  th, td {
-    text-align: left;
-    padding: 12px 16px;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: #374151;
-  }
-
-  td {
-    color: #4b5563;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
-  }
-}
-
-.doc-subtitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #111827;
-  margin: 24px 0 16px;
-}
-
-.api-block {
-  margin-bottom: 32px;
+.doc-subtitle { font-size: 15px; font-weight: 600; color: #1a1a2e; margin: 20px 0 10px; }
+.doc-table { overflow-x: auto;
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #f2f3f7; white-space: nowrap; }
+  th { background: #fafbfd; font-weight: 600; color: #1a1a2e; }
+  td { color: #4a4a6a; }
 }
 
 // 演示区域样式

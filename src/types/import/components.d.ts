@@ -13,6 +13,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     DropdownItem: typeof import('./../../components/xly-dropdown/dropdown-item.vue')['default']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElDropdown: typeof import('element-plus/es')['ElDropdown']
+    ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
+    ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
@@ -76,5 +79,6 @@ declare module 'vue' {
     XlyUserPicker: typeof import('./../../components/xly-user-picker/index.vue')['default']
     XlyVideo: typeof import('./../../components/xly-video/index.vue')['default']
     XlyWatermark: typeof import('./../../components/xly-watermark/index.vue')['default']
+    XlyWorktab: typeof import('./../../components/xly-worktab/index.vue')['default']
   }
 }

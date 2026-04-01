@@ -29,6 +29,9 @@ importers:
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.30(typescript@5.9.3))
+      sass:
+        specifier: ^1.98.0
+        version: 1.98.0
       scss:
         specifier: ^0.2.4
         version: 0.2.4
@@ -3949,7 +3952,6 @@ snapshots:
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.1.2
-    optional: true
 
   chokidar@5.0.0:
     dependencies:
@@ -4783,8 +4785,7 @@ snapshots:
     dependencies:
       picomatch: 2.3.1
 
-  readdirp@4.1.2:
-    optional: true
+  readdirp@4.1.2: {}
 
   readdirp@5.0.0: {}
 
@@ -4929,7 +4930,6 @@ snapshots:
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.6
-    optional: true
 
   saxes@6.0.0:
     dependencies:
