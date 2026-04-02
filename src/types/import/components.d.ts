@@ -37,6 +37,7 @@ declare module 'vue' {
     XlyChat: typeof import('./../../components/xly-chat/index.vue')['default']
     XlyChatInput: typeof import('./../../components/xly-chat/xly-chat-input.vue')['default']
     XlyChatMessage: typeof import('./../../components/xly-chat/xly-chat-message.vue')['default']
+    XlyChinaMap: typeof import('./../../components/xly-china-map/index.vue')['default']
     XlyCol: typeof import('./../../components/xly-col/index.vue')['default']
     XlyDatePicker: typeof import('./../../components/xly-date-picker/index.vue')['default']
     XlyDateRangePicker: typeof import('./../../components/xly-date-range-picker/index.vue')['default']

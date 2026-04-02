@@ -146,6 +146,13 @@
         "key": "video",
         "path": "/data/video",
         "component": "data/video"
+      },
+      {
+        "id": "6-8",
+        "name": "中国地图 ChinaMap",
+        "key": "china-map",
+        "path": "/data/china-map",
+        "component": "data/china-map"
       }
     ]
   },

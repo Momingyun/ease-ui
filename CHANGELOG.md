@@ -15,6 +15,16 @@
 
 ---
 
+## [2026-04-03]
+
+### ✨ 新增
+- **xly-china-map** 多数据集功能增强
+    - 支持传入多组数据集（如 2023年/2024年 GDP 对比）
+    - `MapDataSet` 数据结构：支持 `name`、`data`、`colorRange` 自定义颜色
+    - **对比模式**（`tooltip-mode="compare"`，默认）：悬浮省份时 Tooltip 同时展示所有数据集的数据，直观对比
+    - **切换模式**（`tooltip-mode="switch"`）：通过 Tab 切换数据集，Tooltip 只显示当前数据
+    - 数据集 Tab 样式优化：白色底 + 连体圆角边框 + 选中态蓝色高亮
+
 ## [2026-04-01]
 - **xly-worktab**（多标签页组件）`src/components/xly-worktab/index.vue`
     - 路由切换自动添加标签页，显示菜单名称
