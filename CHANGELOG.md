@@ -15,6 +15,18 @@
 
 ---
 
+## [2026-04-04]
+
+### ✨ 新增
+- **xly-file-preview**（文件预览组件）`src/components/xly-file-preview/index.vue`
+    - 基于 `@vue-office` 系列组件（docx/excel/pdf），高还原度渲染 Office 文档
+    - 支持四种数据格式输入：逗号拼接字符串、URL字符串数组、对象数组（默认字段 name/url/size）、自定义字段名映射（`field-names` prop）
+    - 内置六种文件格式预览：PDF（@vue-office/pdf Canvas）、Word（@vue-office/docx）、Excel（@vue-office/excel）、PPT（pptx-preview 幻灯片预览）、图片（img原生）、视频（video原生）
+    - 文件渲染失败时优雅降级，显示错误信息和下载按钮
+    - 弹窗支持多文件切换（上一个/下一个）、下载、新标签打开、ESC关闭
+    - `size` 字段单位为 KB，组件自动格式化为可读单位（B / KB / MB / GB）
+    - 文件列表自动识别文件类型显示对应彩色图标
+
 ## [2026-04-03]
 
 ### ✨ 新增

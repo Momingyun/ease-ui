@@ -153,6 +153,13 @@
         "key": "china-map",
         "path": "/data/china-map",
         "component": "data/china-map"
+      },
+      {
+        "id": "6-9",
+        "name": "文件预览 FilePreview",
+        "key": "file-preview",
+        "path": "/data/file-preview",
+        "component": "data/file-preview"
       }
     ]
   },

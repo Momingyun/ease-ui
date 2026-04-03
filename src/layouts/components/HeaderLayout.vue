@@ -74,7 +74,7 @@
             <span>新建</span>
           </div>
           <div class="header__user-dropdown-divider"></div>
-          <div class="header__user-dropdown-item header__user-dropdown-item--danger">
+          <div class="header__user-dropdown-item header__user-dropdown-item--danger" @click="handleLogout">
             <XlyIcon name="el:SwitchButton" :size="16" />
             <span>退出登录</span>
           </div>
@@ -86,9 +86,19 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import XlyIcon from '@/components/xly-icon/index.vue'
+import { useUserStore } from '@/stores/user'
 
+const router = useRouter()
+const userStore = useUserStore()
 const showUserMenu = ref(false)
+
+function handleLogout() {
+  userStore.logout()
+  showUserMenu.value = false
+  router.push({ name: 'Login' })
+}
 
 function handleClickOutside(e: MouseEvent) {
   const target = e.target as HTMLElement

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../layouts/index.vue'
 import { generateRoutes } from './utils'
+import { useUserStore } from '@/stores/user'
 
 // 动态生成的路由
 const dynamicRoutes = generateRoutes()
@@ -8,6 +9,12 @@ const dynamicRoutes = generateRoutes()
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/login/index.vue'),
+      meta: { public: true },
+    },
     {
       path: '/',
       component: MainLayout,
@@ -24,8 +31,21 @@ const router = createRouter({
       path: '/404',
       name: '404',
       component: () => import('../views/exception/404.vue'),
+      meta: { public: true },
     },
   ],
+})
+
+// 路由守卫：未登录跳转登录页
+router.beforeEach((to) => {
+  // 公开页面直接放行
+  if (to.meta.public) return true
+
+  const userStore = useUserStore()
+  if (!userStore.isLoggedIn) {
+    return { name: 'Login', query: { redirect: to.fullPath } }
+  }
+  return true
 })
 
 export default router
