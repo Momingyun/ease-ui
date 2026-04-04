@@ -26,7 +26,7 @@
 
       <!-- 选中值显示 -->
       <span v-else class="xly-select__value" :class="{ 'is-placeholder': !selectedLabels.length }">
-        {{ displayLabel }}
+        {{ selectedLabels.length ? displayLabel : placeholder }}
       </span>
 
       <!-- 后缀 -->

@@ -27,7 +27,7 @@
 
       <!-- 单选显示 -->
       <span v-else class="xly-cascader__value" :class="{ 'is-placeholder': !selectedLabels.length }">
-        {{ displayLabel }}
+        {{ selectedLabels.length ? displayLabel : placeholder }}
       </span>
 
       <!-- 后缀 -->

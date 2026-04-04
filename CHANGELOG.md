@@ -16,6 +16,31 @@
 ---
 
 ## [2026-04-04]
+### ✨ 新增
+- **xly-dict-select**（字典选择器组件）`src/components/xly-dict-select/index.vue`
+    - 基于项目自研 `XlySelect` 组件封装（零第三方依赖），完全复用其多选/折叠标签/valueType 等能力
+    - 新增 `return-field` prop（默认 `'id'`）：控制 `v-model` 最终返回值字段，可设为 `'labelValue'` 返回英文代码
+    - 支持单选（`string`）和多选（`string[]` 或逗号字符串），通过 `multiple` 切换
+    - 多选输出格式通过 `value-format="array"|"string"` 控制
+    - 支持传入逗号拼接字符串，组件自动拆分回显
+    - 默认字段 `id`/`labelValue`，通过 `value-field`/`label-field` 自定义字段名
+    - 选项前显示颜色圆点（对应 `type`/`color` 字段），可通过 `:show-dot="false"` 关闭
+    - `@change` 事件同时返回完整字典项对象，方便获取额外信息
+    - `expose` 暴露 `reload()` 方法，支持手动重新加载字典
+    - 内置完整二开指南，替换 `fetchDictList` 函数即可对接真实接口，支持全局缓存方案
+
+
+### ✨ 新增
+- **xly-dict-tag**（字典标签组件）`src/components/xly-dict-tag/index.vue`
+    - 根据字典类型自动请求并渲染对应 Tag，无需手写 if-else 或维护颜色映射
+    - 内置模拟字典数据（user_status / approve_status / gender / priority / order_status / role_type 等）
+    - 支持单选模式（`value` 传字符串/数字）和多选模式（`multiple` 属性）
+    - 多选值支持逗号拼接字符串和字符串数组两种格式，自动识别
+    - 默认字段：value → `id`，label → `labelValue`；通过 `value-field` / `label-field` 属性自定义任意字段名
+    - 字典数据支持 type（Tag 类型）、color（自定义颜色）、icon（前置图标）字段
+    - 空值不渲染、未匹配值优雅降级显示原始值，保证页面不报错
+    - 加载中显示脉冲点占位，体验流畅
+    - 提供完整二开指南：替换 `fetchDictList` 函数即可对接真实接口，支持字段映射和缓存方案
 
 ### ✨ 新增
 - **xly-file-preview**（文件预览组件）`src/components/xly-file-preview/index.vue`
@@ -27,6 +52,9 @@
     - `size` 字段单位为 KB，组件自动格式化为可读单位（B / KB / MB / GB）
     - 文件列表自动识别文件类型显示对应彩色图标
 
+### 🐛 修复
+- **xly-select**：修复未选中时 placeholder 不显示的问题
+- **xly-cascader**：修复未选中时 placeholder 不显示的问题
 ## [2026-04-03]
 
 ### ✨ 新增

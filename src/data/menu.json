@@ -295,6 +295,13 @@
         "key": "file-upload",
         "path": "/form/file-upload",
         "component": "form/file-upload"
+      },
+      {
+        "id": "4-15",
+        "name": "字典选择 DictSelect",
+        "key": "dict-select",
+        "path": "/form/dict-select",
+        "component": "form/dict-select"
       }
     ]
   },
@@ -396,6 +403,13 @@
         "key": "user-picker",
         "path": "/business/user-picker",
         "component": "business/user-picker"
+      },
+      {
+        "id": "8-4",
+        "name": "字典标签 DictTag",
+        "key": "dict-tag",
+        "path": "/business/dict-tag",
+        "component": "business/dict-tag"
       }
     ]
   }
