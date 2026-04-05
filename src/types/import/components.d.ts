@@ -55,6 +55,7 @@ declare module 'vue' {
     XlyImage: typeof import('./../../components/xly-image/index.vue')['default']
     XlyImageUpload: typeof import('./../../components/xly-image-upload/index.vue')['default']
     XlyInput: typeof import('./../../components/xly-input/index.vue')['default']
+    XlyJsonViewer: typeof import('./../../components/xly-json-viewer/index.vue')['default']
     XlyList: typeof import('./../../components/xly-list/index.vue')['default']
     XlyLoading: typeof import('./../../components/xly-loading/index.vue')['default']
     XlyMessage: typeof import('./../../components/xly-message/index.vue')['default']

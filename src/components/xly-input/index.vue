@@ -5,7 +5,12 @@
       <slot name="prepend" />
     </div>
 
-    <div class="xly-input__wrapper" :class="[wrapperInnerClass, { 'is-textarea': type === 'textarea' }]" @mouseenter="hovering = true" @mouseleave="hovering = false">
+    <div
+      class="xly-input__wrapper"
+      :class="[wrapperInnerClass, { 'is-textarea': type === 'textarea' }]"
+      @mouseenter="hovering = true"
+      @mouseleave="hovering = false"
+    >
       <!-- 前缀图标 -->
       <span v-if="$slots.prefix || prefixIcon" class="xly-input__prefix">
         <slot name="prefix" />
@@ -29,11 +34,11 @@
           @blur="handleBlur"
           @keydown="handleKeydown"
           @compositionstart="isComposing = true"
-          @compositionend="isComposing = false"
+          @compositionend="handleCompositionEnd"
         />
         <!-- 字数统计 -->
         <span v-if="showWordLimit && maxlength" class="xly-input__word-limit">
-          {{ (modelValue as string || '').length }}/{{ maxlength }}
+          {{ ((modelValue as string) || '').length }}/{{ maxlength }}
         </span>
       </template>
 
@@ -55,22 +60,30 @@
         @blur="handleBlur"
         @keydown="handleKeydown"
         @compositionstart="isComposing = true"
-        @compositionend="isComposing = false"
+        @compositionend="handleCompositionEnd"
       />
 
       <!-- 字数统计（非 textarea） -->
       <span v-if="type !== 'textarea' && showWordLimit && maxlength" class="xly-input__word-limit">
-        {{ (modelValue as string || '').length }}/{{ maxlength }}
+        {{ ((modelValue as string) || '').length }}/{{ maxlength }}
       </span>
 
       <!-- 后缀图标 / 清除 / 密码切换 -->
       <span v-if="showSuffix" class="xly-input__suffix">
         <!-- 清除按钮 -->
-        <span v-if="clearable && modelValue && !disabled && !readonly" class="xly-input__clear" @click="clear">
+        <span
+          v-if="clearable && modelValue && !disabled && !readonly"
+          class="xly-input__clear"
+          @click="clear"
+        >
           <XlyIcon name="el:Close" />
         </span>
         <!-- 密码显示/隐藏切换 -->
-        <span v-if="type === 'password' && modelValue" class="xly-input__password-toggle" @click="togglePassword">
+        <span
+          v-if="type === 'password' && modelValue"
+          class="xly-input__password-toggle"
+          @click="togglePassword"
+        >
           <XlyIcon :name="passwordVisible ? 'el:View' : 'el:Hide'" />
         </span>
         <slot name="suffix" />
@@ -188,6 +201,14 @@ function handleInput(e: Event) {
   emit('input', value)
 }
 
+function handleCompositionEnd(e: Event) {
+  isComposing.value = false
+  // 输入法结束后，手动触发一次 input 处理，同步最终确认的值
+  const value = (e.target as HTMLInputElement | HTMLTextAreaElement).value
+  emit('update:modelValue', value)
+  emit('input', value)
+}
+
 function handleChange() {
   emit('change', String(props.modelValue))
 }
@@ -255,20 +276,38 @@ $transition: all 0.2s ease;
   position: relative;
 
   // ========== 尺寸 ==========
-  &--large .xly-input__wrapper { height: 44px; }
-  &--large .xly-input__inner { font-size: 15px; }
+  &--large .xly-input__wrapper {
+    height: 44px;
+  }
+  &--large .xly-input__inner {
+    font-size: 15px;
+  }
   &--large .xly-input__prepend,
-  &--large .xly-input__append { font-size: 14px; }
+  &--large .xly-input__append {
+    font-size: 14px;
+  }
 
-  &--default .xly-input__wrapper { height: 36px; }
-  &--default .xly-input__inner { font-size: 14px; }
+  &--default .xly-input__wrapper {
+    height: 36px;
+  }
+  &--default .xly-input__inner {
+    font-size: 14px;
+  }
   &--default .xly-input__prepend,
-  &--default .xly-input__append { font-size: 14px; }
+  &--default .xly-input__append {
+    font-size: 14px;
+  }
 
-  &--small .xly-input__wrapper { height: 30px; }
-  &--small .xly-input__inner { font-size: 13px; }
+  &--small .xly-input__wrapper {
+    height: 30px;
+  }
+  &--small .xly-input__inner {
+    font-size: 13px;
+  }
   &--small .xly-input__prepend,
-  &--small .xly-input__append { font-size: 12px; }
+  &--small .xly-input__append {
+    font-size: 12px;
+  }
 
   // ========== 前后置 ==========
   &__prepend,
@@ -294,7 +333,9 @@ $transition: all 0.2s ease;
     border-radius: 0 $radius $radius 0;
   }
 
-  &__prepend + &__wrapper { border-radius: 0 $radius $radius 0; }
+  &__prepend + &__wrapper {
+    border-radius: 0 $radius $radius 0;
+  }
 
   // ========== 输入区域 ==========
   &__wrapper {
@@ -309,15 +350,24 @@ $transition: all 0.2s ease;
     box-sizing: border-box;
     cursor: text;
 
-    &.is-hover:not(.is-disabled) { border-color: $border-hover; }
-    &.is-focus:not(.is-disabled) { border-color: $border-focus; box-shadow: 0 0 0 2px $primary-light; }
+    &.is-hover:not(.is-disabled) {
+      border-color: $border-hover;
+    }
+    &.is-focus:not(.is-disabled) {
+      border-color: $border-focus;
+      box-shadow: 0 0 0 2px $primary-light;
+    }
     &.is-disabled {
       background-color: $disabled-bg;
       cursor: not-allowed;
     }
 
-    &.has-prefix { padding-left: 8px; }
-    &.has-suffix { padding-right: 8px; }
+    &.has-prefix {
+      padding-left: 8px;
+    }
+    &.has-suffix {
+      padding-right: 8px;
+    }
 
     // textarea 模式
     &.is-textarea {
@@ -342,8 +392,13 @@ $transition: all 0.2s ease;
     font-family: inherit;
     box-sizing: border-box;
 
-    &::placeholder { color: $text-placeholder; }
-    &:disabled { color: $disabled-color; cursor: not-allowed; }
+    &::placeholder {
+      color: $text-placeholder;
+    }
+    &:disabled {
+      color: $disabled-color;
+      cursor: not-allowed;
+    }
 
     // textarea 样式
     &--textarea {
@@ -369,8 +424,12 @@ $transition: all 0.2s ease;
     flex-shrink: 0;
   }
 
-  &__prefix { margin-right: 4px; }
-  &__suffix { margin-left: 4px; }
+  &__prefix {
+    margin-right: 4px;
+  }
+  &__suffix {
+    margin-left: 4px;
+  }
 
   &__clear,
   &__password-toggle {
@@ -382,7 +441,9 @@ $transition: all 0.2s ease;
     transition: color $transition;
     border-radius: 50%;
 
-    &:hover { color: $text-color; }
+    &:hover {
+      color: $text-color;
+    }
   }
 
   // ========== 字数统计 ==========

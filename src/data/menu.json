@@ -160,6 +160,13 @@
         "key": "file-preview",
         "path": "/data/file-preview",
         "component": "data/file-preview"
+      },
+      {
+        "id": "6-10",
+        "name": "JSON 查看器 JsonViewer",
+        "key": "json-viewer",
+        "path": "/data/json-viewer",
+        "component": "data/json-viewer"
       }
     ]
   },

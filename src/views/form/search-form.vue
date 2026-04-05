@@ -481,7 +481,7 @@ import { ref } from 'vue'
 import XlySearchForm from '@/components/xly-search-form/index.vue'
 
 // 基础用法
-const searchData1 = ref({})
+const   searchData1 = ref({})
 const basicItems = [
   { prop: 'name', label: '姓名', type: 'input' },
   {

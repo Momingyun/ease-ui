@@ -1,0 +1,256 @@
+// 基础变量
+$border-radius: 4px;
+
+// 主题色
+$themes: (
+  light: (
+    bg: #fff,
+    content-bg: #fafbfd,
+    toolbar-bg: #f5f6fa,
+    text: #1a1a2e,
+    text-secondary: #8e8ea0,
+    key: #881391,
+    string: #0b7300,
+    number: #11589d,
+    boolean: #ca4700,
+    null: #8e8ea0,
+    bracket: #1a1a2e,
+    collapsed: #8e8ea0,
+    border: #f2f3f7,
+    hover-bg: #f0f0f5,
+    toolbar-btn-bg: #e8e9f0,
+    toolbar-btn-hover: #dcdce6,
+  ),
+  dark: (
+    bg: #1e1e2e,
+    content-bg: #282a36,
+    toolbar-bg: #232433,
+    text: #f8f8f2,
+    text-secondary: #9580a0,
+    key: #ff79c6,
+    string: #50fa7b,
+    number: #bd93f9,
+    boolean: #ffb86c,
+    null: #6272a4,
+    bracket: #f8f8f2,
+    collapsed: #9580a0,
+    border: #44475a,
+    hover-bg: #44475a,
+    toolbar-btn-bg: #44475a,
+    toolbar-btn-hover: #6272a4,
+  ),
+);
+
+// 组件主体
+.xly-json-viewer {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  border: 1px solid map-get(map-get($themes, light), border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: map-get(map-get($themes, light), bg);
+
+  &--dark {
+    border-color: map-get(map-get($themes, dark), border);
+    background: map-get(map-get($themes, dark), bg);
+  }
+
+  // 工具栏
+  &__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: map-get(map-get($themes, light), toolbar-bg);
+    border-bottom: 1px solid map-get(map-get($themes, light), border);
+
+    .xly-json-viewer--dark & {
+      background: map-get(map-get($themes, dark), toolbar-bg);
+      border-bottom-color: map-get(map-get($themes, dark), border);
+    }
+  }
+
+  &__toolbar-left,
+  &__toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: map-get(map-get($themes, light), text);
+    background: map-get(map-get($themes, light), toolbar-btn-bg);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    .xly-json-viewer--dark & {
+      color: map-get(map-get($themes, dark), text);
+      background: map-get(map-get($themes, dark), toolbar-btn-bg);
+    }
+
+    &:hover {
+      background: map-get(map-get($themes, light), toolbar-btn-hover);
+
+      .xly-json-viewer--dark & {
+        background: map-get(map-get($themes, dark), toolbar-btn-hover);
+      }
+    }
+
+    .xly-icon {
+      font-size: 14px;
+    }
+  }
+
+  // 内容区
+  &__content {
+    overflow: auto;
+    max-height: v-bind('props.maxHeight || "none"');
+    background: map-get(map-get($themes, light), content-bg);
+
+    .xly-json-viewer--dark & {
+      background: map-get(map-get($themes, dark), content-bg);
+    }
+  }
+
+  &__pre {
+    margin: 0;
+    padding: 16px 16px 16px 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  &__empty {
+    padding: 24px;
+    text-align: center;
+    color: map-get(map-get($themes, light), text-secondary);
+    font-size: 14px;
+
+    .xly-json-viewer--dark & {
+      color: map-get(map-get($themes, dark), text-secondary);
+    }
+  }
+}
+
+// JSON 节点
+.json-node {
+  display: inline;
+}
+
+// 基础值
+.json-value {
+  &--light { color: map-get(map-get($themes, light), text); }
+  &--dark { color: map-get(map-get($themes, dark), text); }
+}
+
+.json-string {
+  color: map-get(map-get($themes, light), string);
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), string); }
+}
+
+.json-number {
+  color: map-get(map-get($themes, light), number);
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), number); }
+}
+
+.json-boolean {
+  color: map-get(map-get($themes, light), boolean);
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), boolean); }
+}
+
+.json-null {
+  color: map-get(map-get($themes, light), null);
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), null); }
+}
+
+.json-primitive {
+  color: map-get(map-get($themes, light), text);
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), text); }
+}
+
+// 括号（根节点强制靠左）
+.json-bracket {
+  color: map-get(map-get($themes, light), bracket);
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), bracket); }
+}
+
+// 占位符（用于根节点对齐）
+.json-placeholder {
+  display: inline-block;
+  width: 16px;
+}
+
+// 键名
+.json-key {
+  color: map-get(map-get($themes, light), key);
+  &--light { color: map-get(map-get($themes, light), key); }
+  &--dark { color: map-get(map-get($themes, dark), key); }
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), key); }
+}
+
+// 折叠信息
+.json-collapsed {
+  color: map-get(map-get($themes, light), collapsed);
+  font-style: italic;
+  &--light { color: map-get(map-get($themes, light), collapsed); }
+  &--dark { color: map-get(map-get($themes, dark), collapsed); }
+  .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), collapsed); }
+}
+
+// 折叠/展开箭头
+.json-toggle {
+  display: inline-block;
+  width: 14px;
+  margin-right: 2px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  color: map-get(map-get($themes, light), text-secondary);
+  font-size: 10px;
+  vertical-align: middle;
+
+  .xly-json-viewer--dark & {
+    color: map-get(map-get($themes, dark), text-secondary);
+  }
+
+  &:hover {
+    color: map-get(map-get($themes, light), text);
+    .xly-json-viewer--dark & { color: map-get(map-get($themes, dark), text); }
+  }
+}
+
+// 子项
+.json-item {
+  display: inline;
+}
+
+// 冒号
+.json-colon {
+  .xly-json-viewer--dark & {
+    color: map-get(map-get($themes, dark), text);
+  }
+}
+
+// 逗号
+.json-comma {
+  .xly-json-viewer--dark & {
+    color: map-get(map-get($themes, dark), text);
+  }
+}
+
+// 缩进
+.json-indent {
+  display: inline;
+  white-space: pre;
+}
+
+// 子内容容器
+.json-children {
+  display: inline;
+}
