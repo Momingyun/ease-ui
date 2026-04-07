@@ -853,6 +853,63 @@ const columns = [
       </div>
     </section>
 
+    <!-- 操作列固定 -->
+    <section class="doc-section">
+      <h2 class="doc-section__title">操作列固定</h2>
+      <p class="doc-section__desc">
+        通过 <code>action-fixed</code> 属性将操作列固定在左侧或右侧，配合 <code>action-width</code> 设置宽度。
+        横向滚动时操作按钮始终可见，提升用户体验。
+      </p>
+      <div class="doc-preview">
+        <div
+          class="doc-preview__body"
+          style="flex-direction: column; align-items: stretch; gap: 20px"
+        >
+          <div style="width: 100%; overflow-x: auto">
+            <p class="size-label">操作列固定在右侧</p>
+            <xly-table
+              :columns="actionFixedColumns"
+              :data="enhancedBigData.slice(0, 8)"
+              stripe
+              border
+              action-fixed="right"
+              :action-width="140"
+              :page-size="8"
+            >
+              <template #action="{ row }">
+                <div class="action-btns">
+                  <button class="action-btn action-btn--edit" @click.stop="handleEdit(row)">
+                    编辑
+                  </button>
+                  <button class="action-btn action-btn--delete" @click.stop="handleDelete(row)">
+                    删除
+                  </button>
+                </div>
+              </template>
+            </xly-table>
+          </div>
+          <p style="font-size: 13px; color: #8e8ea0">
+            💡 提示：横向滚动表格，操作列始终固定在右侧
+          </p>
+        </div>
+        <div class="doc-code">
+          <pre><code>&lt;xly-table
+  :columns="columns"
+  :data="data"
+  stripe
+  border
+  action-fixed="right"
+  :action-width="140"
+&gt;
+  &lt;template #action="{ row }"&gt;
+    &lt;button @click="handleEdit(row)"&gt;编辑&lt;/button&gt;
+    &lt;button @click="handleDelete(row)"&gt;删除&lt;/button&gt;
+  &lt;/template&gt;
+&lt;/xly-table&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
     <!-- 合计行 -->
     <section class="doc-section">
       <h2 class="doc-section__title">合计行</h2>
@@ -1785,6 +1842,36 @@ const columnSettingsColumns: TableColumn[] = [
 function handleColumnOrderChange(newColumns: TableColumn[]) {
   console.log('列顺序已更新', newColumns)
 }
+
+/* -------------------- 操作列固定 -------------------- */
+const actionFixedColumns: TableColumn[] = [
+  { prop: 'id', name: 'ID',  fixed: 'left', align: 'center' },
+  { prop: 'name', name: '姓名', fixed: 'left' },
+  { prop: 'age', name: '年龄',  align: 'center' },
+  { prop: 'gender', name: '性别',  align: 'center' },
+  { prop: 'dept', name: '部门', },
+  { prop: 'position', name: '职位',  },
+  { prop: 'email', name: '邮箱', width: 180, ellipsis: true },
+  { prop: 'phone', name: '电话',  },
+  { prop: 'address', name: '地址',  ellipsis: true },
+  { prop: 'company', name: '公司',  },
+  { prop: 'city', name: '城市',  },
+  { prop: 'province', name: '省份',  },
+  { prop: 'joinDate', name: '入职日期' },
+  { prop: 'salary', name: '薪资', align: 'right' },
+  { prop: 'bonus', name: '奖金', align: 'right' },
+  { prop: 'performance', name: '绩效',  align: 'center' },
+  { prop: 'status', name: '状态', align: 'center' },
+  { prop: 'education', name: '学历',  align: 'center' },
+  { prop: 'experience', name: '工作年限' , align: 'center' },
+  { prop: 'entryDate', name: '转正日期' },
+  { prop: 'contractEnd', name: '合同到期'},
+  { prop: 'idCard', name: '身份证号',  ellipsis: true },
+  { prop: 'bankCard', name: '银行卡号',  ellipsis: true },
+  { prop: 'emergencyContact', name: '紧急联系人' },
+  { prop: 'emergencyPhone', name: '紧急电话' },
+  { prop: 'remark', name: '备注', width: 120, ellipsis: true },
+]
 
 /* -------------------- 列固定 -------------------- */
 const fixedColumns: TableColumn[] = [

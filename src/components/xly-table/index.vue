@@ -1,7 +1,7 @@
 <template>
   <div class="xly-table" :class="tableClass">
     <!-- 工具栏 -->
-    <div v-if="showToolbar" class="xly-table__toolbar">
+    <div v-if="$slots.toolbar || title" class="xly-table__toolbar">
       <div class="xly-table__toolbar-left">
         <span v-if="title" class="xly-table__title">{{ title }}</span>
         <slot name="toolbar-left" />
@@ -52,43 +52,43 @@
       <table class="xly-table__inner" :style="{ minWidth: tableMinWidth }">
         <!-- 表头 -->
         <thead class="xly-table__thead">
-        <tr>
-          <!-- 树形展开列 -->
-          <th v-if="tree" class="xly-table__th xly-table__th--tree-expand" />
-          <!-- 普通展开列 -->
-          <th v-else-if="expandable" class="xly-table__th xly-table__th--expand" />
-          <!-- 选择列 - 多选模式 -->
-          <th v-if="selectable && selectionMode === 'multiple'" class="xly-table__th xly-table__th--selection">
-            <label class="xly-table__checkbox">
-              <input
-                type="checkbox"
-                :checked="isAllSelected"
-                :indeterminate="isIndeterminate"
-                @change="handleSelectAll"
-              />
-              <span class="xly-table__checkbox-inner" />
-            </label>
-          </th>
-          <!-- 选择列 - 单选模式 -->
-          <th v-if="selectable && selectionMode === 'single'" class="xly-table__th xly-table__th--selection" />
-          <!-- 序号列 -->
-          <th v-if="showIndex" class="xly-table__th xly-table__th--index">
-            {{ indexLabel }}
-          </th>
-          <!-- 数据列 -->
-          <th
-            v-for="col in visibleColumns"
-            :key="col.prop"
-            class="xly-table__th"
-            :class="[
+          <tr>
+            <!-- 树形展开列 -->
+            <th v-if="tree" class="xly-table__th xly-table__th--tree-expand" />
+            <!-- 普通展开列 -->
+            <th v-else-if="expandable" class="xly-table__th xly-table__th--expand" />
+            <!-- 选择列 - 多选模式 -->
+            <th v-if="selectable && selectionMode === 'multiple'" class="xly-table__th xly-table__th--selection">
+              <label class="xly-table__checkbox">
+                <input
+                  type="checkbox"
+                  :checked="isAllSelected"
+                  :indeterminate="isIndeterminate"
+                  @change="handleSelectAll"
+                />
+                <span class="xly-table__checkbox-inner" />
+              </label>
+            </th>
+            <!-- 选择列 - 单选模式 -->
+            <th v-if="selectable && selectionMode === 'single'" class="xly-table__th xly-table__th--selection" />
+            <!-- 序号列 -->
+            <th v-if="showIndex" class="xly-table__th xly-table__th--index">
+              {{ indexLabel }}
+            </th>
+            <!-- 数据列 -->
+            <th
+              v-for="col in visibleColumns"
+              :key="col.prop"
+              class="xly-table__th"
+              :class="[
                 col.align ? `xly-table__th--${col.align}` : '',
                 col.sortable ? 'is-sortable' : '',
                 sortState.key === col.prop ? 'is-sorted' : '',
                 col.fixed ? `xly-table__th--fixed xly-table__th--fixed-${col.fixed}` : '',
               ]"
-            :style="getColStyle(col)"
-            @click="col.sortable ? handleSort(col.prop) : undefined"
-          >
+              :style="getColStyle(col)"
+              @click="col.sortable ? handleSort(col.prop) : undefined"
+            >
               <span class="xly-table__th-inner">
                 <span class="xly-table__th-label">{{ col.name }}</span>
                 <span v-if="col.sortable" class="xly-table__sort-icons">
@@ -116,91 +116,96 @@
                   </svg>
                 </span>
               </span>
-          </th>
-          <!-- 操作列 -->
-          <th v-if="$slots.action" class="xly-table__th xly-table__th--action xly-table__th--fixed xly-table__th--fixed-right">
-            {{ actionLabel }}
-          </th>
-        </tr>
+            </th>
+            <!-- 操作列 -->
+            <th
+              v-if="$slots.action"
+              class="xly-table__th xly-table__th--action"
+              :class="actionFixed ? `xly-table__th--fixed xly-table__th--fixed-${actionFixed}` : ''"
+              :style="actionFixed ? { [actionFixed]: '0px', width: actionWidth ? `${actionWidth}px` : '120px' } : {}"
+            >
+              {{ actionLabel }}
+            </th>
+          </tr>
         </thead>
 
         <!-- 表体 -->
         <tbody class="xly-table__tbody">
-        <!-- 加载状态 -->
-        <tr v-if="loading" class="xly-table__loading-row">
-          <td :colspan="totalColCount">
-            <div class="xly-table__loading">
-              <div class="xly-table__loading-spinner">
-                <div
-                  v-for="i in 5"
-                  :key="i"
-                  class="xly-table__loading-bar"
-                  :style="{ animationDelay: `${i * 0.1}s` }"
-                ></div>
+          <!-- 加载状态 -->
+          <tr v-if="loading" class="xly-table__loading-row">
+            <td :colspan="totalColCount">
+              <div class="xly-table__loading">
+                <div class="xly-table__loading-spinner">
+                  <div
+                    v-for="i in 5"
+                    :key="i"
+                    class="xly-table__loading-bar"
+                    :style="{ animationDelay: `${i * 0.1}s` }"
+                  ></div>
+                </div>
+                <span v-if="loadingText" class="xly-table__loading-text">{{ loadingText }}</span>
               </div>
-              <span v-if="loadingText" class="xly-table__loading-text">{{ loadingText }}</span>
-            </div>
-          </td>
-        </tr>
+            </td>
+          </tr>
 
-        <!-- 空状态 -->
-        <tr v-else-if="displayData.length === 0" class="xly-table__empty-row">
-          <td :colspan="totalColCount">
-            <div class="xly-table__empty">
-              <slot name="empty">
-                <svg
-                  viewBox="0 0 80 60"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="xly-table__empty-icon"
-                >
-                  <rect
-                    x="4"
-                    y="10"
-                    width="72"
-                    height="46"
-                    rx="4"
-                    fill="#f5f7fa"
-                    stroke="#e2e4ed"
-                    stroke-width="1.5"
-                  />
-                  <rect
-                    x="4"
-                    y="10"
-                    width="72"
-                    height="14"
-                    rx="4"
-                    fill="#eef0f6"
-                    stroke="#e2e4ed"
-                    stroke-width="1.5"
-                  />
-                  <rect x="14" y="32" width="26" height="4" rx="2" fill="#dde0ea" />
-                  <rect x="14" y="42" width="18" height="4" rx="2" fill="#dde0ea" />
-                  <rect x="46" y="32" width="20" height="4" rx="2" fill="#dde0ea" />
-                  <rect x="46" y="42" width="12" height="4" rx="2" fill="#dde0ea" />
-                </svg>
-                <p class="xly-table__empty-text">{{ emptyText }}</p>
-              </slot>
-            </div>
-          </td>
-        </tr>
+          <!-- 空状态 -->
+          <tr v-else-if="displayData.length === 0" class="xly-table__empty-row">
+            <td :colspan="totalColCount">
+              <div class="xly-table__empty">
+                <slot name="empty">
+                  <svg
+                    viewBox="0 0 80 60"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="xly-table__empty-icon"
+                  >
+                    <rect
+                      x="4"
+                      y="10"
+                      width="72"
+                      height="46"
+                      rx="4"
+                      fill="#f5f7fa"
+                      stroke="#e2e4ed"
+                      stroke-width="1.5"
+                    />
+                    <rect
+                      x="4"
+                      y="10"
+                      width="72"
+                      height="14"
+                      rx="4"
+                      fill="#eef0f6"
+                      stroke="#e2e4ed"
+                      stroke-width="1.5"
+                    />
+                    <rect x="14" y="32" width="26" height="4" rx="2" fill="#dde0ea" />
+                    <rect x="14" y="42" width="18" height="4" rx="2" fill="#dde0ea" />
+                    <rect x="46" y="32" width="20" height="4" rx="2" fill="#dde0ea" />
+                    <rect x="46" y="42" width="12" height="4" rx="2" fill="#dde0ea" />
+                  </svg>
+                  <p class="xly-table__empty-text">{{ emptyText }}</p>
+                </slot>
+              </div>
+            </td>
+          </tr>
 
-        <!-- 数据行 -->
-        <template v-else>
-          <!-- 树形模式渲染 -->
-          <template v-if="tree">
-            <template v-for="node in treeFlatData" :key="node.key">
-              <tr
-                class="xly-table__tr"
-                :class="{
+          <!-- 数据行 -->
+          <template v-else>
+            <!-- 树形模式渲染 -->
+            <template v-if="tree">
+              <template v-for="node in treeFlatData" :key="node.key">
+                <tr
+                  class="xly-table__tr"
+                  :class="{
                     'is-selected': isRowSelected(node.row),
                     'is-tree-node': true,
                     'is-tree-expanded': node.expanded,
                   }"
-                @click="handleTreeNodeClick(node.row); handleRowClick(node.row, 0)"
-              >
-                <!-- 树形展开列（只在第一列前显示） -->
-                <td class="xly-table__td xly-table__td--tree-expand">
+                  @click="handleTreeNodeClick(node.row); handleRowClick(node.row, 0)"
+                >
+                  <!-- 树形展开列（只在第一列前显示） -->
+                  <td class="xly-table__td xly-table__td--tree-expand">
                     <span
                       v-if="node.hasChildren"
                       class="xly-table__tree-icon"
@@ -214,97 +219,102 @@
                         <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="20" />
                       </svg>
                     </span>
-                </td>
-                <!-- 选择列 - 多选模式 -->
-                <td v-if="selectable && selectionMode === 'multiple'" class="xly-table__td xly-table__td--selection">
-                  <label class="xly-table__checkbox" @click.stop>
-                    <input
-                      type="checkbox"
-                      :checked="isRowSelected(node.row)"
-                      @change="handleRowSelect(node.row)"
-                    />
-                    <span class="xly-table__checkbox-inner" />
-                  </label>
-                </td>
-                <!-- 选择列 - 单选模式 -->
-                <td v-if="selectable && selectionMode === 'single'" class="xly-table__td xly-table__td--selection">
-                  <label class="xly-table__radio" @click.stop="handleRowSelect(node.row)">
+                  </td>
+                  <!-- 选择列 - 多选模式 -->
+                  <td v-if="selectable && selectionMode === 'multiple'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__checkbox" @click.stop>
+                      <input
+                        type="checkbox"
+                        :checked="isRowSelected(node.row)"
+                        @change="handleRowSelect(node.row)"
+                      />
+                      <span class="xly-table__checkbox-inner" />
+                    </label>
+                  </td>
+                  <!-- 选择列 - 单选模式 -->
+                  <td v-if="selectable && selectionMode === 'single'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__radio" @click.stop="handleRowSelect(node.row)">
                       <span
                         class="xly-table__radio-inner"
                         :class="{ 'is-checked': isRowSelected(node.row) }"
                       />
-                  </label>
-                </td>
-                <!-- 序号列 -->
-                <td v-if="showIndex" class="xly-table__td xly-table__td--index">
-                  {{ node.treeIndex }}
-                </td>
-                <!-- 数据列 -->
-                <td
-                  v-for="(col, colIndex) in visibleColumns"
-                  :key="col.prop"
-                  class="xly-table__td"
-                  :class="[
+                    </label>
+                  </td>
+                  <!-- 序号列 -->
+                  <td v-if="showIndex" class="xly-table__td xly-table__td--index">
+                    {{ node.treeIndex }}
+                  </td>
+                  <!-- 数据列 -->
+                  <td
+                    v-for="(col, colIndex) in visibleColumns"
+                    :key="col.prop"
+                    class="xly-table__td"
+                    :class="[
                       col.align ? `xly-table__td--${col.align}` : '',
                       col.fixed ? `xly-table__td--fixed xly-table__td--fixed-${col.fixed}` : '',
                       colIndex === 0 ? 'xly-table__td--tree-first' : '',
                     ]"
-                  :style="getColStyle(col)"
-                >
-                  <!-- 第一列需要添加缩进 -->
-                  <template v-if="colIndex === 0">
+                    :style="getColStyle(col)"
+                  >
+                    <!-- 第一列需要添加缩进 -->
+                    <template v-if="colIndex === 0">
                       <span
                         class="xly-table__tree-indent"
                         :style="{ paddingLeft: `${node.level * treeIndentSize}px` }"
                       />
-                    <slot
-                      :name="`col-${col.prop}`"
-                      v-bind="{ row: node.row, col, value: getCellValue(node.row, col.prop), index: 0 }"
-                    >
+                      <slot
+                        :name="`col-${col.prop}`"
+                        v-bind="{ row: node.row, col, value: getCellValue(node.row, col.prop), index: 0 }"
+                      >
                         <span
                           class="xly-table__cell-text"
                           :class="{ 'is-ellipsis': col.ellipsis }"
-                        >{{ formatCell(node.row, col) }}</span
+                          >{{ formatCell(node.row, col) }}</span
                         >
-                    </slot>
-                  </template>
-                  <template v-else>
-                    <slot
-                      :name="`col-${col.prop}`"
-                      v-bind="{ row: node.row, col, value: getCellValue(node.row, col.prop), index: 0 }"
-                    >
+                      </slot>
+                    </template>
+                    <template v-else>
+                      <slot
+                        :name="`col-${col.prop}`"
+                        v-bind="{ row: node.row, col, value: getCellValue(node.row, col.prop), index: 0 }"
+                      >
                         <span
                           class="xly-table__cell-text"
                           :class="{ 'is-ellipsis': col.ellipsis }"
-                        >{{ formatCell(node.row, col) }}</span
+                          >{{ formatCell(node.row, col) }}</span
                         >
-                    </slot>
-                  </template>
-                </td>
-                <!-- 操作列 -->
-                <td v-if="$slots.action" class="xly-table__td xly-table__td--action">
-                  <slot name="action" v-bind="{ row: node.row, index: 0 }" />
-                </td>
-              </tr>
+                      </slot>
+                    </template>
+                  </td>
+                  <!-- 操作列 -->
+                  <td
+                    v-if="$slots.action"
+                    class="xly-table__td xly-table__td--action"
+                    :class="actionFixed ? `xly-table__td--fixed xly-table__td--fixed-${actionFixed}` : ''"
+                    :style="actionFixed ? { [actionFixed]: '0px', width: actionWidth ? `${actionWidth}px` : '120px' } : {}"
+                  >
+                    <slot name="action" v-bind="{ row: node.row, index: 0 }" />
+                  </td>
+                </tr>
+              </template>
             </template>
-          </template>
 
-          <!-- 普通模式渲染（展开行） -->
-          <template v-else>
-            <template v-for="item in displayDataWithExpand" :key="item.key">
-              <!-- 主数据行 -->
-              <tr
-                class="xly-table__tr"
-                :class="{
+            <!-- 普通模式渲染（展开行） -->
+            <template v-else>
+              <template v-for="item in displayDataWithExpand" :key="item.key">
+                <!-- 主数据行 -->
+                <tr
+                  class="xly-table__tr"
+                  :class="{
                     'is-selected': isRowSelected(item.row),
                     'is-stripe': stripe && item.index % 2 === 1,
                     'is-clickable': rowClickable || expandable,
                   }"
-                :style="{ cursor: expandable ? 'pointer' : rowClickable ? 'pointer' : 'default' }"
-                @click="handleExpandClick(item.row, item.index); handleRowClick(item.row, item.index)"
-              >
-                <!-- 展开列 -->
-                <td v-if="expandable" class="xly-table__td xly-table__td--expand">
+                  :style="{ cursor: expandable ? 'pointer' : rowClickable ? 'pointer' : 'default' }"
+                  @click="handleExpandClick(item.row, item.index); handleRowClick(item.row, item.index)"
+                >
+                  <!-- 展开列 -->
+                  <td v-if="expandable" class="xly-table__td xly-table__td--expand">
                     <span
                       class="xly-table__expand-icon"
                       :class="{ 'is-expanded': item.expanded }"
@@ -314,46 +324,46 @@
                         <polyline points="9 18 15 12 9 6" />
                       </svg>
                     </span>
-                </td>
-                <!-- 选择列 - 多选模式 -->
-                <td v-if="selectable && selectionMode === 'multiple'" class="xly-table__td xly-table__td--selection">
-                  <label class="xly-table__checkbox" @click.stop>
-                    <input
-                      type="checkbox"
-                      :checked="isRowSelected(item.row)"
-                      @change="handleRowSelect(item.row)"
-                    />
-                    <span class="xly-table__checkbox-inner" />
-                  </label>
-                </td>
-                <!-- 选择列 - 单选模式 -->
-                <td v-if="selectable && selectionMode === 'single'" class="xly-table__td xly-table__td--selection">
-                  <label class="xly-table__radio" @click.stop="handleRowSelect(item.row)">
+                  </td>
+                  <!-- 选择列 - 多选模式 -->
+                  <td v-if="selectable && selectionMode === 'multiple'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__checkbox" @click.stop>
+                      <input
+                        type="checkbox"
+                        :checked="isRowSelected(item.row)"
+                        @change="handleRowSelect(item.row)"
+                      />
+                      <span class="xly-table__checkbox-inner" />
+                    </label>
+                  </td>
+                  <!-- 选择列 - 单选模式 -->
+                  <td v-if="selectable && selectionMode === 'single'" class="xly-table__td xly-table__td--selection">
+                    <label class="xly-table__radio" @click.stop="handleRowSelect(item.row)">
                       <span
                         class="xly-table__radio-inner"
                         :class="{ 'is-checked': isRowSelected(item.row) }"
                       />
-                  </label>
-                </td>
-                <!-- 序号列 -->
-                <td v-if="showIndex" class="xly-table__td xly-table__td--index">
-                  {{ getRowIndex(item.index) }}
-                </td>
-                <!-- 数据列 -->
-                <td
-                  v-for="col in visibleColumns"
-                  :key="col.prop"
-                  class="xly-table__td"
-                  :class="[
+                    </label>
+                  </td>
+                  <!-- 序号列 -->
+                  <td v-if="showIndex" class="xly-table__td xly-table__td--index">
+                    {{ getRowIndex(item.index) }}
+                  </td>
+                  <!-- 数据列 -->
+                  <td
+                    v-for="col in visibleColumns"
+                    :key="col.prop"
+                    class="xly-table__td"
+                    :class="[
                       col.align ? `xly-table__td--${col.align}` : '',
                       col.fixed ? `xly-table__td--fixed xly-table__td--fixed-${col.fixed}` : '',
                     ]"
-                  :style="getColStyle(col)"
-                >
-                  <slot
-                    :name="`col-${col.prop}`"
-                    v-bind="{ row: item.row, col, value: getCellValue(item.row, col.prop), index: item.index }"
+                    :style="getColStyle(col)"
                   >
+                    <slot
+                      :name="`col-${col.prop}`"
+                      v-bind="{ row: item.row, col, value: getCellValue(item.row, col.prop), index: item.index }"
+                    >
                       <span
                         class="xly-table__cell-text"
                         :class="{ 'is-ellipsis': col.ellipsis }"
@@ -363,78 +373,83 @@
                         "
                         @mousemove="col.ellipsis && updateTooltipPosition($event)"
                         @mouseleave="col.ellipsis && hideCellTooltip()"
-                      >{{ formatCell(item.row, col) }}</span
+                        >{{ formatCell(item.row, col) }}</span
                       >
-                  </slot>
-                </td>
-                <!-- 操作列 -->
-                <td v-if="$slots.action" class="xly-table__td xly-table__td--action">
-                  <slot name="action" v-bind="{ row: item.row, index: item.index }" />
-                </td>
-              </tr>
+                    </slot>
+                  </td>
+                  <!-- 操作列 -->
+                  <td
+                    v-if="$slots.action"
+                    class="xly-table__td xly-table__td--action"
+                    :class="actionFixed ? `xly-table__td--fixed xly-table__td--fixed-${actionFixed}` : ''"
+                    :style="actionFixed ? { [actionFixed]: '0px', width: actionWidth ? `${actionWidth}px` : '120px' } : {}"
+                  >
+                    <slot name="action" v-bind="{ row: item.row, index: item.index }" />
+                  </td>
+                </tr>
 
-              <!-- 展开行内容 -->
-              <tr
-                v-if="item.expanded && hasExpandSlot"
-                class="xly-table__expand-row"
-              >
-                <td :colspan="totalColCount" class="xly-table__expand-cell">
-                  <slot name="expand" v-bind="{ row: item.row, index: item.index }" />
-                </td>
-              </tr>
+                <!-- 展开行内容 -->
+                <tr
+                  v-if="item.expanded && hasExpandSlot"
+                  class="xly-table__expand-row"
+                >
+                  <td :colspan="totalColCount" class="xly-table__expand-cell">
+                    <slot name="expand" v-bind="{ row: item.row, index: item.index }" />
+                  </td>
+                </tr>
+              </template>
             </template>
           </template>
-        </template>
         </tbody>
 
         <!-- 合计行（不支持选择/选中） -->
         <tfoot v-if="hasSummary" class="xly-table__tfoot">
-        <tr class="xly-table__summary-row">
-          <!-- 树形/展开占位列 -->
-          <td v-if="tree || expandable" class="xly-table__td xly-table__td--summary-placeholder" />
-          <!-- 选择列占位：合计行不参与选择，显示为空格占位 -->
-          <td v-if="selectable" class="xly-table__td xly-table__td--summary-placeholder xly-table__td--no-select" />
-          <!-- 序号列 → 显示"合计"标签 -->
-          <td v-if="showIndex" class="xly-table__td xly-table__td--summary-label">
-            {{ summaryLabel }}
-          </td>
-          <!-- 数据列 -->
-          <td
-            v-for="(col, colIdx) in visibleColumns"
-            :key="col.prop"
-            class="xly-table__td xly-table__td--summary"
-            :class="[
+          <tr class="xly-table__summary-row">
+            <!-- 树形/展开占位列 -->
+            <td v-if="tree || expandable" class="xly-table__td xly-table__td--summary-placeholder" />
+            <!-- 选择列占位：合计行不参与选择，显示为空格占位 -->
+            <td v-if="selectable" class="xly-table__td xly-table__td--summary-placeholder xly-table__td--no-select" />
+            <!-- 序号列 → 显示"合计"标签 -->
+            <td v-if="showIndex" class="xly-table__td xly-table__td--summary-label">
+              {{ summaryLabel }}
+            </td>
+            <!-- 数据列 -->
+            <td
+              v-for="(col, colIdx) in visibleColumns"
+              :key="col.prop"
+              class="xly-table__td xly-table__td--summary"
+              :class="[
                 col.align ? `xly-table__td--${col.align}` : '',
                 col.fixed ? `xly-table__td--fixed xly-table__td--fixed-${col.fixed}` : '',
               ]"
-            :style="getColStyle(col)"
-          >
-            <!-- 没有序号列时，第一列显示合计标签 -->
-            <template v-if="!showIndex && colIdx === 0">
-              <span class="xly-table__summary-title">{{ summaryLabel }}</span>
-              <span v-if="summaryRow[col.prop]?.value" class="xly-table__summary-sep"> / </span>
-              <template v-if="summaryRow[col.prop]?.value">
+              :style="getColStyle(col)"
+            >
+              <!-- 没有序号列时，第一列显示合计标签 -->
+              <template v-if="!showIndex && colIdx === 0">
+                <span class="xly-table__summary-title">{{ summaryLabel }}</span>
+                <span v-if="summaryRow[col.prop]?.value" class="xly-table__summary-sep"> / </span>
+                <template v-if="summaryRow[col.prop]?.value">
                   <span
                     v-if="summaryMixed && (summaryRow[col.prop].type === 'sum' || summaryRow[col.prop].type === 'avg')"
                     :class="['xly-table__summary-badge', `xly-table__summary-badge--${summaryRow[col.prop].type}`]"
                   >{{ summaryRow[col.prop].type === 'sum' ? '合计' : '均值' }}</span>
-                <span>{{ summaryRow[col.prop].value }}</span>
+                  <span>{{ summaryRow[col.prop].value }}</span>
+                </template>
               </template>
-            </template>
-            <template v-else>
-              <template v-if="summaryRow[col.prop]?.type === 'sum' || summaryRow[col.prop]?.type === 'avg'">
+              <template v-else>
+                <template v-if="summaryRow[col.prop]?.type === 'sum' || summaryRow[col.prop]?.type === 'avg'">
                   <span
                     v-if="summaryMixed"
                     :class="['xly-table__summary-badge', `xly-table__summary-badge--${summaryRow[col.prop].type}`]"
                   >{{ summaryRow[col.prop].type === 'sum' ? '合计' : '均值' }}</span>
-                <span>{{ summaryRow[col.prop].value }}</span>
+                  <span>{{ summaryRow[col.prop].value }}</span>
+                </template>
+                <template v-else>
+                  {{ summaryRow[col.prop]?.value }}
+                </template>
               </template>
-              <template v-else>
-                {{ summaryRow[col.prop]?.value }}
-              </template>
-            </template>
-          </td>
-        </tr>
+            </td>
+          </tr>
         </tfoot>
       </table>
     </div>
@@ -792,6 +807,10 @@ export interface TableProps {
   showSummary?: boolean
   /** 合计行首列（或首个非数据列）显示的文字，默认"合计" */
   summaryLabel?: string
+  /** 操作列固定位置：'left' | 'right' */
+  actionFixed?: 'left' | 'right'
+  /** 操作列宽度 */
+  actionWidth?: number
 }
 
 /* ====================================================
@@ -814,10 +833,10 @@ const props = withDefaults(defineProps<TableProps>(), {
   page: 1,
   pageSize: 10,
   showPageSize: true,
-  pageSizeOptions: () => [10, 20, 50, 100,150,200,500],
+  pageSizeOptions: () => [10, 20, 50, 100],
   compact: false,
   highlight: true,
-  paginationPosition: 'center',
+  paginationPosition: 'right',
   showPageInput: true,
   showColumnSettings: false,
   columnDraggable: true,
@@ -852,26 +871,6 @@ const emit = defineEmits<{
   /** 树形节点展开/收起 */
   (e: 'tree-expand', row: Record<string, any>, expanded: boolean): void
 }>()
-
-/* ====================================================
-   工具栏可见性
-==================================================== */
-/**
- * 只要满足以下任一条件，工具栏就会显示：
- * - 传入了 title
- * - 使用了 toolbar-left slot
- * - 使用了 toolbar slot（右侧自定义内容）
- * - 开启了 showRefresh / showExport / showColumnSettings
- */
-const showToolbar = computed(
-  () =>
-    !!props.title ||
-    !!slots['toolbar-left'] ||
-    !!slots['toolbar'] ||
-    props.showRefresh ||
-    props.showExport ||
-    props.showColumnSettings,
-)
 
 /* ====================================================
    刷新 & 导出
@@ -963,6 +962,11 @@ function getColStyle(col: TableColumn) {
   if (col.width) {
     style.width = typeof col.width === 'number' ? `${col.width}px` : col.width
     style.maxWidth = style.width // 限制最大宽度，确保 ellipsis 生效
+  } else {
+    // 没传 width 时给个默认最小宽度，防止列被压缩
+    style.minWidth = col.minWidth
+      ? (typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth)
+      : '120px'
   }
   if (col.minWidth)
     style.minWidth = typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth
@@ -1779,27 +1783,29 @@ defineExpose({
 $primary: #5e6ad2;
 $primary-light: #f0f1ff;
 $text-primary: #1a1a2e;
+$text-primary: #1a1a2e;
 $text-regular: #4a4a6a;
 $text-secondary: #8e8ea0;
 $text-disabled: #c0c0d0;
-$border-color: #f2f3f7;
-$bg-header: #ffffff;
-$bg-hover: #f8f9ff;
-$bg-selected: #edeeff;
-$radius-sm: 6px;
-$radius-md: 8px;
-$radius-lg: 16px;
-$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.02);
-$shadow-md: 0 4px 20px rgba(94, 106, 210, 0.08);
+$border-color: #e8e8f0;
+$border-strong: #d0d0e0;
+$bg-header: #f8f9fc;
+$bg-hover: #f0f2f8;
+$bg-selected: #e8ebf5;
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 /* ========== 容器 ========== */
 .xly-table {
   background: #fff;
   border-radius: $radius-lg;
-  border: 1px solid $border-color;
+  border: 1px solid $border-strong;
   box-shadow: $shadow-sm;
-  font-size: 14px;
+  font-size: 13px;
   font-family:
     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', sans-serif;
@@ -1814,7 +1820,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   &--border {
     .xly-table__th,
     .xly-table__td {
-      border-right: 1px solid $border-color;
+      border-right: 1px solid $border-strong;
 
       &:last-child {
         border-right: none;
@@ -1885,16 +1891,18 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .xly-table__th {
-  padding: 14px 20px;
+  padding: 12px 16px;
   text-align: left;
-  font-size: 13px;
-  font-weight: 600;
-  color: $text-regular;
+  font-size: 12px;
+  font-weight: 700;
+  color: $text-primary;
   background: $bg-header;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 2px solid $border-strong;
   border-right: none;
   white-space: nowrap;
   user-select: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   line-height: 1.5;
   letter-spacing: 0;
   position: relative;
@@ -1978,7 +1986,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &.is-stripe {
-    background: #fafbfc;
+    background: #f5f6fa;
   }
 
   &.is-selected {
@@ -1992,12 +2000,13 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 /* ========== 单元格 ========== */
 .xly-table__td {
-  padding: 14px 20px;
+  padding: 12px 16px;
   color: $text-regular;
   border-bottom: 1px solid $border-color;
   border-right: none;
   vertical-align: middle;
   line-height: 1.5;
+  font-weight: 500;
   transition: $transition;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
@@ -2575,8 +2584,18 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 .xly-table__td--fixed {
   position: sticky;
   z-index: 1;
-  background: #fff;
+}
 
+.xly-table__th--fixed {
+  background: $bg-header;
+}
+
+.xly-table__td--fixed {
+  background: #fff;
+}
+
+.xly-table__th--fixed,
+.xly-table__td--fixed {
   &::after {
     content: '';
     position: absolute;
