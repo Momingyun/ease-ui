@@ -15,6 +15,14 @@
 
 ---
 
+## [2026-04-08]
+- **xly-dept-tree**（部门树组件）`src/components/xly-dept-tree/`
+    - 用于展示组织架构、部门层级等树形结构数据
+    - 支持树形数据和带 `pid` 的扁平数据两种格式，自动构建树结构
+    - 内置展开/折叠、节点选中、高亮等功能
+    - 支持 `default-expand-level` 控制默认展开层级，设为 0 全部展开
+    - 支持 `selected-id` 外部控制选中节点，`@select` 事件获取选中数据
+    - 支持 `node-key` 自定义字段映射（id/pid/label/children）
 
 ## [2026-04-07]
 ### ✨ 新增

@@ -1,0 +1,122 @@
+// 主题变量 - 大企业/政府风格
+$themes: (
+  light: (
+    bg: #ffffff,
+    hover-bg: #f0f2f5,
+    selected-bg: #d6e4f0,
+    selected-border: #1d4e89,
+    text: #1a1a1a,
+    text-secondary: #4a4a4a,
+    expand-icon: #666666,
+    expand-icon-hover: #1d4e89,
+  ),
+);
+
+// 组件主体
+.xly-dept-tree {
+  width: 100%;
+  background: transparent;
+  user-select: none;
+
+  &__loading,
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 60px 24px;
+    color: map-get(map-get($themes, light), text-secondary);
+    font-size: 15px;
+  }
+
+  &__loading-icon {
+    font-size: 18px;
+    animation: spin 1s linear infinite;
+  }
+
+  &__content {
+    padding: 0;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// 节点行
+.dept-node {
+  &__row {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 1px;
+
+    &:hover {
+      background: map-get(map-get($themes, light), hover-bg);
+    }
+  }
+
+  &--selected > &__row {
+    background: map-get(map-get($themes, light), selected-bg);
+    border-left: 4px solid map-get(map-get($themes, light), selected-border);
+    font-weight: 500;
+  }
+
+  // 展开/折叠图标
+  &__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-right: 12px;
+    color: map-get(map-get($themes, light), expand-icon);
+    transition: transform 0.2s, color 0.2s;
+    font-size: 11px;
+    flex-shrink: 0;
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
+
+    &:hover {
+      color: map-get(map-get($themes, light), expand-icon-hover);
+    }
+  }
+
+  &__toggle-placeholder {
+    width: 22px;
+    height: 22px;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  // 节点图标
+  &__icon {
+    display: flex;
+    align-items: center;
+    margin-right: 14px;
+    font-size: 18px;
+    color: map-get(map-get($themes, light), text-secondary);
+    flex-shrink: 0;
+  }
+
+  // 节点标签
+  &__label {
+    flex: 1;
+    color: map-get(map-get($themes, light), text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &--selected &__label {
+    color: map-get(map-get($themes, light), selected-border);
+  }
+}

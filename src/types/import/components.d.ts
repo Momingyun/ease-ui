@@ -11,16 +11,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    DeptNode: typeof import('./../../components/xly-dept-tree/DeptNode.vue')['default']
     DropdownItem: typeof import('./../../components/xly-dropdown/dropdown-item.vue')['default']
-    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElIcon: typeof import('element-plus/es')['ElIcon']
-    ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElTag: typeof import('element-plus/es')['ElTag']
     Item: typeof import('./../../components/xly-descriptions/item.vue')['default']
     RadioGroup: typeof import('./../../components/xly-radio/radio-group.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -43,6 +41,7 @@ declare module 'vue' {
     XlyDateRangePicker: typeof import('./../../components/xly-date-range-picker/index.vue')['default']
     XlyDateTimePicker: typeof import('./../../components/xly-date-time-picker/index.vue')['default']
     XlyDateTimeRangePicker: typeof import('./../../components/xly-date-time-range-picker/index.vue')['default']
+    XlyDeptTree: typeof import('./../../components/xly-dept-tree/index.vue')['default']
     XlyDescriptions: typeof import('./../../components/xly-descriptions/index.vue')['default']
     XlyDictSelect: typeof import('./../../components/xly-dict-select/index.vue')['default']
     XlyDictTag: typeof import('./../../components/xly-dict-tag/index.vue')['default']
