@@ -5,6 +5,7 @@
       <div class="xly-table__toolbar-left">
         <span v-if="title" class="xly-table__title">{{ title }}</span>
         <slot name="toolbar-left" />
+        <slot name="toolbar" />
       </div>
       <div class="xly-table__toolbar-right">
         <!-- 刷新按钮 -->
@@ -43,7 +44,6 @@
             <xly-icon name="el:Operation" :size="16" />
           </template>
         </xly-button>
-        <slot name="toolbar" />
       </div>
     </div>
 
