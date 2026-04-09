@@ -1,678 +1,372 @@
 <script setup lang="ts">
+defineOptions({ name: 'Home' })
+
 const features = [
-  {
-    icon: '📄',
-    title: '单文件组件，即拷即用',
-    desc: '每个组件都是完全独立的 .vue 单文件，包含模板、逻辑、样式。无需任何配置，直接复制到项目即可使用。',
-  },
-  {
-    icon: '🔌',
-    title: '仅依赖 Element Plus',
-    desc: '不引入其他 UI 库，无样式冲突。如果你的项目已使用 Element Plus，可以无缝集成。',
-  },
-  {
-    icon: '🎨',
-    title: '样式完全独立',
-    desc: '所有样式内联在组件内部，零样式污染。直接修改组件内的 SCSS 变量即可定制主题。',
-  },
-  {
-    icon: '🎯',
-    title: '解决真实业务痛点',
-    desc: '每个组件都源于实际项目需求，解决表格选择混乱、搜索表单臃肿、日期范围绑定繁琐等痛点。',
-  },
+  { title: '单文件组件', desc: '每个组件都是独立的 .vue 文件，复制即用，不依赖公共模块。' },
+  { title: '零额外依赖', desc: '只依赖 Element Plus，不引入任何第三方库，无版本冲突。' },
+  { title: 'SCSS 变量换肤', desc: '所有样式通过 SCSS 变量控制，改一个变量全局换色。' },
+  { title: '真实业务场景', desc: '搜索表单、高级表格、权限树…实际项目打磨。' },
 ]
 
 const componentGroups = [
-  {
-    name: '基础组件',
-    color: '#409eff',
-    bgColor: '#ecf5ff',
-    count: 11,
-    items: [
-      'xly-button',
-      'xly-icon',
-      'xly-tag',
-      'xly-divider',
-      'xly-avatar',
-      'xly-card',
-      'xly-watermark',
-      'xly-carousel',
-      'xly-empty',
-      'xly-badge',
-      'xly-list',
-    ],
-  },
-  {
-    name: '数据展示',
-    color: '#7c3aed',
-    bgColor: '#f3f0ff',
-    count: 7,
-    items: [
-      'xly-table',
-      'xly-chart',
-      'xly-statistic',
-      'xly-descriptions',
-      'xly-image',
-      'xly-timeline',
-      'xly-video',
-    ],
-  },
-  {
-    name: '导航组件',
-    color: '#0891b2',
-    bgColor: '#ecfeff',
-    count: 3,
-    items: ['xly-tabs', 'xly-steps', 'xly-dropdown'],
-  },
-  {
-    name: '表单组件',
-    color: '#67c23a',
-    bgColor: '#f0f9eb',
-    count: 14,
-    items: [
-      'xly-input',
-      'xly-select',
-      'xly-radio',
-      'xly-cascader',
-      'xly-rate',
-      'xly-switch',
-      'xly-date-picker',
-      'xly-time-picker',
-      'xly-date-time-picker',
-      'xly-search-form',
-      'xly-range-picker',
-      'xly-image-upload',
-      'xly-file-upload',
-      'xly-upload',
-    ],
-  },
-  {
-    name: '反馈组件',
-    color: '#f56c6c',
-    bgColor: '#fef0f0',
-    count: 6,
-    items: ['xly-modal', 'xly-drawer', 'xly-loading', 'xly-message', 'xly-tour', 'xly-progress'],
-  },
-  {
-    name: '布局组件',
-    color: '#e6a23c',
-    bgColor: '#fdf6ec',
-    count: 1,
-    items: ['xly-grid'],
-  },
-  {
-    name: '业务组件',
-    color: '#909399',
-    bgColor: '#f4f4f5',
-    count: 3,
-    items: ['xly-permission', 'xly-chat', 'xly-user-picker'],
-  },
+  { name: '基础', prefix: '/basic', items: ['button', 'icon', 'tag', 'divider', 'avatar', 'card', 'watermark', 'carousel', 'empty', 'badge', 'list'] },
+  { name: '数据展示', prefix: '/data', items: ['table', 'chart', 'statistic', 'descriptions', 'image', 'timeline', 'video', 'china-map', 'file-preview', 'json-viewer', 'dept-tree', 'tree-chart', 'gantt'] },
+  { name: '导航', prefix: '/nav', items: ['tabs', 'steps', 'dropdown'] },
+  { name: '表单', prefix: '/form', items: ['input', 'select', 'radio', 'cascader', 'rate', 'switch', 'date-picker', 'time-picker', 'date-time-picker', 'search-form', 'range-picker', 'image-upload', 'file-upload', 'upload', 'dict-select'] },
+  { name: '反馈', prefix: '/feedback', items: ['modal', 'drawer', 'loading', 'message', 'tour', 'progress'] },
+  { name: '布局', prefix: '/layout', items: ['grid', 'worktab'] },
+  { name: '业务', prefix: '/business', items: ['permission', 'chat', 'user-picker', 'dict-tag'] },
 ]
 
-const painPoints = [
-  {
-    icon: '🔧',
-    title: '组件库太重',
-    desc: '引入一套组件库需要学习整套 API、主题配置、构建配置，成本太高',
-  },
-  {
-    icon: '📋',
-    title: '复制粘贴难',
-    desc: '想从项目 A 复用组件到项目 B，发现依赖了各种公共样式、工具函数，拆不出来',
-  },
-  {
-    icon: '🧩',
-    title: 'Element Plus 不够用',
-    desc: '基础组件有了，但带展开收起的搜索表单、智能表格等业务组件还得自己写',
-  },
-  {
-    icon: '🔄',
-    title: '重复造轮子',
-    desc: '每个项目都要重新实现表格选择、日期范围绑定、表单布局...',
-  },
-]
+/** 组件 key → 路由路径（个别路径不规则的在此修正） */
+const pathOverrides: Record<string, string> = {
+  'search-form': '/form/searchForm',
+}
+
+function compPath(group: typeof componentGroups[0], key: string) {
+  return pathOverrides[key] || `${group.prefix}/${key}`
+}
 </script>
 
 <template>
   <div class="home">
-    <!-- Hero 区域 -->
-    <div class="hero">
-      <div class="hero-inner">
-        <div class="hero-badge">Vue 3 · TypeScript · Element Plus</div>
-        <div class="hero-title-row">
-          <h1 class="hero-title">Ease UI</h1>
-          <a
-            href="https://gitee.com/yun_hua_admin/ease-ui/stargazers"
-            target="_blank"
-            class="title-star"
-          >
-            <img
-              src="https://gitee.com/yun_hua_admin/ease-ui/badge/star.svg?theme=dark"
-              alt="star"
-              class="star-badge"
-            />
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Vue 3 · Element Plus · TypeScript
+        </div>
+        <h1 class="hero-title">
+          为中后台开发<br>
+          <span class="hero-accent">量身定做</span>的组件库
+        </h1>
+        <p class="hero-desc">
+          54 个组件，覆盖搜索、表格、权限、上传等真实业务场景。<br>
+          零额外依赖，复制即用。
+        </p>
+        <div class="hero-actions">
+          <a href="https://gitee.com/yun_hua_admin/ease-ui" target="_blank" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.984 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.984 0zm6.09 5.333c.328 0 .593.266.592.593v1.482a.594.594 0 0 1-.593.592H9.777c-.982 0-1.778.796-1.778 1.778v5.926c0 .982.796 1.778 1.778 1.778h4.444a.593.593 0 0 0 .593-.593v-2.963a.593.593 0 0 0-.593-.593H11.63a.592.592 0 0 1-.592-.592v-1.482c0-.327.266-.592.592-.592h2.964a2.666 2.666 0 0 1 2.666 2.666v4.444a2.666 2.666 0 0 1-2.666 2.667H8.148a2.667 2.667 0 0 1-2.667-2.667V8.296a2.667 2.667 0 0 1 2.667-2.666h9.333a.594.594 0 0 1 .593.703z"/></svg>
+            Gitee
+          </a>
+          <a href="https://github.com/Momingyun/ease-ui" target="_blank" class="btn-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
           </a>
         </div>
-        <p class="hero-subtitle">即插即用的 Vue 3 业务组件库，让中后台开发回归简单</p>
-        <p class="hero-desc">
-          一套为「快速复制」而生的业务组件库。每个组件都是独立的 .vue
-          单文件，不依赖任何外部样式或工具函数，<br />
-          直接复制到你的项目即可使用，让组件复用像复制代码一样简单。
-        </p>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <span class="stat-num">45</span>
-            <span class="stat-label">个组件</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">7</span>
-            <span class="stat-label">个分类</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">0</span>
-            <span class="stat-label">额外依赖</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">100%</span>
-            <span class="stat-label">样式隔离</span>
-          </div>
-        </div>
-
-        <!-- 开源地址 -->
-        <div class="hero-links">
-          <div class="link-item">
-            <span class="link-platform">Gitee：</span>
-            <a href="https://gitee.com/yun_hua_admin/ease-ui" target="_blank" class="link-url">
-              https://gitee.com/yun_hua_admin/ease-ui
-            </a>
-          </div>
-          <div class="link-item">
-            <span class="link-platform">GitHub：</span>
-            <a href="https://github.com/Momingyun/ease-ui" target="_blank" class="link-url">
-              https://github.com/Momingyun/ease-ui
-            </a>
-          </div>
-        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 痛点区域 -->
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">💡 为什么需要它</h2>
-        <p class="section-subtitle">中后台开发中你一定遇到过这些问题</p>
-      </div>
-      <div class="pain-grid">
-        <div v-for="item in painPoints" :key="item.title" class="pain-card">
-          <span class="pain-icon">{{ item.icon }}</span>
-          <div class="pain-content">
-            <h4 class="pain-title">{{ item.title }}</h4>
-            <p class="pain-desc">{{ item.desc }}</p>
+    <!-- 特性 -->
+    <section class="features">
+      <div class="container">
+        <div class="feature-grid">
+          <div v-for="item in features" :key="item.title" class="feature-card">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.desc }}</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 核心优势 -->
-    <section class="section section-gray">
-      <div class="section-header">
-        <h2 class="section-title">✨ 核心优势</h2>
-        <p class="section-subtitle">极致轻量，即拷即用</p>
-      </div>
-      <div class="feature-grid">
-        <div v-for="item in features" :key="item.title" class="feature-card">
-          <span class="feature-icon">{{ item.icon }}</span>
-          <h3 class="feature-title">{{ item.title }}</h3>
-          <p class="feature-desc">{{ item.desc }}</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 组件分类 -->
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">📦 组件总览</h2>
-        <p class="section-subtitle">共 45 个组件，覆盖中后台常用场景</p>
-      </div>
-      <div class="component-groups">
-        <div v-for="group in componentGroups" :key="group.name" class="group-card">
-          <div class="group-header" :style="{ borderLeftColor: group.color }">
-            <div class="group-left">
-              <span class="group-name">{{ group.name }}</span>
-              <span class="group-count" :style="{ background: group.bgColor, color: group.color }">
-                {{ group.count }} 个
-              </span>
+    <!-- 组件 -->
+    <section class="components">
+      <div class="container">
+        <h2 class="section-title">组件</h2>
+        <p class="section-desc">覆盖中后台开发全场景，看中哪个复制哪个。</p>
+        <div class="comp-list">
+          <div v-for="group in componentGroups" :key="group.name" class="comp-row">
+            <span class="comp-cat">{{ group.name }}</span>
+            <div class="comp-tags">
+              <router-link v-for="tag in group.items" :key="tag" :to="compPath(group, tag)" class="comp-tag">{{ tag }}</router-link>
             </div>
           </div>
-          <div class="group-tags">
-            <span
-              v-for="tag in group.items"
-              :key="tag"
-              class="comp-tag"
-              :style="{ borderColor: group.color + '40', color: group.color }"
-            >
-              {{ tag }}
-            </span>
-          </div>
         </div>
       </div>
     </section>
 
-    <!-- 快速开始 -->
-    <section class="section section-gray">
-      <div class="section-header">
-        <h2 class="section-title">🚀 快速使用</h2>
-        <p class="section-subtitle">找到你需要的组件，直接复制，无需安装</p>
-      </div>
-      <div class="steps-row">
-        <div class="step-item">
-          <div class="step-num">01</div>
-          <h4 class="step-title">浏览组件</h4>
-          <p class="step-desc">在左侧菜单中找到你需要的组件，查看演示效果</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step-item">
-          <div class="step-num">02</div>
-          <h4 class="step-title">复制源码</h4>
-          <p class="step-desc">直接复制 <code>src/components/xly-xxx/index.vue</code> 文件</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step-item">
-          <div class="step-num">03</div>
-          <h4 class="step-title">粘贴使用</h4>
-          <p class="step-desc">放入你的项目，按需修改 SCSS 变量定制样式</p>
-        </div>
+    <!-- 上手 -->
+    <section class="start">
+      <div class="container">
+        <h2 class="section-title">快速上手</h2>
+        <ol class="start-steps">
+          <li><strong>浏览</strong> — 左侧菜单查看演示效果和 API 文档</li>
+          <li><strong>复制</strong> — 将 <code>src/components/xly-xxx</code> 复制到你的项目</li>
+          <li><strong>使用</strong> — 按需调整 SCSS 变量，融入你的项目</li>
+        </ol>
       </div>
     </section>
   </div>
 </template>
 
 <style scoped lang="scss">
-$primary: #4f6ef7;
-$border: #e4e7ed;
-$text-primary: #1a1a2e;
-$text-secondary: #606266;
-$text-muted: #909399;
-$radius: 12px;
-$radius-sm: 8px;
+/* === Tokens === */
+$black: #09090b;
+$text-1: #18181b;
+$text-2: #71717a;
+$text-3: #a1a1aa;
+$border: #e4e4e7;
+$bg-subtle: #fafafa;
+$accent: #18181b;
 
+/* === Base === */
 .home {
-  min-height: 100%;
-  background: #fff;
+  color: $text-1;
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ========== Hero ========== */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === Hero === */
 .hero {
-  padding: 56px 40px 48px;
-  background: linear-gradient(135deg, #f5f7ff 0%, #eef2ff 50%, #f0f9eb 100%);
+  padding: 100px 0 80px;
+  background: $bg-subtle;
   border-bottom: 1px solid $border;
-
-  .hero-inner {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .hero-badge {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    background: rgba($primary, 0.1);
-    color: $primary;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-  }
-
-  .hero-title {
-    font-size: 40px;
-    font-weight: 700;
-    color: $text-primary;
-    margin: 0;
-    letter-spacing: -0.5px;
-  }
-
-  .hero-title-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    margin-bottom: 14px;
-
-    .title-star {
-      display: flex;
-      align-items: center;
-
-      .star-badge {
-        height: 26px;
-        border-radius: 6px;
-      }
-    }
-  }
-
-  .hero-subtitle {
-    font-size: 18px;
-    color: $primary;
-    font-weight: 500;
-    margin: 0 0 16px;
-  }
-
-  .hero-desc {
-    font-size: 14px;
-    color: $text-secondary;
-    line-height: 1.8;
-    margin: 0 0 36px;
-  }
 }
 
-.hero-stats {
+.hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0;
-  background: #fff;
-  border: 1px solid $border;
-  border-radius: 40px;
-  padding: 12px 32px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-
-  .stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 24px;
-
-    .stat-num {
-      font-size: 24px;
-      font-weight: 700;
-      color: $primary;
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: $text-muted;
-      margin-top: 4px;
-    }
-  }
-
-  .stat-divider {
-    width: 1px;
-    height: 36px;
-    background: $border;
-    flex-shrink: 0;
-  }
-}
-
-.hero-links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 8px;
-  margin-top: 20px;
-
-  .link-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .link-platform {
-    font-size: 14px;
-    color: $text-secondary;
-  }
-
-  .link-url {
-    font-size: 14px;
-    color: $primary;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-/* ========== Section ========== */
-.section {
-  padding: 52px 40px;
-
-  &.section-gray {
-    background: #f9fafb;
-    border-top: 1px solid $border;
-    border-bottom: 1px solid $border;
-  }
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 36px;
-
-  .section-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: $text-primary;
-    margin: 0 0 8px;
-  }
-
-  .section-subtitle {
-    font-size: 14px;
-    color: $text-muted;
-    margin: 0;
-  }
-}
-
-/* ========== Pain Points ========== */
-.pain-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.pain-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px 24px;
+  font-size: 13px;
+  color: $text-2;
+  margin-bottom: 24px;
   background: #fff;
   border: 1px solid $border;
-  border-radius: $radius-sm;
-  transition: box-shadow 0.2s;
+  padding: 5px 14px;
+  border-radius: 100px;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.hero-title {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: $black;
+  margin: 0 0 20px;
+  letter-spacing: -0.03em;
+}
+
+.hero-accent {
+  background: linear-gradient(135deg, $black 0%, #52525b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: $text-2;
+  line-height: 1.8;
+  margin: 0 0 32px;
+  max-width: 520px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: $accent;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.15s;
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  }
-
-  .pain-icon {
-    font-size: 28px;
-    flex-shrink: 0;
-    line-height: 1;
-    margin-top: 2px;
-  }
-
-  .pain-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: $text-primary;
-    margin: 0 0 6px;
-  }
-
-  .pain-desc {
-    font-size: 13px;
-    color: $text-secondary;
-    line-height: 1.6;
-    margin: 0;
+    opacity: 0.85;
   }
 }
 
-/* ========== Features ========== */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: #fff;
+  color: $text-1;
+  border: 1px solid $border;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $bg-subtle;
+  }
+}
+
+/* === Features === */
+.features {
+  padding: 64px 0;
+}
+
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: $border;
+  border: 1px solid $border;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .feature-card {
-  padding: 28px 24px;
   background: #fff;
-  border: 1px solid $border;
-  border-radius: $radius;
-  text-align: center;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  padding: 28px 28px;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  }
-
-  .feature-icon {
-    font-size: 32px;
-    display: block;
-    margin-bottom: 14px;
-    line-height: 1;
-  }
-
-  .feature-title {
+  h3 {
     font-size: 14px;
     font-weight: 600;
-    color: $text-primary;
-    margin: 0 0 10px;
+    color: $text-1;
+    margin: 0 0 6px;
   }
 
-  .feature-desc {
+  p {
     font-size: 13px;
-    color: $text-secondary;
-    line-height: 1.7;
+    color: $text-2;
     margin: 0;
-  }
-}
-
-/* ========== Component Groups ========== */
-.component-groups {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.group-card {
-  background: #fff;
-  border: 1px solid $border;
-  border-radius: $radius-sm;
-  overflow: hidden;
-
-  .group-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    border-left: 4px solid;
-    background: #fafafa;
-    border-bottom: 1px solid $border;
-
-    .group-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .group-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: $text-primary;
-    }
-
-    .group-count {
-      font-size: 12px;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-  }
-
-  .group-tags {
-    padding: 14px 18px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .comp-tag {
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 4px;
-    border: 1px solid;
-    font-family: 'Consolas', 'Monaco', monospace;
-    background: #fff;
-  }
-}
-
-/* ========== Steps ========== */
-.steps-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.step-item {
-  flex: 1;
-  text-align: center;
-  padding: 28px 24px;
-  background: #fff;
-  border: 1px solid $border;
-  border-radius: $radius-sm;
-
-  .step-num {
-    font-size: 28px;
-    font-weight: 800;
-    color: rgba($primary, 0.15);
-    line-height: 1;
-    margin-bottom: 12px;
-    font-family: 'Arial', sans-serif;
-    letter-spacing: -1px;
-  }
-
-  .step-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: $text-primary;
-    margin: 0 0 8px;
-  }
-
-  .step-desc {
-    font-size: 13px;
-    color: $text-secondary;
     line-height: 1.6;
-    margin: 0;
-
-    code {
-      font-size: 12px;
-      background: #f0f2f5;
-      padding: 1px 6px;
-      border-radius: 4px;
-      color: $primary;
-      font-family: 'Consolas', 'Monaco', monospace;
-    }
   }
 }
 
-.step-arrow {
-  font-size: 20px;
-  color: #c0c4cc;
-  padding: 0 16px;
+/* === Components === */
+.components {
+  padding: 64px 0;
+  border-top: 1px solid $border;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+}
+
+.section-desc {
+  font-size: 14px;
+  color: $text-3;
+  margin: 0 0 28px;
+}
+
+.comp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comp-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.comp-cat {
+  font-size: 12px;
+  font-weight: 500;
+  color: $text-3;
+  min-width: 52px;
+  padding-top: 4px;
   flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.comp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.comp-tag {
+  font-size: 12.5px;
+  color: $text-2;
+  padding: 3px 10px;
+  background: $bg-subtle;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  transition: all 0.12s;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    border-color: $border;
+    background: #fff;
+    color: $accent;
+  }
+}
+
+/* === Start === */
+.start {
+  padding: 64px 0 80px;
+  border-top: 1px solid $border;
+}
+
+.start-steps {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: $text-2;
+  line-height: 2.2;
+
+  strong {
+    color: $text-1;
+    font-weight: 600;
+  }
+
+  code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 12px;
+    background: $bg-subtle;
+    border: 1px solid $border;
+    color: $text-1;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .hero {
+    padding: 64px 0 56px;
+  }
+  .hero-title {
+    font-size: 32px;
+  }
+  .hero-desc br {
+    display: none;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .comp-row {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
 </style>
