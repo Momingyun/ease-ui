@@ -9,7 +9,7 @@
       @mouseleave="hideControls"
       @mousemove="handleMouseMove"
       @click="handleClick"
-      @dblclick="toggleFullscreen"
+      @dblclick="handleDblclick"
     >
       <!-- 封面图 -->
       <div v-if="showPoster && !hasPlayed" class="xly-video__poster" @click="play">
@@ -71,9 +71,10 @@
         class="xly-video__controls"
         :class="{ 'is-show': controlsVisible || !isPlaying || isFullscreen }"
         @click.stop
+        @dblclick.stop
       >
         <!-- 进度条 -->
-        <div class="xly-video__progress-wrap" @click.stop>
+        <div class="xly-video__progress-wrap" @click.stop @dblclick.stop>
           <div class="xly-video__progress" @click="seekTo">
             <div
               class="xly-video__progress-buffered"
@@ -377,6 +378,8 @@ const props = withDefaults(
     showVolume?: boolean
     /** 是否显示全屏按钮 */
     showFullscreen?: boolean
+    /** 是否开启双击全屏（默认 true） */
+    dblclickFullscreen?: boolean
     /** 是否开启弹幕功能（关闭后所有弹幕相关UI都不显示） */
     danmakuEnabled?: boolean
     /** 是否显示弹幕开关 */
@@ -408,6 +411,7 @@ const props = withDefaults(
     showSpeed: true,
     showVolume: true,
     showFullscreen: true,
+    dblclickFullscreen: true,
     danmakuEnabled: true,
     showDanmakuToggle: true,
     showDanmakuInput: true,
@@ -766,6 +770,13 @@ const handleClick = () => {
     play()
   } else {
     togglePlay()
+  }
+}
+
+// 双击处理（仅在开启双击全屏时触发）
+const handleDblclick = () => {
+  if (props.dblclickFullscreen) {
+    toggleFullscreen()
   }
 }
 

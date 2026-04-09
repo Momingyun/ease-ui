@@ -404,6 +404,12 @@ const handleTimeUpdate = (time) => console.log('当前时间:', time)
               <td><code>true</code></td>
             </tr>
             <tr>
+              <td><code>dblclickFullscreen</code></td>
+              <td>是否开启双击视频区域全屏</td>
+              <td><code>boolean</code></td>
+              <td><code>true</code></td>
+            </tr>
+            <tr>
               <td><code>danmakuEnabled</code></td>
               <td>是否开启弹幕功能（关闭后所有弹幕相关UI都不显示）</td>
               <td><code>boolean</code></td>
@@ -575,7 +581,7 @@ const handleTimeUpdate = (time) => console.log('当前时间:', time)
             </div>
             <div class="shortcut-item">
               <span class="shortcut-key">双击视频</span>
-              <span class="shortcut-desc">切换全屏</span>
+              <span class="shortcut-desc">切换全屏（可通过 <code>dblclickFullscreen</code> 关闭）</span>
             </div>
             <div class="shortcut-item">
               <span class="shortcut-key">C</span>
