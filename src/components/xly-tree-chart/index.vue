@@ -14,8 +14,8 @@
           @click="setLayout('horizontal')"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="6" width="18" height="4" rx="1" />
-            <rect x="3" y="14" width="12" height="4" rx="1" />
+            <rect x="6" y="3" width="4" height="18" rx="1" />
+            <rect x="14" y="3" width="4" height="12" rx="1" />
           </svg>
         </button>
         <button
@@ -25,8 +25,8 @@
           @click="setLayout('vertical')"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="6" y="3" width="4" height="18" rx="1" />
-            <rect x="14" y="3" width="4" height="12" rx="1" />
+            <rect x="3" y="6" width="18" height="4" rx="1" />
+            <rect x="3" y="14" width="12" height="4" rx="1" />
           </svg>
         </button>
         <div class="xly-tree-chat__divider" />
