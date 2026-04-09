@@ -65,6 +65,35 @@ const hasRemoteChildren = computed(() => {
   return props.node.hasRemoteChildren === true
 })
 
+// 节点样式计算（通过 CSS 变量传递给 hover 样式）
+const nodeVars = computed(() => {
+  const vars: Record<string, string> = {}
+
+  // 普通样式
+  if (props.node.borderColor) {
+    vars['--node-border-color'] = props.node.borderColor
+  }
+  if (props.node.backgroundColor) {
+    vars['--node-bg-color'] = props.node.backgroundColor
+  }
+  if (props.node.textColor) {
+    vars['--node-text-color'] = props.node.textColor
+  }
+
+  // 激活（hover）样式
+  if (props.node.activeBorderColor) {
+    vars['--node-active-border-color'] = props.node.activeBorderColor
+  }
+  if (props.node.activeBackgroundColor) {
+    vars['--node-active-bg-color'] = props.node.activeBackgroundColor
+  }
+  if (props.node.activeTextColor) {
+    vars['--node-active-text-color'] = props.node.activeTextColor
+  }
+
+  return vars
+})
+
 // 切换展开
 function toggleExpand() {
   if (!props.expandable) return
@@ -98,7 +127,7 @@ const nodeType = computed(() => {
     <div
       class="tree-node"
       :class="[`tree-node--${nodeType}`, { 'is-expanded': isExpanded, 'has-children': (hasChildren || hasRemoteChildren) && expandable }]"
-      :style="{ '--node-color': nodeColor }"
+      :style="{ '--node-color': nodeColor, ...nodeVars }"
       @click="handleNodeClick"
     >
       <span class="tree-node__title">{{ node[nodeConfig.titleField] }}</span>
@@ -179,8 +208,8 @@ const nodeType = computed(() => {
   justify-content: center;
   min-width: 120px;
   padding: 10px 16px;
-  background: #fff;
-  border: 2px solid var(--node-color);
+  background: var(--node-bg-color, #fff);
+  border: 2px solid var(--node-border-color, var(--node-color));
   cursor: pointer;
   transition: all 0.15s;
   flex-shrink: 0;
@@ -189,7 +218,7 @@ const nodeType = computed(() => {
   &__title {
     font-size: 13px;
     font-weight: 600;
-    color: #1a202c;
+    color: var(--node-text-color, #1a202c);
     white-space: nowrap;
     text-align: center;
     line-height: 1.3;
@@ -209,7 +238,7 @@ const nodeType = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--node-color);
+    color: var(--node-border-color, var(--node-color));
     cursor: pointer;
     transition: all 0.15s;
     flex-shrink: 0;
@@ -259,41 +288,42 @@ const nodeType = computed(() => {
     }
   }
 
-  // 父节点 - 白底深蓝字
+  // 父节点 - 白底深蓝字，支持自定义样式
   &--parent {
     &:hover {
-      background: var(--node-color);
+      background: var(--node-active-bg-color, var(--node-color));
+      border-color: var(--node-active-border-color, var(--node-color));
 
       .tree-node__title {
-        color: #fff;
+        color: var(--node-active-text-color, #fff);
       }
 
       .tree-node__arrow {
-        color: #fff;
+        color: var(--node-active-text-color, #fff);
       }
     }
   }
 
-  // 叶节点 - 灰底灰边
+  // 叶节点 - 灰底灰边，支持自定义样式
   &--leaf {
-    border-color: #a0aec0;
-    background: #f7fafc;
+    border-color: var(--node-border-color, #a0aec0);
+    background: var(--node-bg-color, #f7fafc);
 
     .tree-node__title {
-      color: #4a5568;
+      color: var(--node-text-color, #4a5568);
       font-weight: 500;
     }
 
     &:hover {
-      border-color: var(--node-color);
-      background: var(--node-color);
+      border-color: var(--node-active-border-color, var(--node-color));
+      background: var(--node-active-bg-color, var(--node-color));
 
       .tree-node__title {
-        color: #fff;
+        color: var(--node-active-text-color, #fff);
       }
 
       .tree-node__arrow {
-        color: #fff;
+        color: var(--node-active-text-color, #fff);
       }
     }
   }

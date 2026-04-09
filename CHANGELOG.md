@@ -32,6 +32,21 @@
     - 支持自定义画布宽高（width / height）
     - 隐藏滚动条，始终在容器内显示
     - 根节点带阴影效果，子节点悬停有动画
+
+### ✨ 新增
+- **xly-tree-chart** 新增 `trees` 属性，支持同时渲染多个独立的思维导图
+    - 类型：`TreeChartNode[][]`
+    - 竖向布局时多棵树横向排列
+    - 横向布局时多棵树纵向排列
+    - 共享工具栏和缩放平移功能
+- **xly-tree-chart** `TreeChartNode` 新增自定义节点样式
+    - `color`：自定义颜色（用于分层配色）
+    - `textColor`：字体颜色
+    - `backgroundColor`: 背景颜色
+    - `activeBackgroundColor`：悬停背景色
+    - `activeTextColor`：悬停字体颜色
+    - `borderColor`：边框颜色（普通状态）
+    - `activeBorderColor`：悬停边框颜色
 ### 🔧 优化
 - **xly-video** 新增 `dblclickFullscreen` 属性，控制是否开启双击全屏（默认 `true`）
 - **xly-video** 优化双击控制栏/进度条等操作区域不再误触发全屏

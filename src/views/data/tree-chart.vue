@@ -22,6 +22,23 @@
       </div>
     </section>
 
+    <!-- ===== 多棵树模式 ===== -->
+    <section class="doc-section">
+      <h2 class="doc-section__title">多棵树模式</h2>
+      <p class="doc-section__desc">
+        通过 <code>:trees</code> 属性传入数组的数组，同时渲染多个独立的思维导图。
+        竖向布局时多棵树横向排列，横向布局时多棵树纵向排列。
+      </p>
+      <div class="doc-preview">
+        <div class="doc-preview__body">
+          <XlyTreeChart :trees="multiTreeData" :height="500" />
+        </div>
+        <div class="doc-code">
+          <pre><code>&lt;XlyTreeChart :trees="[treeData1, treeData2]" /&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== 数据结构 ===== -->
     <section class="doc-section">
       <h2 class="doc-section__title">数据结构</h2>
@@ -43,7 +60,6 @@ const treeData: TreeChartNode[] = [
       {
         id: 'child-1',
         label: '子节点 1',
-        disabled: true,   // 禁用状态（可选）
         children: [
           { id: 'leaf-1', label: '叶子节点' },
         ],
@@ -159,18 +175,57 @@ const treeData: TreeChartNode[] = [
       </div>
     </section>
 
-    <!-- ===== 禁用节点 ===== -->
+    <!-- ===== 节点样式自定义 ===== -->
     <section class="doc-section">
-      <h2 class="doc-section__title">禁用节点</h2>
+      <h2 class="doc-section__title">节点样式自定义</h2>
       <p class="doc-section__desc">
-        通过 <code>disabled: true</code> 设置禁用状态，禁用节点不可点击。
+        通过节点数据属性自定义字体颜色、背景色、边框颜色等，支持普通状态和激活状态的独立样式设置。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
-          <XlyTreeChart :data="disabledData" :height="300" />
+          <XlyTreeChart :data="customStyleData" :height="400" />
         </div>
         <div class="doc-code">
-          <pre><code>&lt;XlyTreeChart :data="treeDataWithDisabled" /&gt;</code></pre>
+          <pre><code>const treeData: TreeChartNode[] = [
+  {
+    id: 1,
+    label: '产品研发部',
+    // 普通状态样式
+    textColor: '#1e40af',
+    backgroundColor: '#dbeafe',
+    borderColor: '#3b82f6',
+    // 悬停状态样式
+    activeTextColor: '#ffffff',
+    activeBackgroundColor: '#3b82f6',
+    activeBorderColor: '#1d4ed8',
+    children: [
+      {
+        id: 11,
+        label: '前端组',
+        textColor: '#166534',
+        backgroundColor: '#dcfce7',
+        borderColor: '#22c55e',
+        activeTextColor: '#ffffff',
+        activeBackgroundColor: '#22c55e',
+        activeBorderColor: '#15803d',
+      },
+      {
+        id: 12,
+        label: '后端组',
+        textColor: '#92400e',
+        backgroundColor: '#fef3c7',
+        borderColor: '#f59e0b',
+      },
+      {
+        id: 13,
+        label: '测试组',
+        textColor: '#9f1239',
+        backgroundColor: '#ffe4e6',
+        borderColor: '#ef4444',
+      },
+    ],
+  },
+]</code></pre>
         </div>
       </div>
     </section>
@@ -355,9 +410,15 @@ const treeData: TreeChartNode[] = [
           <tbody>
             <tr>
               <td>data</td>
-              <td>树形数据</td>
+              <td>树形数据（单个树）</td>
               <td><code>TreeChartNode[]</code></td>
               <td><code>[]</code></td>
+            </tr>
+            <tr>
+              <td>trees</td>
+              <td>多棵树数据（支持同时渲染多个独立的思维导图）</td>
+              <td><code>TreeChartNode[][]</code></td>
+              <td><code>null</code></td>
             </tr>
             <tr>
               <td>layout</td>
@@ -526,13 +587,38 @@ const treeData: TreeChartNode[] = [
               <td><code>TreeChartNode[]</code></td>
             </tr>
             <tr>
-              <td>disabled</td>
-              <td>是否禁用</td>
-              <td><code>boolean</code></td>
+              <td>color</td>
+              <td>自定义颜色（用于分层配色）</td>
+              <td><code>string</code></td>
             </tr>
             <tr>
-              <td>color</td>
-              <td>自定义颜色</td>
+              <td>textColor</td>
+              <td>字体颜色</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td>backgroundColor</td>
+              <td>背景色</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td>activeBackgroundColor</td>
+              <td>悬停背景色</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td>activeTextColor</td>
+              <td>悬停字体颜色</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td>borderColor</td>
+              <td>边框颜色（普通状态）</td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td>activeBorderColor</td>
+              <td>悬停边框颜色</td>
               <td><code>string</code></td>
             </tr>
             <tr>
@@ -625,8 +711,7 @@ const structureData: TreeChartNode[] = [
     children: [
       {
         id: 'child-1',
-        label: '子节点 1（禁用）',
-        disabled: true,
+        label: '子节点 1',
         children: [
           { id: 'leaf-1', label: '叶子节点 A' },
           { id: 'leaf-2', label: '叶子节点 B' },
@@ -692,38 +777,159 @@ const basicData: TreeChartNode[] = [
   },
 ]
 
+// ===== 多棵树数据 =====
+const multiTreeData: TreeChartNode[][] = [
+  [
+    {
+      id: 'tree1-root',
+      label: '前端技术栈',
+      color: '#3b82f6',
+      children: [
+        { id: 'tree1-1', label: '框架', children: [
+          { id: 'tree1-1-1', label: 'Vue' },
+          { id: 'tree1-1-2', label: 'React' },
+          { id: 'tree1-1-3', label: 'Angular' },
+        ]},
+        { id: 'tree1-2', label: '构建工具', children: [
+          { id: 'tree1-2-1', label: 'Vite' },
+          { id: 'tree1-2-2', label: 'Webpack' },
+        ]},
+      ],
+    },
+  ],
+  [
+    {
+      id: 'tree2-root',
+      label: '后端技术栈',
+      color: '#10b981',
+      children: [
+        { id: 'tree2-1', label: '语言', children: [
+          { id: 'tree2-1-1', label: 'Java' },
+          { id: 'tree2-1-2', label: 'Go' },
+          { id: 'tree2-1-3', label: 'Python' },
+        ]},
+        { id: 'tree2-2', label: '数据库', children: [
+          { id: 'tree2-2-1', label: 'MySQL' },
+          { id: 'tree2-2-2', label: 'Redis' },
+        ]},
+      ],
+    },
+  ],
+  [
+    {
+      id: 'tree3-root',
+      label: '运维工具',
+      color: '#f59e0b',
+      children: [
+        { id: 'tree3-1', label: '容器化', children: [
+          { id: 'tree3-1-1', label: 'Docker' },
+          { id: 'tree3-1-2', label: 'K8s' },
+        ]},
+        { id: 'tree3-2', label: 'CI/CD', children: [
+          { id: 'tree3-2-1', label: 'Jenkins' },
+          { id: 'tree3-2-2', label: 'GitLab CI' },
+        ]},
+      ],
+    },
+  ],
+]
+
 // ===== 自定义节点配置 =====
 const customNodeConfig = {
   nodeWidth: 180,
   nodeMinHeight: 56,
   horizontalGap: 80,
   verticalGap: 32,
+  lineColor:'red'
 }
 
 // ===== 自定义颜色 =====
 const customColors = ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe']
 
-// ===== 禁用节点数据 =====
-const disabledData: TreeChartNode[] = [
+// ===== 节点样式自定义数据 =====
+const customStyleData: TreeChartNode[] = [
   {
     id: 1,
-    label: '项目架构',
+    label: '产品研发部',
+    // 普通状态样式
+    textColor: '#1e40af',
+    backgroundColor: '#dbeafe',
+    borderColor: '#3b82f6',
+    // 悬停状态样式
+    activeTextColor: '#ffffff',
+    activeBackgroundColor: '#3b82f6',
+    activeBorderColor: '#1d4ed8',
     children: [
       {
         id: 11,
-        label: '核心模块',
-        disabled: true,
+        label: '前端组',
+        textColor: '#166534',
+        backgroundColor: '#dcfce7',
+        borderColor: '#22c55e',
+        activeTextColor: '#ffffff',
+        activeBackgroundColor: '#22c55e',
+        activeBorderColor: '#15803d',
         children: [
-          { id: 111, label: '模块 A' },
-          { id: 112, label: '模块 B' },
+          {
+            id: 111,
+            label: 'React 小组',
+            textColor: '#166534',
+            backgroundColor: '#dcfce7',
+            borderColor: '#22c55e',
+          },
+          {
+            id: 112,
+            label: 'Vue 小组',
+            textColor: '#166534',
+            backgroundColor: '#dcfce7',
+            borderColor: '#22c55e',
+          },
         ],
       },
       {
         id: 12,
-        label: '业务模块',
+        label: '后端组',
+        textColor: '#92400e',
+        backgroundColor: '#fef3c7',
+        borderColor: '#f59e0b',
         children: [
-          { id: 121, label: '模块 C' },
-          { id: 122, label: '模块 D' },
+          {
+            id: 121,
+            label: 'Java 组',
+            textColor: '#92400e',
+            backgroundColor: '#fef3c7',
+            borderColor: '#f59e0b',
+          },
+          {
+            id: 122,
+            label: 'Go 组',
+            textColor: '#92400e',
+            backgroundColor: '#fef3c7',
+            borderColor: '#f59e0b',
+          },
+        ],
+      },
+      {
+        id: 13,
+        label: '测试组',
+        textColor: '#9f1239',
+        backgroundColor: '#ffe4e6',
+        borderColor: '#ef4444',
+        children: [
+          {
+            id: 131,
+            label: '功能测试',
+            textColor: '#9f1239',
+            backgroundColor: '#ffe4e6',
+            borderColor: '#ef4444',
+          },
+          {
+            id: 132,
+            label: '自动化测试',
+            textColor: '#9f1239',
+            backgroundColor: '#ffe4e6',
+            borderColor: '#ef4444',
+          },
         ],
       },
     ],

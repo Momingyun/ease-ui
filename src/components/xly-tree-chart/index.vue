@@ -1,14 +1,14 @@
 <template>
-  <div class="xly-tree-chart" ref="containerRef">
+  <div class="xly-tree-Chart" ref="containerRef">
     <!-- 控制栏 -->
-    <div v-if="showToolbar" class="xly-tree-chart__toolbar">
-      <div class="xly-tree-chart__toolbar-left">
+    <div v-if="showToolbar" class="xly-tree-Chart__toolbar">
+      <div class="xly-tree-Chart__toolbar-left">
         <slot name="toolbar" />
       </div>
-      <div class="xly-tree-chart__toolbar-right">
+      <div class="xly-tree-Chart__toolbar-right">
         <!-- 布局切换 -->
         <button
-          class="xly-tree-chart__btn"
+          class="xly-tree-Chart__btn"
           :class="{ 'is-active': internalLayout === 'horizontal' }"
           title="横向布局"
           @click="setLayout('horizontal')"
@@ -26,7 +26,7 @@
           </svg>
         </button>
         <button
-          class="xly-tree-chart__btn"
+          class="xly-tree-Chart__btn"
           :class="{ 'is-active': internalLayout === 'vertical' }"
           title="竖向布局"
           @click="setLayout('vertical')"
@@ -43,9 +43,9 @@
             <rect x="14" y="3" width="4" height="12" rx="1" />
           </svg>
         </button>
-        <div class="xly-tree-chart__divider" />
+        <div class="xly-tree-Chart__divider" />
         <!-- 缩放控制 -->
-        <button class="xly-tree-chart__btn" title="缩小" @click="zoomOut">
+        <button class="xly-tree-Chart__btn" title="缩小" @click="zoomOut">
           <svg
             width="16"
             height="16"
@@ -59,8 +59,8 @@
             <line x1="8" y1="11" x2="14" y2="11" />
           </svg>
         </button>
-        <span class="xly-tree-chart__zoom-text">{{ Math.round(scale * 100) }}%</span>
-        <button class="xly-tree-chart__btn" title="放大" @click="zoomIn">
+        <span class="xly-tree-Chart__zoom-text">{{ Math.round(scale * 100) }}%</span>
+        <button class="xly-tree-Chart__btn" title="放大" @click="zoomIn">
           <svg
             width="16"
             height="16"
@@ -75,7 +75,7 @@
             <line x1="8" y1="11" x2="14" y2="11" />
           </svg>
         </button>
-        <button class="xly-tree-chart__btn" title="重置视图" @click="resetView">
+        <button class="xly-tree-Chart__btn" title="重置视图" @click="resetView">
           <svg
             width="16"
             height="16"
@@ -93,7 +93,7 @@
 
     <!-- 画布容器 -->
     <div
-      class="xly-tree-chart__canvas-wrapper"
+      class="xly-tree-Chart__canvas-wrapper"
       ref="canvasWrapperRef"
       :class="{ 'is-panning': isPanning }"
       :style="canvasWrapperStyle"
@@ -105,10 +105,10 @@
       @contextmenu.prevent
     >
       <!-- 画布内容 -->
-      <div class="xly-tree-chart__canvas" ref="canvasRef" :style="canvasStyle">
+      <div class="xly-tree-Chart__canvas" ref="canvasRef" :style="canvasStyle">
         <!-- SVG 连接线层 -->
         <svg
-          class="xly-tree-chart__lines"
+          class="xly-tree-Chart__lines"
           ref="linesSvgRef"
           :width="canvasWidth"
           :height="canvasHeight"
@@ -126,26 +126,53 @@
         </svg>
 
         <!-- 递归渲染树节点 -->
-        <div class="xly-tree-chart__root" :class="`xly-tree-chart__root--${internalLayout}`">
-          <TreeNode
-            v-for="(node, index) in data"
-            :key="getNodeKey(node, index)"
-            :node="node"
-            :node-config="mergedNodeConfig"
-            :layout="internalLayout"
-            :level="0"
-            :colors="colors"
-            :default-expand-all="defaultExpandAll"
-            :expanded-keys="currentExpandedKeys"
-            :expandable="expandable"
-            @node-click="handleNodeClick"
-            @toggle-expand="handleToggleExpand"
-          />
+        <div class="xly-tree-Chart__root" :class="`xly-tree-Chart__root--${internalLayout}`">
+          <!-- 多棵树模式 -->
+          <template v-if="hasMultipleTrees">
+            <div
+              v-for="(treeData, treeIndex) in props.trees"
+              :key="`tree-${treeIndex}`"
+              class="xly-tree-Chart__tree-wrapper"
+              :class="`xly-tree-Chart__tree-wrapper--${internalLayout}`"
+            >
+              <TreeNode
+                v-for="(node, index) in treeData"
+                :key="getNodeKey(node, index, `tree-${treeIndex}`)"
+                :node="node"
+                :node-config="mergedNodeConfig"
+                :layout="internalLayout"
+                :level="0"
+                :colors="colors"
+                :default-expand-all="defaultExpandAll"
+                :expanded-keys="currentExpandedKeys"
+                :expandable="expandable"
+                @node-click="handleNodeClick"
+                @toggle-expand="handleToggleExpand"
+              />
+            </div>
+          </template>
+          <!-- 单棵树模式 -->
+          <template v-else>
+            <TreeNode
+              v-for="(node, index) in data"
+              :key="getNodeKey(node, index)"
+              :node="node"
+              :node-config="mergedNodeConfig"
+              :layout="internalLayout"
+              :level="0"
+              :colors="colors"
+              :default-expand-all="defaultExpandAll"
+              :expanded-keys="currentExpandedKeys"
+              :expandable="expandable"
+              @node-click="handleNodeClick"
+              @toggle-expand="handleToggleExpand"
+            />
+          </template>
         </div>
       </div>
 
       <!-- 空状态 -->
-      <div v-if="isEmpty" class="xly-tree-chart__empty">
+      <div v-if="isEmpty" class="xly-tree-Chart__empty">
         <svg
           width="48"
           height="48"
@@ -177,10 +204,22 @@ export interface TreeChatNode {
   children?: TreeChatNode[]
   /** 是否禁用 */
   disabled?: boolean
-  /** 自定义颜色 */
+  /** 自定义颜色（用于边框和装饰） */
   color?: string
   /** 展开状态 */
   expanded?: boolean
+  /** 字体颜色 */
+  textColor?: string
+  /** 背景色 */
+  backgroundColor?: string
+  /** 激活/选中背景色 */
+  activeBackgroundColor?: string
+  /** 激活/选中字体颜色 */
+  activeTextColor?: string
+  /** 边框颜色 */
+  borderColor?: string
+  /** 激活边框颜色 */
+  activeBorderColor?: string
   /** 额外数据 */
   [key: string]: any
 }
@@ -219,8 +258,10 @@ interface ConnectionLine {
 
 const props = withDefaults(
   defineProps<{
-    /** 树形数据 */
+    /** 树形数据（单个树） */
     data?: TreeChatNode[]
+    /** 多棵树数据（支持同时渲染多个独立的思维导图） */
+    trees?: TreeChatNode[][]
     /** 节点配置 */
     nodeConfig?: NodeConfig
     /** 布局方向 */
@@ -252,6 +293,7 @@ const props = withDefaults(
   }>(),
   {
     data: () => [],
+    trees: null,
     nodeConfig: () => ({}),
     layout: 'horizontal',
     defaultExpandAll: true,
@@ -323,7 +365,21 @@ const internalExpandedKeys = ref<Set<string | number>>(new Set())
 const connectionLines = ref<ConnectionLine[]>([])
 
 // ========== 计算属性 ==========
-const isEmpty = computed(() => !props.data || props.data.length === 0)
+// 是否多棵树模式
+const hasMultipleTrees = computed(() => {
+  return props.trees !== null && Array.isArray(props.trees) && props.trees.length > 0
+})
+
+// 获取当前数据（多棵树或单棵树）
+const currentData = computed(() => {
+  if (hasMultipleTrees.value) {
+    // 多棵树模式：合并所有树的数据用于判断空状态
+    return props.trees.flat()
+  }
+  return props.data
+})
+
+const isEmpty = computed(() => !currentData.value || currentData.value.length === 0)
 
 const canvasStyle = computed(() => ({
   transform: `translate(${translateX.value}px, ${translateY.value}px) scale(${scale.value})`,
@@ -368,8 +424,9 @@ const currentExpandedKeys = computed(() => {
 })
 
 // ========== 方法 ==========
-function getNodeKey(node: TreeChatNode, index: number): string {
-  return String(node.id ?? `node-${index}`)
+function getNodeKey(node: TreeChatNode, index: number, prefix?: string): string {
+  const base = String(node.id ?? `node-${index}`)
+  return prefix ? `${prefix}-${base}` : base
 }
 
 function setLayout(newLayout: 'horizontal' | 'vertical') {
@@ -471,7 +528,7 @@ function updateConnectionLines() {
   const lineColor = mergedNodeConfig.value.lineColor || '#94a3b8'
 
   // 更新画布尺寸
-  const rootEl = canvas.querySelector('.xly-tree-chart__root') as HTMLElement
+  const rootEl = canvas.querySelector('.xly-tree-Chart__root') as HTMLElement
   if (rootEl) {
     const rootRect = rootEl.getBoundingClientRect()
     canvasWidth.value = Math.max(2000, rootRect.width + 80)
@@ -627,11 +684,22 @@ function updateConnectionLines() {
     }
   }
 
-  // 从根节点开始收集
-  const rootWrappers = canvas.querySelectorAll('.xly-tree-chart__root > .tree-node-wrapper')
+  // 从根节点开始收集（支持多棵树和单棵树模式）
+  const rootWrappers = canvas.querySelectorAll('.xly-tree-Chart__root > .tree-node-wrapper')
   rootWrappers.forEach((wrapper) => {
     collectConnections(wrapper)
   })
+
+  // 多棵树模式下，也收集每棵树内部的连接线
+  if (hasMultipleTrees.value) {
+    const treeWrappers = canvas.querySelectorAll('.xly-tree-Chart__tree-wrapper')
+    treeWrappers.forEach((treeWrapper) => {
+      const wrappers = treeWrapper.querySelectorAll('.tree-node-wrapper')
+      wrappers.forEach((wrapper) => {
+        collectConnections(wrapper)
+      })
+    })
+  }
 
   connectionLines.value = lines
 }
@@ -648,7 +716,12 @@ onMounted(() => {
         }
       })
     }
-    expandAll(props.data)
+    // 多棵树模式下展开所有树的数据
+    if (hasMultipleTrees.value) {
+      props.trees.forEach((tree) => expandAll(tree))
+    } else {
+      expandAll(props.data)
+    }
   }
 
   // 等待节点渲染后更新连接线
@@ -668,7 +741,7 @@ onUnmounted(() => {
 
 // 监听数据变化
 watch(
-  () => props.data,
+  [() => props.data, () => props.trees],
   () => {
     if (props.defaultExpandAll) {
       internalExpandedKeys.value.clear()
@@ -680,7 +753,12 @@ watch(
           }
         })
       }
-      expandAll(props.data)
+      // 多棵树模式下展开所有树的数据
+      if (hasMultipleTrees.value) {
+        props.trees.forEach((tree) => expandAll(tree))
+      } else {
+        expandAll(props.data)
+      }
     }
     nextTick(() => {
       requestAnimationFrame(() => {
@@ -713,9 +791,9 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-$xly-tree-chart-prefix: '.xly-tree-chart';
+$xly-tree-Chart-prefix: '.xly-tree-Chart';
 
-#{$xly-tree-chart-prefix} {
+#{$xly-tree-Chart-prefix} {
   display: flex;
   flex-direction: column;
   width: v-bind('props.width');
@@ -729,7 +807,7 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
 }
 
 // 工具栏
-#{$xly-tree-chart-prefix}__toolbar {
+#{$xly-tree-Chart-prefix}__toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -740,14 +818,14 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
   gap: 8px;
 }
 
-#{$xly-tree-chart-prefix}__toolbar-left,
-#{$xly-tree-chart-prefix}__toolbar-right {
+#{$xly-tree-Chart-prefix}__toolbar-left,
+#{$xly-tree-Chart-prefix}__toolbar-right {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-#{$xly-tree-chart-prefix}__btn {
+#{$xly-tree-Chart-prefix}__btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -780,7 +858,7 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
   }
 }
 
-#{$xly-tree-chart-prefix}__zoom-text {
+#{$xly-tree-Chart-prefix}__zoom-text {
   min-width: 48px;
   text-align: center;
   font-size: 12px;
@@ -788,7 +866,7 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
   font-variant-numeric: tabular-nums;
 }
 
-#{$xly-tree-chart-prefix}__divider {
+#{$xly-tree-Chart-prefix}__divider {
   width: 1px;
   height: 20px;
   background: #e4e4e7;
@@ -796,7 +874,7 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
 }
 
 // 画布容器
-#{$xly-tree-chart-prefix}__canvas-wrapper {
+#{$xly-tree-Chart-prefix}__canvas-wrapper {
   flex: 1;
   overflow: hidden;
   position: relative;
@@ -807,14 +885,14 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
   }
 }
 
-#{$xly-tree-chart-prefix}__canvas {
+#{$xly-tree-Chart-prefix}__canvas {
   position: relative;
   width: max-content;
   min-width: 100%;
   min-height: 100%;
 }
 
-#{$xly-tree-chart-prefix}__lines {
+#{$xly-tree-Chart-prefix}__lines {
   position: absolute;
   top: 0;
   left: 0;
@@ -822,7 +900,7 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
   z-index: 0;
 }
 
-#{$xly-tree-chart-prefix}__root {
+#{$xly-tree-Chart-prefix}__root {
   position: relative;
   padding: 40px;
   z-index: 1;
@@ -834,17 +912,37 @@ $xly-tree-chart-prefix: '.xly-tree-chart';
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
   }
 
   &--vertical {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 60px;
+  }
+}
+
+// 多棵树容器
+#{$xly-tree-Chart-prefix}__tree-wrapper {
+  &--horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+
+  &--vertical {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
   }
 }
 
 // 空状态
-#{$xly-tree-chart-prefix}__empty {
+#{$xly-tree-Chart-prefix}__empty {
   position: absolute;
   inset: 0;
   display: flex;
