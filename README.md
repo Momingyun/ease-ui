@@ -94,54 +94,62 @@ src/components/xly-button/index.vue
 
 每个组件都源于实际项目需求：
 
-| 组件 | 解决的痛点 |
-|------|-----------|
-| **反馈组件** | |
-| xly-drawer | 侧边滑出面板，替代 Dialog 更适合复杂表单场景，支持四个方向弹出 |
-| xly-modal | 模态弹窗，支持自定义标题、内容、底部按钮，简化 Dialog 使用 |
-| xly-loading | 全局加载状态，命令式 API 比指令更灵活，支持局部/全屏/指定容器 |
-| xly-message | 轻量消息提示，success/warning/danger/info/text 五种类型 |
-| xly-progress | 进度条，支持线性/圆形/仪表盘三种类型，五种状态，不确定进度动画 |
-| **基础组件** | |
-| xly-avatar | 头像展示，图片加载失败时自动回退到文字/图标，支持三种尺寸 |
-| xly-button | 按钮组件，7种类型满足不同场景，链接模式和幽灵按钮丰富视觉 |
-| xly-card | 卡片容器，阴影、圆角、悬浮效果可控，header/footer 插槽灵活布局 |
-| xly-carousel | 轮播组件，支持自动播放、指示器、箭头导航 |
-| xly-divider | 分割线，水平/垂直方向，内容插槽支持文字标题 |
-| xly-empty | 空状态组件，六种内置类型（default/data/search/network/permission/list），内置 SVG 插图，零依赖 |
-| xly-icon | 图标组件，支持 Element Plus 图标库（el: 前缀），统一图标使用 |
-| xly-image | 图片展示，支持多图、预览（缩放/拖拽/旋转）、+N 显示超出数量 |
-| xly-tag | 标签组件，多种类型和效果，支持可删除 |
-| xly-watermark | 水印组件，防止截图泄露，支持文字/图片水印 |
-| **数据展示** | |
-| xly-statistic | 统计数值组件，数字自动千分位格式化，趋势箭头，prefix/suffix 前后缀 |
-| xly-descriptions | 描述列表组件，column 列数控制，bordered 边框模式，span 跨列 |
-| xly-timeline | 时间线，垂直展示时间节点，四种状态图标区分进度 |
-| **表单组件** | |
-| xly-form | 智能表单，内置 24 栅格，校验规则下沉字段级，减少 Col/Row 模板 |
-| xly-input | 输入框，支持前缀/后缀图标、字数统计、多种状态 |
-| xly-select | 选择器，支持多选、搜索、可搜索远程数据 |
-| xly-radio | 单选框组，支持按钮样式和填充样式 |
-| xly-cascader | 级联选择，多选时简化数据扁平化处理 |
-| xly-rate | 评分组件，支持半星、只读、辅助文字 |
-| xly-date-picker | 日期选择，format/valueFormat 统一配置 |
-| xly-date-range-picker | 日期范围，start/end 分离绑定，提交表单无需转换 |
-| xly-date-time-picker | 日期时间选择，支持秒级精度 |
-| xly-date-time-range-picker | 日期时间范围，start/end 分离绑定 |
-| xly-time-picker | 时间选择，format 统一配置 |
-| xly-time-range-picker | 时间范围，开始/结束时间联动校验 |
-| xly-search-form | 搜索表单，配置化定义字段，展开收起、回车搜索内置 |
-| xly-image-upload | 图片上传组件，支持本地上传/网络上传，base64 或网络接口，拖拽上传，多图预览 |
-| xly-file-upload | 文件上传组件，支持多种文件类型，自定义图标，大小校验，下载功能 |
-| **布局组件** | |
-| xly-row | 栅格行，配合 Col 实现 24 栅格布局 |
-| xly-col | 栅格列，span/offset/pull/push 精确控制宽度 |
-| xly-tabs | 标签页，支持卡片/朴素样式，懒加载提升性能 |
-| xly-dropdown | 下拉菜单，触发方式多样，支持嵌套子菜单 |
-| **业务组件** | |
-| xly-table | 超级表格，选择状态管理混乱、分页逻辑重复、列配置无法持久化 |
-| xly-permission | 权限配置，三级/四级/五级树形结构，勾选联动逻辑复杂 |
-| xly-chat | 聊天组件，消息气泡、时间分组、输入状态 |
+| 组件                         | 解决的痛点                                                                   |
+|----------------------------|-------------------------------------------------------------------------|
+| **反馈组件**                   |                                                                         |
+| xly-drawer                 | 侧边滑出面板，替代 Dialog 更适合复杂表单场景，支持四个方向弹出                                     |
+| xly-modal                  | 模态弹窗，支持自定义标题、内容、底部按钮，简化 Dialog 使用                                       |
+| xly-loading                | 全局加载状态，命令式 API 比指令更灵活，支持局部/全屏/指定容器                                      |
+| xly-message                | 轻量消息提示，success/warning/danger/info/text 五种类型                            |
+| xly-progress               | 进度条，支持线性/圆形/仪表盘三种类型，五种状态，不确定进度动画                                        |
+| **基础组件**                   |                                                                         |
+| xly-avatar                 | 头像展示，图片加载失败时自动回退到文字/图标，支持三种尺寸                                           |
+| xly-button                 | 按钮组件，7种类型满足不同场景，链接模式和幽灵按钮丰富视觉                                           |
+| xly-card                   | 卡片容器，阴影、圆角、悬浮效果可控，header/footer 插槽灵活布局                                  |
+| xly-carousel               | 轮播组件，支持自动播放、指示器、箭头导航                                                    |
+| xly-divider                | 分割线，水平/垂直方向，内容插槽支持文字标题                                                  |
+| xly-empty                  | 空状态组件，六种内置类型（default/data/search/network/permission/list），内置 SVG 插图，零依赖 |
+| xly-icon                   | 图标组件，支持 Element Plus 图标库（el: 前缀），统一图标使用                                 |
+| xly-image                  | 图片展示，支持多图、预览（缩放/拖拽/旋转）、+N 显示超出数量                                        |
+| xly-tag                    | 标签组件，多种类型和效果，支持可删除                                                      |
+| xly-watermark              | 水印组件，防止截图泄露，支持文字/图片水印                                                   |
+|                            | **数据展示**                                                                | |
+| xly-statistic              | 统计数值组件，数字自动千分位格式化，趋势箭头，prefix/suffix 前后缀                                |
+| xly-descriptions           | 描述列表组件，column 列数控制，bordered 边框模式，span 跨列                                |
+| xly-timeline               | 时间线，垂直展示时间节点，四种状态图标区分进度                                                 |
+| xly-tree-chart             | 思维导图组件，支持横向/竖向布局切换、缩放平移、节点交互                                            |
+| xly-chart                  | 图表组件，支持折线/柱状/饼图/漏斗图/仪表盘等类型                                              |
+| xly-china-map              | 中国地图组件，SVG 原生实现，支持缩放、Tooltip、气泡模式                                       |
+| xly-video                  | 视频播放组件，支持多种来源                                                           |
+| xly-image                  | 图片展示组件，支持预览、缩放                                                          |
+| xly-file-preview           | 文件预览组件，支持 Word/Excel/PDF/PPT/图片/视频                                      |
+| xly-json-viewer            | JSON 查看器，语法高亮、折叠展开                                                      |
+| xly-dept-tree              | 部门树组件，支持树形/扁平数据格式，多主题                                                   |
+| **表单组件**                   |                                                                         |
+| xly-form                   | 智能表单，内置 24 栅格，校验规则下沉字段级，减少 Col/Row 模板                                   |
+| xly-input                  | 输入框，支持前缀/后缀图标、字数统计、多种状态                                                 |
+| xly-select                 | 选择器，支持多选、搜索、可搜索远程数据                                                     |
+| xly-radio                  | 单选框组，支持按钮样式和填充样式                                                        |
+| xly-cascader               | 级联选择，多选时简化数据扁平化处理                                                       |
+| xly-rate                   | 评分组件，支持半星、只读、辅助文字                                                       |
+| xly-date-picker            | 日期选择，format/valueFormat 统一配置                                            |
+| xly-date-range-picker      | 日期范围，start/end 分离绑定，提交表单无需转换                                            |
+| xly-date-time-picker       | 日期时间选择，支持秒级精度                                                           |
+| xly-date-time-range-picker | 日期时间范围，start/end 分离绑定                                                   |
+| xly-time-picker            | 时间选择，format 统一配置                                                        |
+| xly-time-range-picker      | 时间范围，开始/结束时间联动校验                                                        |
+| xly-search-form            | 搜索表单，配置化定义字段，展开收起、回车搜索内置                                                |
+| xly-image-upload           | 图片上传组件，支持本地上传/网络上传，base64 或网络接口，拖拽上传，多图预览                               |
+| xly-file-upload            | 文件上传组件，支持多种文件类型，自定义图标，大小校验，下载功能                                         |
+| **布局组件**                   |                                                                         |
+| xly-row                    | 栅格行，配合 Col 实现 24 栅格布局                                                   |
+| xly-col                    | 栅格列，span/offset/pull/push 精确控制宽度                                        |
+| xly-tabs                   | 标签页，支持卡片/朴素样式，懒加载提升性能                                                   |
+| xly-dropdown               | 下拉菜单，触发方式多样，支持嵌套子菜单                                                     |
+| **业务组件**                   |                                                                         |
+| xly-table                  | 超级表格，选择状态管理混乱、分页逻辑重复、列配置无法持久化                                           |
+| xly-permission             | 权限配置，三级/四级/五级树形结构，勾选联动逻辑复杂                                              |
+| xly-chat                   | 聊天组件，消息气泡、时间分组、输入状态                                                     |
 
 ### 🎨 样式完全独立
 

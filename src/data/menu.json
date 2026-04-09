@@ -167,6 +167,20 @@
         "key": "json-viewer",
         "path": "/data/json-viewer",
         "component": "data/json-viewer"
+      },
+      {
+        "id": "6-11",
+        "name": "部门树 DeptTree",
+        "key": "dept-tree",
+        "path": "/data/dept-tree",
+        "component": "data/dept-tree"
+      },
+      {
+        "id": "6-12",
+        "name": "思维导图 TreeChart",
+        "key": "tree-chat",
+        "path": "/data/tree-chart",
+        "component": "data/tree-chart"
       }
     ]
   },
