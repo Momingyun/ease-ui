@@ -11,7 +11,7 @@
         <!-- 标签页 -->
         <XlyWorktab ref="worktabRef" />
         <!-- 页面内容（keep-alive 缓存） -->
-        <main class="layout-content">
+        <main class="layout-content" ref="contentRef">
           <RouterView v-slot="{ Component, route }">
             <KeepAlive>
               <component :is="Component" :key="route.path" />
@@ -35,6 +35,17 @@ import menuData from '@/data/menu.json'
 const route = useRoute()
 const tabsStore = useTabsStore()
 const worktabRef = ref<InstanceType<typeof XlyWorktab>>()
+const contentRef = ref<HTMLElement>()
+
+// 路由变化时重置内容区滚动位置
+watch(
+  () => route.path,
+  () => {
+    if (contentRef.value) {
+      contentRef.value.scrollTop = 0
+    }
+  },
+)
 
 // 从菜单数据中匹配路由标题
 function getRouteTitle(path: string): string {
