@@ -1,14 +1,14 @@
 <template>
-  <div class="xly-tree-chat" ref="containerRef">
+  <div class="xly-tree-chart" ref="containerRef">
     <!-- 控制栏 -->
-    <div v-if="showToolbar" class="xly-tree-chat__toolbar">
-      <div class="xly-tree-chat__toolbar-left">
+    <div v-if="showToolbar" class="xly-tree-chart__toolbar">
+      <div class="xly-tree-chart__toolbar-left">
         <slot name="toolbar" />
       </div>
-      <div class="xly-tree-chat__toolbar-right">
+      <div class="xly-tree-chart__toolbar-right">
         <!-- 布局切换 -->
         <button
-          class="xly-tree-chat__btn"
+          class="xly-tree-chart__btn"
           :class="{ 'is-active': internalLayout === 'horizontal' }"
           title="横向布局"
           @click="setLayout('horizontal')"
@@ -26,7 +26,7 @@
           </svg>
         </button>
         <button
-          class="xly-tree-chat__btn"
+          class="xly-tree-chart__btn"
           :class="{ 'is-active': internalLayout === 'vertical' }"
           title="竖向布局"
           @click="setLayout('vertical')"
@@ -43,9 +43,9 @@
             <rect x="14" y="3" width="4" height="12" rx="1" />
           </svg>
         </button>
-        <div class="xly-tree-chat__divider" />
+        <div class="xly-tree-chart__divider" />
         <!-- 缩放控制 -->
-        <button class="xly-tree-chat__btn" title="缩小" @click="zoomOut">
+        <button class="xly-tree-chart__btn" title="缩小" @click="zoomOut">
           <svg
             width="16"
             height="16"
@@ -59,8 +59,8 @@
             <line x1="8" y1="11" x2="14" y2="11" />
           </svg>
         </button>
-        <span class="xly-tree-chat__zoom-text">{{ Math.round(scale * 100) }}%</span>
-        <button class="xly-tree-chat__btn" title="放大" @click="zoomIn">
+        <span class="xly-tree-chart__zoom-text">{{ Math.round(scale * 100) }}%</span>
+        <button class="xly-tree-chart__btn" title="放大" @click="zoomIn">
           <svg
             width="16"
             height="16"
@@ -75,7 +75,7 @@
             <line x1="8" y1="11" x2="14" y2="11" />
           </svg>
         </button>
-        <button class="xly-tree-chat__btn" title="重置视图" @click="resetView">
+        <button class="xly-tree-chart__btn" title="重置视图" @click="resetView">
           <svg
             width="16"
             height="16"
@@ -93,7 +93,7 @@
 
     <!-- 画布容器 -->
     <div
-      class="xly-tree-chat__canvas-wrapper"
+      class="xly-tree-chart__canvas-wrapper"
       ref="canvasWrapperRef"
       :class="{ 'is-panning': isPanning }"
       :style="canvasWrapperStyle"
@@ -105,10 +105,10 @@
       @contextmenu.prevent
     >
       <!-- 画布内容 -->
-      <div class="xly-tree-chat__canvas" ref="canvasRef" :style="canvasStyle">
+      <div class="xly-tree-chart__canvas" ref="canvasRef" :style="canvasStyle">
         <!-- SVG 连接线层 -->
         <svg
-          class="xly-tree-chat__lines"
+          class="xly-tree-chart__lines"
           ref="linesSvgRef"
           :width="canvasWidth"
           :height="canvasHeight"
@@ -126,7 +126,7 @@
         </svg>
 
         <!-- 递归渲染树节点 -->
-        <div class="xly-tree-chat__root" :class="`xly-tree-chat__root--${internalLayout}`">
+        <div class="xly-tree-chart__root" :class="`xly-tree-chart__root--${internalLayout}`">
           <TreeNode
             v-for="(node, index) in data"
             :key="getNodeKey(node, index)"
@@ -145,7 +145,7 @@
       </div>
 
       <!-- 空状态 -->
-      <div v-if="isEmpty" class="xly-tree-chat__empty">
+      <div v-if="isEmpty" class="xly-tree-chart__empty">
         <svg
           width="48"
           height="48"
@@ -471,7 +471,7 @@ function updateConnectionLines() {
   const lineColor = mergedNodeConfig.value.lineColor || '#94a3b8'
 
   // 更新画布尺寸
-  const rootEl = canvas.querySelector('.xly-tree-chat__root') as HTMLElement
+  const rootEl = canvas.querySelector('.xly-tree-chart__root') as HTMLElement
   if (rootEl) {
     const rootRect = rootEl.getBoundingClientRect()
     canvasWidth.value = Math.max(2000, rootRect.width + 80)
@@ -628,7 +628,7 @@ function updateConnectionLines() {
   }
 
   // 从根节点开始收集
-  const rootWrappers = canvas.querySelectorAll('.xly-tree-chat__root > .tree-node-wrapper')
+  const rootWrappers = canvas.querySelectorAll('.xly-tree-chart__root > .tree-node-wrapper')
   rootWrappers.forEach((wrapper) => {
     collectConnections(wrapper)
   })
@@ -713,9 +713,9 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-$xly-tree-chat-prefix: '.xly-tree-chat';
+$xly-tree-chart-prefix: '.xly-tree-chart';
 
-#{$xly-tree-chat-prefix} {
+#{$xly-tree-chart-prefix} {
   display: flex;
   flex-direction: column;
   width: v-bind('props.width');
@@ -729,7 +729,7 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
 }
 
 // 工具栏
-#{$xly-tree-chat-prefix}__toolbar {
+#{$xly-tree-chart-prefix}__toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -740,14 +740,14 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
   gap: 8px;
 }
 
-#{$xly-tree-chat-prefix}__toolbar-left,
-#{$xly-tree-chat-prefix}__toolbar-right {
+#{$xly-tree-chart-prefix}__toolbar-left,
+#{$xly-tree-chart-prefix}__toolbar-right {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-#{$xly-tree-chat-prefix}__btn {
+#{$xly-tree-chart-prefix}__btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -780,7 +780,7 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
   }
 }
 
-#{$xly-tree-chat-prefix}__zoom-text {
+#{$xly-tree-chart-prefix}__zoom-text {
   min-width: 48px;
   text-align: center;
   font-size: 12px;
@@ -788,7 +788,7 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
   font-variant-numeric: tabular-nums;
 }
 
-#{$xly-tree-chat-prefix}__divider {
+#{$xly-tree-chart-prefix}__divider {
   width: 1px;
   height: 20px;
   background: #e4e4e7;
@@ -796,7 +796,7 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
 }
 
 // 画布容器
-#{$xly-tree-chat-prefix}__canvas-wrapper {
+#{$xly-tree-chart-prefix}__canvas-wrapper {
   flex: 1;
   overflow: hidden;
   position: relative;
@@ -807,14 +807,14 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
   }
 }
 
-#{$xly-tree-chat-prefix}__canvas {
+#{$xly-tree-chart-prefix}__canvas {
   position: relative;
   width: max-content;
   min-width: 100%;
   min-height: 100%;
 }
 
-#{$xly-tree-chat-prefix}__lines {
+#{$xly-tree-chart-prefix}__lines {
   position: absolute;
   top: 0;
   left: 0;
@@ -822,7 +822,7 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
   z-index: 0;
 }
 
-#{$xly-tree-chat-prefix}__root {
+#{$xly-tree-chart-prefix}__root {
   position: relative;
   padding: 40px;
   z-index: 1;
@@ -844,7 +844,7 @@ $xly-tree-chat-prefix: '.xly-tree-chat';
 }
 
 // 空状态
-#{$xly-tree-chat-prefix}__empty {
+#{$xly-tree-chart-prefix}__empty {
   position: absolute;
   inset: 0;
   display: flex;
