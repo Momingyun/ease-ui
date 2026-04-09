@@ -13,9 +13,16 @@
           title="横向布局"
           @click="setLayout('horizontal')"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="6" y="3" width="4" height="18" rx="1" />
-            <rect x="14" y="3" width="4" height="12" rx="1" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="6" width="18" height="4" rx="1" />
+            <rect x="3" y="14" width="12" height="4" rx="1" />
           </svg>
         </button>
         <button
@@ -24,15 +31,29 @@
           title="竖向布局"
           @click="setLayout('vertical')"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="6" width="18" height="4" rx="1" />
-            <rect x="3" y="14" width="12" height="4" rx="1" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="6" y="3" width="4" height="18" rx="1" />
+            <rect x="14" y="3" width="4" height="12" rx="1" />
           </svg>
         </button>
         <div class="xly-tree-chat__divider" />
         <!-- 缩放控制 -->
         <button class="xly-tree-chat__btn" title="缩小" @click="zoomOut">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
             <line x1="8" y1="11" x2="14" y2="11" />
@@ -40,7 +61,14 @@
         </button>
         <span class="xly-tree-chat__zoom-text">{{ Math.round(scale * 100) }}%</span>
         <button class="xly-tree-chat__btn" title="放大" @click="zoomIn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
             <line x1="11" y1="8" x2="11" y2="14" />
@@ -48,7 +76,14 @@
           </svg>
         </button>
         <button class="xly-tree-chat__btn" title="重置视图" @click="resetView">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
             <path d="M3 3v5h5" />
           </svg>
@@ -70,11 +105,7 @@
       @contextmenu.prevent
     >
       <!-- 画布内容 -->
-      <div
-        class="xly-tree-chat__canvas"
-        ref="canvasRef"
-        :style="canvasStyle"
-      >
+      <div class="xly-tree-chat__canvas" ref="canvasRef" :style="canvasStyle">
         <!-- SVG 连接线层 -->
         <svg
           class="xly-tree-chat__lines"
@@ -115,7 +146,14 @@
 
       <!-- 空状态 -->
       <div v-if="isEmpty" class="xly-tree-chat__empty">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
           <circle cx="12" cy="12" r="10" />
           <path d="M12 8v4M12 16h.01" />
         </svg>
@@ -179,54 +217,66 @@ interface ConnectionLine {
   color: string
 }
 
-const props = withDefaults(defineProps<{
-  /** 树形数据 */
-  data?: TreeChatNode[]
-  /** 节点配置 */
-  nodeConfig?: NodeConfig
-  /** 布局方向 */
-  layout?: 'horizontal' | 'vertical'
-  /** 默认展开所有节点 */
-  defaultExpandAll?: boolean
-  /** 受控展开的节点 keys（不传则使用内部状态） */
-  expandedKeys?: (string | number)[]
-  /** 是否显示工具栏 */
-  showToolbar?: boolean
-  /** 自定义颜色列表 */
-  colors?: string[]
-  /** 最小缩放比例 */
-  minScale?: number
-  /** 最大缩放比例 */
-  maxScale?: number
-  /** 是否启用展开收起功能 */
-  expandable?: boolean
-  /** 背景色 */
-  backgroundColor?: string
-  /** 是否显示网格背景 */
-  showGrid?: boolean
-  /** 网格颜色 */
-  gridColor?: string
-  /** 画布宽度 */
-  width?: number | string
-  /** 画布高度 */
-  height?: number | string
-}>(), {
-  data: () => [],
-  nodeConfig: () => ({}),
-  layout: 'horizontal',
-  defaultExpandAll: true,
-  expandedKeys: null,
-  showToolbar: true,
-  colors: () => ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'],
-  minScale: 0.3,
-  maxScale: 3,
-  expandable: true,
-  backgroundColor: '#ffffff',
-  showGrid: true,
-  gridColor: '#f1f2f5',
-  width: '100%',
-  height: '100%',
-})
+const props = withDefaults(
+  defineProps<{
+    /** 树形数据 */
+    data?: TreeChatNode[]
+    /** 节点配置 */
+    nodeConfig?: NodeConfig
+    /** 布局方向 */
+    layout?: 'horizontal' | 'vertical'
+    /** 默认展开所有节点 */
+    defaultExpandAll?: boolean
+    /** 受控展开的节点 keys（不传则使用内部状态） */
+    expandedKeys?: (string | number)[]
+    /** 是否显示工具栏 */
+    showToolbar?: boolean
+    /** 自定义颜色列表 */
+    colors?: string[]
+    /** 最小缩放比例 */
+    minScale?: number
+    /** 最大缩放比例 */
+    maxScale?: number
+    /** 是否启用展开收起功能 */
+    expandable?: boolean
+    /** 背景色 */
+    backgroundColor?: string
+    /** 是否显示网格背景 */
+    showGrid?: boolean
+    /** 网格颜色 */
+    gridColor?: string
+    /** 画布宽度 */
+    width?: number | string
+    /** 画布高度 */
+    height?: number | string
+  }>(),
+  {
+    data: () => [],
+    nodeConfig: () => ({}),
+    layout: 'horizontal',
+    defaultExpandAll: true,
+    expandedKeys: null,
+    showToolbar: true,
+    colors: () => [
+      '#3b82f6',
+      '#10b981',
+      '#f59e0b',
+      '#ef4444',
+      '#8b5cf6',
+      '#ec4899',
+      '#06b6d4',
+      '#84cc16',
+    ],
+    minScale: 0.3,
+    maxScale: 3,
+    expandable: true,
+    backgroundColor: '#ffffff',
+    showGrid: true,
+    gridColor: '#f1f2f5',
+    width: '100%',
+    height: '100%',
+  },
+)
 
 const emit = defineEmits<{
   /** 节点点击 */
@@ -255,7 +305,9 @@ const canvasWidth = ref(2000)
 const canvasHeight = ref(2000)
 
 // 内部布局状态
-const internalLayout = ref<'horizontal' | 'vertical'>(props.layout ?? 'horizontal')
+const internalLayout = ref<'horizontal' | 'vertical'>(
+  props.layout ? (props.layout === 'horizontal' ? 'vertical' : 'horizontal') : 'horizontal',
+)
 
 // 拖拽状态
 const isPanning = ref(false)
@@ -445,7 +497,6 @@ function updateConnectionLines() {
     const nodeCenterX = nodeLeft + nodeRect.width / 2
     const nodeCenterY = nodeTop + nodeRect.height / 2
 
-
     // 获取子节点包装器
     const childWrappers = childrenContainer?.querySelectorAll(':scope > .tree-node-wrapper') || []
 
@@ -590,7 +641,7 @@ onMounted(() => {
   // 初始化时展开所有或指定的节点
   if (props.defaultExpandAll) {
     const expandAll = (nodes: TreeChatNode[]) => {
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         if (node.children && node.children.length > 0) {
           internalExpandedKeys.value.add(node.id)
           expandAll(node.children)
@@ -616,34 +667,41 @@ onUnmounted(() => {
 })
 
 // 监听数据变化
-watch(() => props.data, () => {
-  if (props.defaultExpandAll) {
-    internalExpandedKeys.value.clear()
-    const expandAll = (nodes: TreeChatNode[]) => {
-      nodes.forEach(node => {
-        if (node.children && node.children.length > 0) {
-          internalExpandedKeys.value.add(node.id)
-          expandAll(node.children)
-        }
-      })
+watch(
+  () => props.data,
+  () => {
+    if (props.defaultExpandAll) {
+      internalExpandedKeys.value.clear()
+      const expandAll = (nodes: TreeChatNode[]) => {
+        nodes.forEach((node) => {
+          if (node.children && node.children.length > 0) {
+            internalExpandedKeys.value.add(node.id)
+            expandAll(node.children)
+          }
+        })
+      }
+      expandAll(props.data)
     }
-    expandAll(props.data)
-  }
-  nextTick(() => {
-    requestAnimationFrame(() => {
-      updateConnectionLines()
+    nextTick(() => {
+      requestAnimationFrame(() => {
+        updateConnectionLines()
+      })
     })
-  })
-}, { deep: true })
+  },
+  { deep: true },
+)
 
 // 监听展开状态变化
-watch(() => [...currentExpandedKeys.value], () => {
-  nextTick(() => {
-    requestAnimationFrame(() => {
-      setTimeout(() => updateConnectionLines(), 50)
+watch(
+  () => [...currentExpandedKeys.value],
+  () => {
+    nextTick(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => updateConnectionLines(), 50)
+      })
     })
-  })
-})
+  },
+)
 
 // ========== 暴露方法 ==========
 defineExpose({
