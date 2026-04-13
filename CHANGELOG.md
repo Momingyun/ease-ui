@@ -15,6 +15,36 @@
 
 ---
 
+## [2026-04-13]
+### ✨ 新增
+- **xly-gantt**（甘特图组件）`src/components/xly-gantt/index.vue`
+    - 项目管理可视化组件，支持日/周/月三种视图切换
+    - 纯 SVG 原生实现，零第三方依赖
+    - 支持任务层级结构（分组 + 子任务），可展开/收起
+    - 支持里程碑标记（菱形图标）
+    - 支持任务进度展示（进度条 + 百分比）
+    - 支持任务依赖关系可视化（箭头连线）
+    - 支持今日线标记
+    - 支持滚轮缩放和平滑缩放控制
+    - 支持 Tooltip 悬浮提示（显示任务详情）
+    - 支持自定义任务条颜色（success/warning/danger/info）
+    - 支持点击任务事件（@task-click）
+    - 支持 scrollToToday() / scrollToDate() / zoomIn() / zoomOut() 等方法
+    - 支持 **width** 和 **height** 属性设置组件尺寸
+
+- **xly-chart**（图标组件）`src/components/xly-chat/index.vue`
+    - 折线图新增属性 `smooth`控制平滑曲线
+    - 折线图新增属性 `show-dots`控制隐藏折线上的数据点（小圆点）
+
+- 预览新增
+    - 新增 `xly-calendar`(日历组件功能预览),相关组建代码未更新上传
+    - 新增 `xly-topology`(拓扑图功能预览),相关组建代码未更新上传
+    - 新增 `xly-pdf-sign`(PDF签名功能预览),相关组建代码未更新上传
+
+### 🔧 优化
+- **xly-form** 表单校验时校验信息显示导致输入框上下移位的问题
+- **xly-radio** 优化选择是标签上下移位的问题
+
 ## [2026-04-09]
 ### ✨ 新增
 - **xly-tree-chart**（思维导图组件）`src/components/xly-tree-chart/`
