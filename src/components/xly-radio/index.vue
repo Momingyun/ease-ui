@@ -21,7 +21,7 @@
       @change.stop
     />
     <span class="xly-radio__inner">
-      <span v-if="isChecked" class="xly-radio__dot" />
+      <span class="xly-radio__dot" :class="{ 'is-show': isChecked }" />
     </span>
     <span v-if="$slots.default" class="xly-radio__label">
       <slot />
@@ -216,13 +216,18 @@ $transition: all 0.2s ease;
   height: 6px;
   border-radius: 50%;
   background: $primary;
-  transform: scale(1);
+  flex-shrink: 0;
+  transform: scale(0);
   transition: transform 0.15s ease;
+
+  &.is-show {
+    transform: scale(1);
+  }
 }
 
 .xly-radio__label {
   margin-left: 8px;
-  line-height: 1;
+  line-height: 1.4;
 }
 
 // 状态

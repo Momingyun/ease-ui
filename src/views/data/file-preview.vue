@@ -5,9 +5,7 @@
       <h1 class="doc-title">FilePreview 文件预览</h1>
       <p class="doc-desc">
         支持展示文件列表并点击打开预览弹窗，内置 PDF、Word、Excel、PPT、图片、视频六种格式预览能力，
-        基于
-        <code>@vue-office</code>
-        系列组件实现高还原度文档渲染。支持多种数据格式传入，灵活适配各类业务场景。
+        基于 <code>@vue-office</code> 系列组件实现高还原度文档渲染。支持多种数据格式传入，灵活适配各类业务场景。
       </p>
     </div>
 
@@ -30,7 +28,9 @@
     <!-- URL 数组 -->
     <section class="doc-section">
       <h2 class="doc-section__title">URL 字符串数组</h2>
-      <p class="doc-section__desc">传入 URL 字符串组成的数组，文件名自动从 URL 末尾解析。</p>
+      <p class="doc-section__desc">
+        传入 URL 字符串组成的数组，文件名自动从 URL 末尾解析。
+      </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <XlyFilePreview :files="urlArrayFiles" />
@@ -62,8 +62,8 @@
     <section class="doc-section">
       <h2 class="doc-section__title">自定义字段名映射 <code>field-names</code></h2>
       <p class="doc-section__desc">
-        当后端返回的字段名与默认值不同时，使用 <code>field-names</code> 属性进行映射， 支持自定义
-        <code>name</code>、<code>url</code>、<code>size</code> 三个字段的别名。
+        当后端返回的字段名与默认值不同时，使用 <code>field-names</code> 属性进行映射，
+        支持自定义 <code>name</code>、<code>url</code>、<code>size</code> 三个字段的别名。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -82,8 +82,8 @@
     <section class="doc-section">
       <h2 class="doc-section__title">多种文件类型混合</h2>
       <p class="doc-section__desc">
-        支持 PDF、Word、Excel、PPT、图片、视频等多种格式同时展示。 弹窗中提供
-        <strong>上一个 / 下一个</strong> 切换按钮，方便连续浏览多个文件。
+        支持 PDF、Word、Excel、PPT、图片、视频等多种格式同时展示。
+        弹窗中提供 <strong>上一个 / 下一个</strong> 切换按钮，方便连续浏览多个文件。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -99,8 +99,8 @@
     <section class="doc-section">
       <h2 class="doc-section__title">PDF 预览演示</h2>
       <p class="doc-section__desc">
-        使用阿里云 OSS 公网 PDF 文件，点击可直接体验预览效果。 PDF 预览使用浏览器原生
-        <code>&lt;iframe&gt;</code> 渲染，本地与公网文件均支持。
+        使用阿里云 OSS 公网 PDF 文件，点击可直接体验预览效果。
+        PDF 预览使用浏览器原生 <code>&lt;iframe&gt;</code> 渲染，本地与公网文件均支持。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -116,49 +116,23 @@
     <section class="doc-section">
       <h2 class="doc-section__title">Office 文档预览说明</h2>
       <p class="doc-section__desc">
-        Word、Excel、PDF 文档使用
-        <code>@vue-office</code> 系列组件实现<strong>高还原度</strong>渲染，
+        Word、Excel、PDF 文档使用 <code>@vue-office</code> 系列组件实现<strong>高还原度</strong>渲染，
         接近原始文件外观。所有预览均在浏览器端完成，无需后端服务。
       </p>
       <div class="doc-preview">
         <div class="doc-preview__body">
           <div class="office-notice">
             <div class="office-notice__icon">
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="16" x2="12" y2="12" />
-                <line x1="12" y1="8" x2="12.01" y2="8" />
-              </svg>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             </div>
             <div class="office-notice__content">
               <p class="office-notice__title">预览方案</p>
               <ul class="office-notice__list">
-                <li>
-                  <strong>Word</strong>：使用
-                  <code>@vue-office/docx</code>，支持分页、样式、图片、表格等高还原度渲染
-                </li>
-                <li>
-                  <strong>Excel</strong>：使用
-                  <code>@vue-office/excel</code>，完整还原表格样式、Sheet 切换等
-                </li>
-                <li>
-                  <strong>PDF</strong>：使用 <code>@vue-office/pdf</code>，Canvas 渲染，完美还原
-                </li>
-                <li>
-                  <strong>PPT</strong>：使用 <code>pptx-preview</code> 库，支持幻灯片列表模式预览
-                </li>
-                <li>
-                  文件需配置 <strong>CORS 跨域</strong> 允许 fetch
-                  访问（本地文件和同域文件无此限制）
-                </li>
+                <li><strong>Word</strong>：使用 <code>@vue-office/docx</code>，支持分页、样式、图片、表格等高还原度渲染</li>
+                <li><strong>Excel</strong>：使用 <code>@vue-office/excel</code>，完整还原表格样式、Sheet 切换等</li>
+                <li><strong>PDF</strong>：使用 <code>@vue-office/pdf</code>，Canvas 渲染，完美还原</li>
+                <li><strong>PPT</strong>：使用 <code>pptx-preview</code> 库，支持幻灯片列表模式预览</li>
+                <li>文件需配置 <strong>CORS 跨域</strong> 允许 fetch 访问（本地文件和同域文件无此限制）</li>
               </ul>
             </div>
           </div>
@@ -172,9 +146,11 @@
     <!-- 安装依赖 -->
     <section class="doc-section">
       <h2 class="doc-section__title">安装依赖</h2>
-      <p class="doc-section__desc">文件预览组件依赖以下 npm 包，使用前请先安装：</p>
+      <p class="doc-section__desc">
+        文件预览组件依赖以下 npm 包，使用前请先安装：
+      </p>
       <div class="doc-preview">
-        <div class="doc-code" style="border-top: none">
+        <div class="doc-code" style="border-top: none;">
           <pre><code>{{ installCode }}</code></pre>
         </div>
       </div>
@@ -309,7 +285,7 @@ import XlyFilePreview from '@/components/xly-file-preview/index.vue'
 
 // ==================== OSS 公网示例文件 ====================
 const OSS = 'https://xlyoa.oss-cn-hangzhou.aliyuncs.com/xly/test'
-const pdfUrl = `${OSS}/EaseUI.pdf`
+const pdfUrl  = `${OSS}/EaseUI.pdf`
 const docxUrl = `${OSS}/EaseUI.docx`
 const xlsxUrl = `${OSS}/EaseUI.xlsx`
 const pptxUrl = `${OSS}/EaseUI.pptx`
@@ -324,9 +300,9 @@ const urlArrayFiles = [pdfUrl, xlsxUrl, pptxUrl]
 
 // 对象数组（默认字段名）
 const objectFiles = [
-  { name: 'EaseUI.pdf', url: pdfUrl, size: 1500 },
-  { name: 'EaseUI.xlsx', url: xlsxUrl, size: 200 },
-  { name: 'EaseUI.docx', url: docxUrl, size: 350 },
+  { name: 'EaseUI.pdf',  url: pdfUrl,  size: 1500 },
+  { name: 'EaseUI.xlsx', url: xlsxUrl, size: 200  },
+  { name: 'EaseUI.docx', url: docxUrl, size: 350  },
 ]
 
 // 自定义字段名
@@ -337,22 +313,24 @@ const customFieldFiles = [
 
 // 多种文件类型混合
 const mixedFiles = [
-  { name: 'EaseUI.pdf', url: pdfUrl, size: 1500 },
-  { name: 'EaseUI.docx', url: docxUrl, size: 350 },
-  { name: 'EaseUI.xlsx', url: xlsxUrl, size: 200 },
+  { name: 'EaseUI.pdf',  url: pdfUrl,  size: 1500 },
+  { name: 'EaseUI.docx', url: docxUrl, size: 350  },
+  { name: 'EaseUI.xlsx', url: xlsxUrl, size: 200  },
   { name: 'EaseUI.pptx', url: pptxUrl, size: 2048 },
 ]
 
 // PDF 预览
-const pdfFiles = [{ name: 'EaseUI.pdf', url: pdfUrl, size: 1500 }]
+const pdfFiles = [
+  { name: 'EaseUI.pdf', url: pdfUrl, size: 1500 },
+]
 
 // ==================== 代码示例 ====================
 
 const installCode = `# Office 文档预览依赖（Word / Excel / PDF）
-pnpm install @vue-office/docx @vue-office/excel @vue-office/pdf
+npm install @vue-office/docx @vue-office/excel @vue-office/pdf
 
 # PPT 预览依赖
-pnpm install pptx-preview`
+npm install pptx-preview`
 
 const stringCode = `<!-- 逗号拼接字符串，最简用法 -->
 <XlyFilePreview files="https://oss.com/EaseUI.pdf,https://oss.com/EaseUI.xlsx,https://oss.com/EaseUI.docx" />`

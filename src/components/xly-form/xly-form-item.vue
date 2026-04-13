@@ -143,13 +143,20 @@ $transition: all 0.2s ease;
 
 .xly-form-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   margin-bottom: 20px;
+  min-height: 32px;
 
   &.is-error {
-    .xly-form-item__content { position: relative; }
-    // 子组件边框变红由子组件通过 CSS 处理
+    :deep(.xly-input__wrapper) {
+      border-color: $danger !important;
+      box-shadow: 0 0 0 1px $danger inset !important;
+    }
+    :deep(.xly-select .xly-select__wrapper) {
+      border-color: $danger !important;
+      box-shadow: 0 0 0 1px $danger inset !important;
+    }
   }
 
   &.is-required {
@@ -179,6 +186,11 @@ $transition: all 0.2s ease;
 .xly-form-item__content {
   flex: 1;
   min-width: 0;
+  position: relative;
+  padding-bottom: 0;
+  display: flex;
+  align-items: center;
+  min-height: 36px;
 }
 
 .xly-form-item__control {
@@ -191,6 +203,10 @@ $transition: all 0.2s ease;
   line-height: 1.4;
   margin-top: 4px;
   word-break: break-all;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 1;
 }
 
 .xly-form-item__tip {

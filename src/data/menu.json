@@ -181,6 +181,34 @@
         "key": "tree-chat",
         "path": "/data/tree-chart",
         "component": "data/tree-chart"
+      },
+      {
+        "id": "6-13",
+        "name": "甘特图 Gantt",
+        "key": "gantt",
+        "path": "/data/gantt",
+        "component": "data/gantt"
+      },
+      {
+        "id": "6-14",
+        "name": "拓扑图 Topology",
+        "key": "topology",
+        "path": "/data/topology",
+        "component": "data/topology"
+      },
+      {
+        "id": "6-15",
+        "name": "日历视图 Calendar",
+        "key": "calendar",
+        "path": "/data/calendar",
+        "component": "data/calendar"
+      },
+      {
+        "id": "6-16",
+        "name": "PDF 签名 PdfSign",
+        "key": "pdf-sign",
+        "path": "/data/pdf-sign",
+        "component": "data/pdf-sign"
       }
     ]
   },

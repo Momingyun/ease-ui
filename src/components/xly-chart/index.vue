@@ -212,6 +212,7 @@
                 />
                 <!-- 数据点 -->
                 <circle
+                  v-if="showDots"
                   v-for="(val, i) in serie.data"
                   :key="`lp-${i}`"
                   :cx="getXCenter(i)"
@@ -359,6 +360,7 @@
                 />
                 <!-- 数据点 -->
                 <circle
+                  v-if="showDots"
                   v-for="(val, i) in serie.data"
                   :key="`mlp-${i}`"
                   :cx="getXCenter(i)"
@@ -756,6 +758,10 @@ const props = withDefaults(defineProps<{
   showDownload?: boolean
   /** 每个数据点最小宽度（px），超出时启用横向拖拽，0=自动 */
   minItemWidth?: number
+  /** 折线是否使用平滑曲线 */
+  smooth?: boolean
+  /** 是否显示折线数据点（小圆点） */
+  showDots?: boolean
   /** 仪表盘：当前值 */
   gaugeValue?: number
   /** 仪表盘：最小值 */
@@ -782,6 +788,8 @@ const props = withDefaults(defineProps<{
   animated: true,
   showDownload: true,
   minItemWidth: 0,
+  smooth: false,
+  showDots: true,
   gaugeValue: 0,
   gaugeMin: 0,
   gaugeMax: 100,
@@ -1090,16 +1098,42 @@ function getY(val: number): number {
 
 function getLinePath(data: number[]): string {
   if (!data.length) return ''
-  return data
-    .map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getY(val)}`)
-    .join(' ')
+  if (!props.smooth) {
+    // 直线
+    return data
+      .map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getY(val)}`)
+      .join(' ')
+  }
+  // 平滑曲线（Catmull-Rom样条转三次贝塞尔）
+  const points = data.map((val, i) => ({ x: getXCenter(i), y: getY(val) }))
+  if (points.length < 2) return ''
+  if (points.length === 2) {
+    return `M ${points[0].x} ${points[0].y} L ${points[1].x} ${points[1].y}`
+  }
+  // 生成平滑曲线路径
+  let d = `M ${points[0].x} ${points[0].y}`
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(0, i - 1)]
+    const p1 = points[i]
+    const p2 = points[i + 1]
+    const p3 = points[Math.min(points.length - 1, i + 2)]
+    // Catmull-Rom到三次贝塞尔转换
+    const cp1x = p1.x + (p2.x - p0.x) / 6
+    const cp1y = p1.y + (p2.y - p0.y) / 6
+    const cp2x = p2.x - (p3.x - p1.x) / 6
+    const cp2y = p2.y - (p3.y - p1.y) / 6
+    d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`
+  }
+  return d
 }
 
 function getAreaPath(data: number[]): string {
   if (!data.length) return ''
-  const linePart = data.map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getY(val)}`).join(' ')
+  const linePart = getLinePath(data)
   const base = svgHeight.value - padding.value.bottom
-  return `${linePart} L ${getXCenter(data.length - 1)} ${base} L ${getXCenter(0)} ${base} Z`
+  const lastX = getXCenter(data.length - 1)
+  const firstX = getXCenter(0)
+  return `${linePart} L ${lastX} ${base} L ${firstX} ${base} Z`
 }
 
 // ========== 获取系列颜色（支持单个柱子自定义颜色）==========
@@ -1314,15 +1348,38 @@ function filterTicksBySpacing(ticks: number[], getYFn: (v: number) => number): n
 /** 折线路径（mixed 模式，用折线 Y 轴） */
 function getMixedLinePath(data: number[]): string {
   if (!data.length) return ''
-  return data.map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getMixedLineY(val)}`).join(' ')
+  if (!props.smooth) {
+    return data.map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getMixedLineY(val)}`).join(' ')
+  }
+  // 平滑曲线
+  const points = data.map((val, i) => ({ x: getXCenter(i), y: getMixedLineY(val) }))
+  if (points.length < 2) return ''
+  if (points.length === 2) {
+    return `M ${points[0].x} ${points[0].y} L ${points[1].x} ${points[1].y}`
+  }
+  let d = `M ${points[0].x} ${points[0].y}`
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(0, i - 1)]
+    const p1 = points[i]
+    const p2 = points[i + 1]
+    const p3 = points[Math.min(points.length - 1, i + 2)]
+    const cp1x = p1.x + (p2.x - p0.x) / 6
+    const cp1y = p1.y + (p2.y - p0.y) / 6
+    const cp2x = p2.x - (p3.x - p1.x) / 6
+    const cp2y = p2.y - (p3.y - p1.y) / 6
+    d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`
+  }
+  return d
 }
 
 /** 面积路径（mixed 模式，用折线 Y 轴） */
 function getMixedLineAreaPath(data: number[]): string {
   if (!data.length) return ''
-  const linePart = data.map((val, i) => `${i === 0 ? 'M' : 'L'} ${getXCenter(i)} ${getMixedLineY(val)}`).join(' ')
+  const linePart = getMixedLinePath(data)
   const base = svgHeight.value - padding.value.bottom
-  return `${linePart} L ${getXCenter(data.length - 1)} ${base} L ${getXCenter(0)} ${base} Z`
+  const lastX = getXCenter(data.length - 1)
+  const firstX = getXCenter(0)
+  return `${linePart} L ${lastX} ${base} L ${firstX} ${base} Z`
 }
 
 // ========== 饼图计算 ==========

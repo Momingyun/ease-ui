@@ -44,7 +44,7 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    open: true,
+    open: true
   },
   build: {
     outDir: 'dist',
@@ -57,7 +57,7 @@ export default defineConfig({
           // 第三方库分离
           'vue-vendor': ['vue', 'vue-router'],
           'element-plus': ['element-plus', '@element-plus/icons-vue'],
-          'utils-vendor': ['@vueuse/core', 'axios']
+          'utils-vendor': ['@vueuse/core', 'axios'],
         },
         // 优化chunk文件名
         chunkFileNames: 'chunks/[name]-[hash].js',

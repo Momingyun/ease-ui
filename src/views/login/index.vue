@@ -111,7 +111,9 @@
 
     <!-- 底部版权 -->
     <div class="login-copyright">
-      <span>© 2025 Ease UI. All rights reserved.</span>
+      <span>© 2026 Ease UI. All rights reserved.</span>
+<!--      <span class="login-copyright__sep">|</span>-->
+<!--      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="login-copyright__link">蜀ICP备19027113号</a>-->
     </div>
   </div>
 </template>
@@ -171,7 +173,6 @@ $text-muted: #8e8ea0;
   justify-content: center;
   min-height: 100vh;
   background: #f0f2f8;
-  padding: 20px;
   position: relative;
   overflow: hidden;
 }
@@ -608,6 +609,23 @@ $text-muted: #8e8ea0;
   color: #b0b5c3;
   z-index: 1;
   animation: text-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-copyright__sep {
+  color: #d0d5e0;
+}
+
+.login-copyright__link {
+  color: #b0b5c3;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $primary;
+  }
 }
 
 /* ========== 响应式 ========== */
