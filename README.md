@@ -22,6 +22,10 @@
 Ease UI 是一套为「快速复制」而生的 Vue 3 业务组件库。每个组件都是独立的 .vue 单文件，不依赖任何外部样式或工具函数，直接复制到你的项目即可使用。它仅依赖 Element Plus，却解决了中后台开发中表格选择混乱、搜索表单代码臃肿、日期范围绑定繁琐等真实痛点，让组件复用像复制代码一样简单。
 </p>
 
+<p align="center">
+你的⭐️ Star ⭐️是我持续更新的动力，项目也活的更长
+</p>
+
 ---
 
 ## 💡 项目初衷
@@ -113,7 +117,7 @@ src/components/xly-button/index.vue
 | xly-image                  | 图片展示，支持多图、预览（缩放/拖拽/旋转）、+N 显示超出数量                                        |
 | xly-tag                    | 标签组件，多种类型和效果，支持可删除                                                      |
 | xly-watermark              | 水印组件，防止截图泄露，支持文字/图片水印                                                   |
-|                            | **数据展示**                                                                | |
+| **数据展示**                   |                                                                         | |
 | xly-statistic              | 统计数值组件，数字自动千分位格式化，趋势箭头，prefix/suffix 前后缀                                |
 | xly-descriptions           | 描述列表组件，column 列数控制，bordered 边框模式，span 跨列                                |
 | xly-timeline               | 时间线，垂直展示时间节点，四种状态图标区分进度                                                 |
@@ -178,7 +182,7 @@ src/components/xly-button/index.vue
 - 📦 **可移植性强** - 复制到任何 Vue 3 项目都能正常工作
 
 ---
-
+## 💡 在线预览
 **在线预览：** http://1.14.65.79
 
 ## 📦 组件亮点
@@ -280,9 +284,7 @@ const selectedMap = ref<Map<any, Record<string, any>>>(new Map())
   // 支持 rowKey 指定唯一标识字段
   < xly - table
 row - key = "id"
-::
-
-selectable = "true" / >
+  ::selectable = "true" / >
 ```
 
 ---
@@ -335,30 +337,26 @@ required / >
 <xly-form - item
 label = "邮箱"
 prop = "email"
-::
-
-rules = "[
+  ::rules = "[
 {
   required: true, message
-::
+    ::
 
-  '请输入邮箱'
+    '请输入邮箱'
 }
 ,
 {
   pattern: /^\S+@\S+\.\S+$/, message
-::
+    ::
 
-  '邮箱格式不正确'
+    '邮箱格式不正确'
 }
 ]
 " />
 
 // 方式3：Form 级统一 rules
 < xly - form
-::
-
-rules = "{ username: [{ required: true }] }" / >
+  ::rules = "{ username: [{ required: true }] }" / >
 ```
 
 ---
@@ -529,56 +527,56 @@ src/components/xly-button/index.vue
 
 ## 📂 组件依赖关系
 
-| 组件 | 内部依赖 | 说明 |
-|------|---------|------|
-| **反馈组件** | | |
-| `xly-drawer` | 无 | 抽屉组件，支持四个方向 |
-| `xly-modal` | 无 | 模态框组件 |
-| `xly-loading` | 无 | 全局加载状态（命令式 API） |
-| `xly-message` | 无 | 消息提示（命令式 API） |
-| `xly-progress` | `xly-icon` | 进度条，支持线性/圆形/仪表盘，不确定进度动画 |
-| **基础组件** | | |
-| `xly-avatar` | 无 | 头像组件，支持图片/文字/图标 |
-| `xly-button` | 无 | 按钮组件，7种类型+链接模式 |
-| `xly-card` | 无 | 卡片组件，支持阴影、圆角、悬浮 |
-| `xly-carousel` | 无 | 轮播组件 |
-| `xly-divider` | 无 | 分割线组件 |
-| `xly-empty` | 无 | 空状态组件，六种内置类型 |
-| `xly-icon` | 无 | 图标组件，支持 el: 前缀 |
-| `xly-image` | 无 | 图片组件，支持预览、缩放 |
-| `xly-tag` | 无 | 标签组件 |
-| `xly-watermark` | 无 | 水印组件 |
-| **数据展示** | | |
-| `xly-statistic` | 无 | 统计数值组件，千分位格式化 |
-| `xly-descriptions` | 无 | 描述列表组件，列数控制 |
-| `xly-timeline` | 无 | 时间线组件 |
-| `xly-chart` | 无 | 图表组件，SVG 原生实现 |
-| `xly-image` | 无 | 图片组件（已在基础组件列出） |
-| **表单组件** | | |
-| `xly-form` | 无 | 智能表单，24栅格布局 |
-| `xly-input` | 无 | 输入框组件 |
-| `xly-select` | 无 | 选择器组件 |
-| `xly-radio` | 无 | 单选框组件 |
-| `xly-cascader` | 无 | 级联选择器 |
-| `xly-rate` | 无 | 评分组件 |
-| `xly-date-picker` | 无 | 日期选择器 |
-| `xly-date-range-picker` | 无 | 日期范围选择器（分离式绑定） |
-| `xly-date-time-picker` | 无 | 日期时间选择器 |
-| `xly-date-time-range-picker` | 无 | 日期时间范围选择器 |
-| `xly-time-picker` | 无 | 时间选择器 |
-| `xly-time-range-picker` | 无 | 时间范围选择器 |
-| `xly-search-form` | `xly-form` | 搜索表单，配置化字段 |
-| `xly-image-upload` | `xly-icon` | 图片上传组件，支持本地上传/网络上传 |
-| `xly-file-upload` | `xly-icon` | 文件上传组件，多种文件类型，大小校验 |
-| **布局组件** | | |
-| `xly-row` | 无 | 栅格行组件 |
-| `xly-col` | 无 | 栅格列组件 |
-| `xly-tabs` | 无 | 标签页组件 |
-| `xly-dropdown` | 无 | 下拉菜单组件 |
-| **业务组件** | | |
-| `xly-table` | `xly-button`, `xly-icon` | 超级表格，支持选择、分页、列设置 |
-| `xly-permission` | 无 | 权限配置组件，三/四/五级结构 |
-| `xly-chat` | 无 | 聊天组件 |
+| 组件                           | 内部依赖                     | 说明                      |
+|------------------------------|--------------------------|-------------------------|
+| **反馈组件**                     |                          |                         |
+| `xly-drawer`                 | 无                        | 抽屉组件，支持四个方向             |
+| `xly-modal`                  | 无                        | 模态框组件                   |
+| `xly-loading`                | 无                        | 全局加载状态（命令式 API）         |
+| `xly-message`                | 无                        | 消息提示（命令式 API）           |
+| `xly-progress`               | `xly-icon`               | 进度条，支持线性/圆形/仪表盘，不确定进度动画 |
+| **基础组件**                     |                          |                         |
+| `xly-avatar`                 | 无                        | 头像组件，支持图片/文字/图标         |
+| `xly-button`                 | 无                        | 按钮组件，7种类型+链接模式          |
+| `xly-card`                   | 无                        | 卡片组件，支持阴影、圆角、悬浮         |
+| `xly-carousel`               | 无                        | 轮播组件                    |
+| `xly-divider`                | 无                        | 分割线组件                   |
+| `xly-empty`                  | 无                        | 空状态组件，六种内置类型            |
+| `xly-icon`                   | 无                        | 图标组件，支持 el: 前缀          |
+| `xly-image`                  | 无                        | 图片组件，支持预览、缩放            |
+| `xly-tag`                    | 无                        | 标签组件                    |
+| `xly-watermark`              | 无                        | 水印组件                    |
+| **数据展示**                     |                          |                         |
+| `xly-statistic`              | 无                        | 统计数值组件，千分位格式化           |
+| `xly-descriptions`           | 无                        | 描述列表组件，列数控制             |
+| `xly-timeline`               | 无                        | 时间线组件                   |
+| `xly-chart`                  | 无                        | 图表组件，SVG 原生实现           |
+| `xly-image`                  | 无                        | 图片组件（已在基础组件列出）          |
+| **表单组件**                     |                          |                         |
+| `xly-form`                   | 无                        | 智能表单，24栅格布局             |
+| `xly-input`                  | 无                        | 输入框组件                   |
+| `xly-select`                 | 无                        | 选择器组件                   |
+| `xly-radio`                  | 无                        | 单选框组件                   |
+| `xly-cascader`               | 无                        | 级联选择器                   |
+| `xly-rate`                   | 无                        | 评分组件                    |
+| `xly-date-picker`            | 无                        | 日期选择器                   |
+| `xly-date-range-picker`      | 无                        | 日期范围选择器（分离式绑定）          |
+| `xly-date-time-picker`       | 无                        | 日期时间选择器                 |
+| `xly-date-time-range-picker` | 无                        | 日期时间范围选择器               |
+| `xly-time-picker`            | 无                        | 时间选择器                   |
+| `xly-time-range-picker`      | 无                        | 时间范围选择器                 |
+| `xly-search-form`            | `xly-form`               | 搜索表单，配置化字段              |
+| `xly-image-upload`           | `xly-icon`               | 图片上传组件，支持本地上传/网络上传      |
+| `xly-file-upload`            | `xly-icon`               | 文件上传组件，多种文件类型，大小校验      |
+| **布局组件**                     |                          |                         |
+| `xly-row`                    | 无                        | 栅格行组件                   |
+| `xly-col`                    | 无                        | 栅格列组件                   |
+| `xly-tabs`                   | 无                        | 标签页组件                   |
+| `xly-dropdown`               | 无                        | 下拉菜单组件                  |
+| **业务组件**                     |                          |                         |
+| `xly-table`                  | `xly-button`, `xly-icon` | 超级表格，支持选择、分页、列设置        |
+| `xly-permission`             | 无                        | 权限配置组件，三/四/五级结构         |
+| `xly-chat`                   | 无                        | 聊天组件                    |
 
 ---
 
@@ -662,12 +660,12 @@ ease-ui/
       <td align="center">
         <img src="./src/assets/pay/weixin.png" width="400" alt="微信支付">
         <br>
-        <sub>微信支付</sub>
+        <sub>微信赞助</sub>
       </td>
       <td align="center">
         <img src="./src/assets/pay/zfb.png" width="400" alt="支付宝">
         <br>
-        <sub>支付宝</sub>
+        <sub>支付宝赞助</sub>
       </td>
     </tr>
   </table>
