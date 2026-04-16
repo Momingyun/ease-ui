@@ -1,0 +1,43 @@
+[
+  {
+    "nodeType": "0",
+    "nodeCode": "start",
+    "nodeName": "开始",
+    "permissionFlag": null,
+    "nodeRatio": "0",
+    "anyNodeSkip": null,
+    "listenerType": "",
+    "listenerPath": "",
+    "formCustom": "",
+    "formPath": null,
+    "ext": "[]",
+    "coordinate": "700,100|700,100",
+    "version": "1",
+    "skipList": [
+      {
+        "skipType": "PASS",
+        "skipCondition": null,
+        "skipName": null,
+        "nowNodeCode": "start",
+        "nextNodeCode": "7b6beda3-0cde-47fb-b4c3-4d004a396721",
+        "coordinate": "700,140;700,210"
+      }
+    ]
+  },
+  {
+    "nodeType": "2",
+    "nodeCode": "end",
+    "nodeName": "结束",
+    "permissionFlag": null,
+    "nodeRatio": "0",
+    "anyNodeSkip": null,
+    "listenerType": null,
+    "listenerPath": null,
+    "formCustom": null,
+    "formPath": null,
+    "ext": "[]",
+    "coordinate": "700,530|700,530",
+    "version": "1",
+    "skipList": []
+  }
+]

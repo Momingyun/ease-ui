@@ -13,7 +13,12 @@
       <!-- 左侧品牌区 -->
       <div class="login-brand">
         <div class="login-brand__decor">
-          <span v-for="i in 6" :key="i" class="login-brand__ring" :class="`login-brand__ring--${i}`" />
+          <span
+            v-for="i in 6"
+            :key="i"
+            class="login-brand__ring"
+            :class="`login-brand__ring--${i}`"
+          />
         </div>
         <div class="login-brand__content">
           <div class="login-brand__logo">
@@ -32,23 +37,58 @@
           <p class="login-brand__desc">基于 Vue 3 的企业级管理后台组件库</p>
           <div class="login-brand__features">
             <div class="login-brand__feature">
-              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                  clip-rule="evenodd"
+                />
+              </svg>
               <span>零依赖原生组件</span>
             </div>
             <div class="login-brand__feature">
-              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                  clip-rule="evenodd"
+                />
+              </svg>
               <span>TypeScript 支持</span>
             </div>
             <div class="login-brand__feature">
-              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                  clip-rule="evenodd"
+                />
+              </svg>
               <span>完善的文档示例</span>
             </div>
           </div>
         </div>
         <div class="login-brand__footer">
           <span class="login-brand__version">v1.0.0</span>
-          <a class="login-brand__link" href="https://gitee.com/yun_hua_admin/ease-ui" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <a
+            class="login-brand__link"
+            href="https://gitee.com/yun_hua_admin/ease-ui"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              width="16"
+              height="16"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
             <span>Gitee</span>
           </a>
         </div>
@@ -65,7 +105,17 @@
           <div class="login-field">
             <label class="login-field__label">账号</label>
             <div class="login-field__wrap">
-              <svg class="login-field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <svg
+                class="login-field__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
               <input
                 v-model="form.username"
                 class="login-field__input"
@@ -80,7 +130,17 @@
           <div class="login-field">
             <label class="login-field__label">密码</label>
             <div class="login-field__wrap">
-              <svg class="login-field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <svg
+                class="login-field__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
               <input
                 v-model="form.password"
                 class="login-field__input"
@@ -93,12 +153,39 @@
           </div>
 
           <div v-if="errorMsg" class="login-form__error">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="15" y1="9" x2="9" y2="15" />
+              <line x1="9" y1="9" x2="15" y2="15" />
+            </svg>
             <span>{{ errorMsg }}</span>
           </div>
 
-          <button type="submit" class="login-btn" :disabled="loading || !form.username || !form.password">
-            <svg v-if="loading" class="login-btn__spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          <button
+            type="submit"
+            class="login-btn"
+            :disabled="loading || !form.username || !form.password"
+          >
+            <svg
+              v-if="loading"
+              class="login-btn__spinner"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path
+                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+              />
+            </svg>
             <span>{{ loading ? '登录中...' : '登 录' }}</span>
           </button>
         </form>
@@ -112,8 +199,14 @@
     <!-- 底部版权 -->
     <div class="login-copyright">
       <span>© 2026 Ease UI. All rights reserved.</span>
-<!--      <span class="login-copyright__sep">|</span>-->
-<!--      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="login-copyright__link">蜀ICP备19027113号</a>-->
+      <span class="login-copyright__sep">|</span>
+      <a
+        href="https://beian.miit.gov.cn/"
+        target="_blank"
+        rel="noopener"
+        class="login-copyright__link"
+        >蜀ICP备19027113号</a
+      >
     </div>
   </div>
 </template>
@@ -230,18 +323,33 @@ $text-muted: #8e8ea0;
 }
 
 @keyframes float-1 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-40px, 30px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-40px, 30px);
+  }
 }
 
 @keyframes float-2 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(30px, -40px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30px, -40px);
+  }
 }
 
 @keyframes float-3 {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.15); }
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
 }
 
 /* ========== 卡片 ========== */
@@ -295,17 +403,61 @@ $text-muted: #8e8ea0;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.06);
 
-  &--1 { width: 300px; height: 300px; top: -80px; right: -80px; }
-  &--2 { width: 200px; height: 200px; top: -20px; right: -20px; border-color: rgba(255, 255, 255, 0.04); }
-  &--3 { width: 150px; height: 150px; bottom: 60px; left: -40px; }
-  &--4 { width: 100px; height: 100px; bottom: 100px; left: -10px; border-color: rgba(255, 255, 255, 0.04); }
-  &--5 { width: 80px; height: 80px; top: 50%; left: 50%; transform: translate(-50%, -50%); border-color: rgba(255, 255, 255, 0.08); animation: pulse-ring 4s ease-in-out infinite; }
-  &--6 { width: 50px; height: 50px; top: 60%; right: 30%; background: rgba(255, 255, 255, 0.04); border: none; }
+  &--1 {
+    width: 300px;
+    height: 300px;
+    top: -80px;
+    right: -80px;
+  }
+  &--2 {
+    width: 200px;
+    height: 200px;
+    top: -20px;
+    right: -20px;
+    border-color: rgba(255, 255, 255, 0.04);
+  }
+  &--3 {
+    width: 150px;
+    height: 150px;
+    bottom: 60px;
+    left: -40px;
+  }
+  &--4 {
+    width: 100px;
+    height: 100px;
+    bottom: 100px;
+    left: -10px;
+    border-color: rgba(255, 255, 255, 0.04);
+  }
+  &--5 {
+    width: 80px;
+    height: 80px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-color: rgba(255, 255, 255, 0.08);
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+  &--6 {
+    width: 50px;
+    height: 50px;
+    top: 60%;
+    right: 30%;
+    background: rgba(255, 255, 255, 0.04);
+    border: none;
+  }
 }
 
 @keyframes pulse-ring {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
 }
 
 .login-brand__content {
@@ -330,8 +482,14 @@ $text-muted: #8e8ea0;
 }
 
 @keyframes logo-in {
-  from { opacity: 0; transform: scale(0.5) rotate(-10deg); }
-  to { opacity: 1; transform: scale(1) rotate(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
 }
 
 .login-brand__title {
@@ -352,8 +510,14 @@ $text-muted: #8e8ea0;
 }
 
 @keyframes text-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .login-brand__features {
@@ -525,9 +689,16 @@ $text-muted: #8e8ea0;
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
 }
 
 /* ========== 登录按钮 ========== */
@@ -554,7 +725,7 @@ $text-muted: #8e8ea0;
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -587,7 +758,9 @@ $text-muted: #8e8ea0;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ========== 底部提示 ========== */

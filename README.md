@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="./CHANGELOG.md">📋 更新记录</a> &nbsp;|&nbsp;
-  <a href="http://1.14.65.79">🌐 在线预览</a> &nbsp;|&nbsp;
+  <a href="https://ease-ui.com">🌐 在线预览</a> &nbsp;|&nbsp;
   <a href="https://gitee.com/yun_hua_admin/ease-ui">⭐ Gitee 仓库</a>
 </p>
 
@@ -183,7 +183,7 @@ src/components/xly-button/index.vue
 
 ---
 ## 💡 在线预览
-**在线预览：** http://1.14.65.79
+**在线预览：** https://ease-ui.com
 
 ## 📦 组件亮点
 
