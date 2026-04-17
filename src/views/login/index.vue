@@ -207,6 +207,9 @@
         class="login-copyright__link"
         >蜀ICP备19027113号</a
       >
+      <div>
+        <script id="LA-DATA-WIDGET" crossorigin="anonymous" charset="UTF-8" src="https://v6-widget.51.la/v6/3PZZvyfjAYKik1UU/quote.js?theme=0&f=12"></script>
+      </div>
     </div>
   </div>
 </template>
