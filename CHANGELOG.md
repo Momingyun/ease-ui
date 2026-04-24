@@ -15,6 +15,61 @@
 
 ---
 
+
+## [2026-04-24]
+### ✨ 新增
+
+- **菜单工具类** `src/utils/menu.ts`
+    - 统一管理菜单数据，支持本地 JSON 和远程 API 两种获取方式
+    - 核心 API：`getMenuData()` 获取菜单、`findMenuByPath()` 查找菜单、`filterMenuByPermissions()` 权限过滤、`resolveComponent()` 组件解析
+    - 内置缓存机制，支持 `forceRefresh` 强制刷新
+    - 提供菜单持久化工具：`saveMenuPermissions()` / `getMenuPermissions()`
+    - 所有菜单组件（VerticalSidebar / HorizontalMenu / FixedSidebar）统一使用工具类
+
+- **菜单使用指南** `src/views/basic/menu-doc.vue`
+    - 菜单数据结构说明（JSON 字段详解）
+    - 本地/远程菜单配置模式详解
+    - 菜单权限控制实现方案
+    - 菜单持久化方案（LocalStorage / 服务端 / 混合模式）
+    - 常见问题 FAQ
+    - 菜单路径：`/basic/menu-doc`
+
+- **404 页面完善** `src/views/exception/404.vue`
+    - 城市建筑风格 SVG 插画
+    - 友好的错误提示信息
+    - 返回首页 / 返回上一页操作按钮
+
+- **菜单配置更新**
+    - 新增「系统管理」一级菜单（含三级菜单混合模式）
+    - 新增「菜单使用指南」菜单项（`/basic/menu-doc`，id: 2-13）
+
+### 🔧 优化
+
+- **布局切换系统**（垂直布局 / 左右分栏 / 水平布局）
+    - 新增 `menuLayout` Store 管理布局状态
+    - 新增 `MenuLayoutDrawer` 组件支持布局切换
+    - 三种布局统一背景色 `#eef1f8`
+    - 垂直布局样式优化：间距、滚动、换行处理
+
+- **水平布局优化**
+    - 水平菜单融合到顶部导航（HeaderLayout）
+    - Logo 左 / 菜单居中 / 操作按钮右的经典布局
+    - 高度自适应 Header，不影响其他布局
+
+- **三级菜单支持**
+    - 垂直布局：点击二级菜单展开三级子菜单，带箭头旋转动画
+    - 水平布局：hover 二级菜单时右侧弹出三级下拉菜单
+    - 三级菜单样式优化：字体 13px、适当间距、颜色区分
+
+- **路由优化**
+    - 404 路由调整到顶层，确保未匹配路由正确重定向
+    - `router/utils.ts` 增加组件缓存优化
+
+### 🐛 修复
+
+- **垂直布局三级菜单样式**：字体太小、间距不足的问题
+
+
 ## [2026-04-13]
 ### ✨ 新增
 - **xly-gantt**（甘特图组件）`src/components/xly-gantt/index.vue`
