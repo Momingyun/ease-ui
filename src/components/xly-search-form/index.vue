@@ -1,174 +1,170 @@
 <template>
   <div class="xly-search-form" :class="{ 'is-expanded': expanded }">
-    <xlyRow :gutter="10">
-      <XlyCol :span="20">
-        <div class="search-form-body">
-          <!-- 搜索表单 -->
-          <XlyForm
-            ref="formRef"
-            :model="formData"
-            :rules="rules"
-            :inline="inline"
-            :size="size"
-            :disabled="disabled"
-            :span="4"
+    <div class="search-form-body">
+      <!-- 搜索表单 -->
+      <XlyForm
+        ref="formRef"
+        :model="formData"
+        :rules="rules"
+        :inline="inline"
+        :size="size"
+        :disabled="disabled"
+        :span="4"
+      >
+        <template v-for="item in visibleItems" :key="item.prop">
+          <XlyFormItem
+            :label="item.label"
+            :prop="item.prop"
+            :required="item.required"
+            :span="item.span"
           >
-            <template v-for="item in visibleItems" :key="item.prop">
-              <XlyFormItem
-                :label="item.label"
-                :prop="item.prop"
-                :required="item.required"
-                :span="item.span"
-              >
-                <!-- 输入框 -->
-                <XlyInput
-                  v-if="item.type === 'input' || !item.type"
-                  v-model="formData[item.prop]"
-                  :placeholder="item.placeholder || `请输入${item.label}`"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :readonly="item.readonly"
-                  :maxlength="item.maxlength"
-                  :show-word-limit="item.showWordLimit"
-                  :prefix-icon="item.prefixIcon"
-                  :suffix-icon="item.suffixIcon"
-                  @keyup.enter="handleSearch"
-                />
+            <!-- 输入框 -->
+            <XlyInput
+              v-if="item.type === 'input' || !item.type"
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder || `请输入${item.label}`"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :readonly="item.readonly"
+              :maxlength="item.maxlength"
+              :show-word-limit="item.showWordLimit"
+              :prefix-icon="item.prefixIcon"
+              :suffix-icon="item.suffixIcon"
+              @keyup.enter="handleSearch"
+            />
 
-                <!-- 文本域 -->
-                <XlyInput
-                  v-else-if="item.type === 'textarea'"
-                  v-model="formData[item.prop]"
-                  type="textarea"
-                  :placeholder="item.placeholder || `请输入${item.label}`"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :readonly="item.readonly"
-                  :maxlength="item.maxlength"
-                  :show-word-limit="item.showWordLimit"
-                  :rows="item.rows || 2"
-                />
+            <!-- 文本域 -->
+            <XlyInput
+              v-else-if="item.type === 'textarea'"
+              v-model="formData[item.prop]"
+              type="textarea"
+              :placeholder="item.placeholder || `请输入${item.label}`"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :readonly="item.readonly"
+              :maxlength="item.maxlength"
+              :show-word-limit="item.showWordLimit"
+              :rows="item.rows || 2"
+            />
 
-                <!-- 选择器 -->
-                <XlySelect
-                  v-else-if="item.type === 'select'"
-                  v-model="formData[item.prop]"
-                  :placeholder="item.placeholder || `请选择${item.label}`"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :multiple="item.multiple"
-                  :filterable="item.filterable"
-                  :options="item.options"
-                  :value-type="item.valueType"
-                  :separator="item.separator"
-                />
+            <!-- 选择器 -->
+            <XlySelect
+              v-else-if="item.type === 'select'"
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder || `请选择${item.label}`"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :multiple="item.multiple"
+              :filterable="item.filterable"
+              :options="item.options"
+              :value-type="item.valueType"
+              :separator="item.separator"
+            />
 
-                <!-- 级联选择器 -->
-                <XlyCascader
-                  v-else-if="item.type === 'cascader'"
-                  v-model="formData[item.prop]"
-                  :placeholder="item.placeholder || `请选择${item.label}`"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :multiple="item.multiple"
-                  :filterable="item.filterable"
-                  :options="item.cascaderOptions"
-                  :value-type="item.valueType"
-                  :separator="item.separator"
-                />
+            <!-- 级联选择器 -->
+            <XlyCascader
+              v-else-if="item.type === 'cascader'"
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder || `请选择${item.label}`"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :multiple="item.multiple"
+              :filterable="item.filterable"
+              :options="item.cascaderOptions"
+              :value-type="item.valueType"
+              :separator="item.separator"
+            />
 
-                <!-- 日期选择器 -->
-                <XlyDatePicker
-                  v-else-if="item.type === 'date'"
-                  v-model="formData[item.prop]"
-                  :placeholder="item.placeholder || `请选择${item.label}`"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :format="item.format"
-                  :value-format="item.valueFormat"
-                />
+            <!-- 日期选择器 -->
+            <XlyDatePicker
+              v-else-if="item.type === 'date'"
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder || `请选择${item.label}`"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :format="item.format"
+              :value-format="item.valueFormat"
+            />
 
-                <!-- 日期范围选择器 -->
-                <XlyDateRangePicker
-                  v-else-if="item.type === 'daterange'"
-                  v-model:start="formData[item.prop]"
-                  v-model:end="formData[item.endProp]"
-                  :start-placeholder="item.startPlaceholder"
-                  :end-placeholder="item.endPlaceholder"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :format="item.format"
-                  :value-format="item.valueFormat"
-                  :separator="item.rangeSeparator"
-                  :size="size"
-                />
+            <!-- 日期范围选择器 -->
+            <XlyDateRangePicker
+              v-else-if="item.type === 'daterange'"
+              v-model:start="formData[item.prop]"
+              v-model:end="formData[item.endProp]"
+              :start-placeholder="item.startPlaceholder"
+              :end-placeholder="item.endPlaceholder"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :format="item.format"
+              :value-format="item.valueFormat"
+              :separator="item.rangeSeparator"
+              :size="size"
+            />
 
-                <!-- 日期时间选择器 -->
-                <XlyDateTimePicker
-                  v-else-if="item.type === 'datetime'"
-                  v-model="formData[item.prop]"
-                  :placeholder="item.placeholder || `请选择${item.label}`"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :format="item.format"
-                  :show-seconds="item.showSeconds"
-                />
+            <!-- 日期时间选择器 -->
+            <XlyDateTimePicker
+              v-else-if="item.type === 'datetime'"
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder || `请选择${item.label}`"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :format="item.format"
+              :show-seconds="item.showSeconds"
+            />
 
-                <!-- 日期时间范围选择器 -->
-                <XlyDateTimeRangePicker
-                  v-else-if="item.type === 'datetimerange'"
-                  v-model:start="formData[item.prop]"
-                  v-model:end="formData[item.endProp]"
-                  :start-placeholder="item.startPlaceholder"
-                  :end-placeholder="item.endPlaceholder"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :format="item.format"
-                  :show-seconds="item.showSeconds"
-                  :separator="item.rangeSeparator"
-                  :size="size"
-                />
+            <!-- 日期时间范围选择器 -->
+            <XlyDateTimeRangePicker
+              v-else-if="item.type === 'datetimerange'"
+              v-model:start="formData[item.prop]"
+              v-model:end="formData[item.endProp]"
+              :start-placeholder="item.startPlaceholder"
+              :end-placeholder="item.endPlaceholder"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :format="item.format"
+              :show-seconds="item.showSeconds"
+              :separator="item.rangeSeparator"
+              :size="size"
+            />
 
-                <!-- 时间选择器 -->
-                <XlyTimePicker
-                  v-else-if="item.type === 'time'"
-                  v-model="formData[item.prop]"
-                  :placeholder="item.placeholder || `请选择${item.label}`"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :format="item.format"
-                />
+            <!-- 时间选择器 -->
+            <XlyTimePicker
+              v-else-if="item.type === 'time'"
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder || `请选择${item.label}`"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :format="item.format"
+            />
 
-                <!-- 时间范围选择器 -->
-                <XlyTimeRangePicker
-                  v-else-if="item.type === 'timerange'"
-                  v-model:start="formData[item.prop]"
-                  v-model:end="formData[item.endProp]"
-                  :start-placeholder="item.startPlaceholder"
-                  :end-placeholder="item.endPlaceholder"
-                  :clearable="item.clearable !== false"
-                  :disabled="item.disabled || disabled"
-                  :format="item.format"
-                  :separator="item.rangeSeparator"
-                  :size="size"
-                />
+            <!-- 时间范围选择器 -->
+            <XlyTimeRangePicker
+              v-else-if="item.type === 'timerange'"
+              v-model:start="formData[item.prop]"
+              v-model:end="formData[item.endProp]"
+              :start-placeholder="item.startPlaceholder"
+              :end-placeholder="item.endPlaceholder"
+              :clearable="item.clearable !== false"
+              :disabled="item.disabled || disabled"
+              :format="item.format"
+              :separator="item.rangeSeparator"
+              :size="size"
+            />
 
-                <!-- 自定义插槽 -->
-                <slot
-                  v-else-if="item.type === 'custom'"
-                  :name="`field-${item.prop}`"
-                  :model-value="formData[item.prop]"
-                  :item="item"
-                  :form-data="formData"
-                  @update:model-value="(val: any) => (formData[item.prop] = val)"
-                />
-              </XlyFormItem>
-            </template>
-          </XlyForm>
-        </div>
-      </XlyCol>
-      <XlyCol :span="4">
-        <div class="xly-search-form-action">
+            <!-- 自定义插槽 -->
+            <slot
+              v-else-if="item.type === 'custom'"
+              :name="`field-${item.prop}`"
+              :model-value="formData[item.prop]"
+              :item="item"
+              :form-data="formData"
+              @update:model-value="(val: any) => formData[item.prop] = val"
+            />
+          </XlyFormItem>
+        </template>
+
+        <!-- 操作按钮 -->
+        <XlyFormItem class="search-actions">
           <XlyButton type="primary" :size="size" :loading="loading" @click="handleSearch">
             {{ searchButtonText }}
           </XlyButton>
@@ -181,9 +177,9 @@
             {{ expanded ? '收起' : '展开' }}
             <XlyIcon :name="expanded ? 'el:ArrowUp' : 'el:ArrowDown'" />
           </XlyButton>
-        </div>
-      </XlyCol>
-    </xlyRow>
+        </XlyFormItem>
+      </XlyForm>
+    </div>
   </div>
 </template>
 
@@ -204,7 +200,7 @@ import XlyButton from '../xly-button/index.vue'
 import XlyIcon from '../xly-icon/index.vue'
 
 defineOptions({
-  name: 'XlySearchForm',
+  name: 'XlySearchForm'
 })
 
 export interface SearchItem {
@@ -215,18 +211,7 @@ export interface SearchItem {
   /** 栅格占据的列数 */
   span?: number
   /** 组件类型 */
-  type?:
-    | 'input'
-    | 'textarea'
-    | 'select'
-    | 'date'
-    | 'daterange'
-    | 'datetime'
-    | 'datetimerange'
-    | 'time'
-    | 'timerange'
-    | 'cascader'
-    | 'custom'
+  type?: 'input' | 'textarea' | 'select' | 'date' | 'daterange' | 'datetime' | 'datetimerange' | 'time' | 'timerange' | 'cascader' | 'custom'
   /** 占位符 */
   placeholder?: string
   /** 是否可清空 */
@@ -317,7 +302,7 @@ const props = withDefaults(defineProps<Props>(), {
   showExpandButton: false,
   defaultExpanded: false,
   disabled: false,
-  rules: () => ({}),
+  rules: () => ({})
 })
 
 const emit = defineEmits<{
@@ -341,12 +326,12 @@ const visibleItems = computed(() => {
   if (!props.showExpandButton || expanded.value) {
     return props.items
   }
-  return props.items.length <= 5 ? props.items : props.items.slice(0, 5)
+  return props.items.filter(item => !item.hiddenWhenCollapsed)
 })
 
 // 初始化表单数据
 const initFormData = () => {
-  props.items.forEach((item) => {
+  props.items.forEach(item => {
     const value = props.modelValue?.[item.prop] ?? item.defaultValue ?? null
     formData[item.prop] = value
     // 初始化范围选择器的结束属性
@@ -375,7 +360,7 @@ const handleReset = () => {
   formRef.value?.resetFields()
 
   // 重置为默认值
-  props.items.forEach((item) => {
+  props.items.forEach(item => {
     formData[item.prop] = item.defaultValue ?? null
   })
 
@@ -394,23 +379,20 @@ watch(
   () => props.modelValue,
   (val) => {
     if (val) {
-      Object.keys(val).forEach((key) => {
+      Object.keys(val).forEach(key => {
         if (key in formData) {
           formData[key] = val[key]
         }
       })
     }
   },
-  { deep: true },
+  { deep: true }
 )
 
 // 监听展开状态变化
-watch(
-  () => props.defaultExpanded,
-  (val) => {
-    expanded.value = val
-  },
-)
+watch(() => props.defaultExpanded, (val) => {
+  expanded.value = val
+})
 
 // 暴露方法
 defineExpose({
@@ -418,7 +400,7 @@ defineExpose({
   getData: () => ({ ...formData }),
   // 设置表单数据
   setData: (data: Record<string, any>) => {
-    Object.keys(data).forEach((key) => {
+    Object.keys(data).forEach(key => {
       if (key in formData) {
         formData[key] = data[key]
       }
@@ -444,7 +426,7 @@ defineExpose({
     emit('expand', false)
   },
   // 获取表单引用
-  getFormRef: () => formRef.value,
+  getFormRef: () => formRef.value
 })
 
 // 初始化
@@ -477,11 +459,6 @@ onMounted(() => {
 
     .xly-form-item {
       margin-bottom: 0;
-
-      // 覆盖 form-item 的 label 样式,实现上下居中对齐
-      .xly-form-item__label {
-        padding-top: 0;
-      }
     }
   }
 

@@ -1,13 +1,15 @@
 <template>
   <div class="xly-table" :class="tableClass">
-    <!-- 工具栏 -->
-    <div v-if="$slots.toolbar || title" class="xly-table__toolbar">
+    <!-- 工具栏（左侧或右侧有内容时才显示） -->
+    <div v-if="toolbarLeftVisible || toolbarRightVisible" class="xly-table__toolbar">
+      <!-- 左侧区域：始终渲染，flex:1 填充空间，左侧无内容时右侧按钮靠左 -->
       <div class="xly-table__toolbar-left">
         <span v-if="title" class="xly-table__title">{{ title }}</span>
-        <slot name="toolbar-left" />
         <slot name="toolbar" />
+        <slot name="toolbar-left" />
       </div>
-      <div class="xly-table__toolbar-right">
+      <!-- 右侧区域：始终渲染 -->
+      <div v-if="toolbarRightVisible" class="xly-table__toolbar-right">
         <!-- 刷新按钮 -->
         <xly-button
           v-if="showRefresh"
@@ -44,6 +46,7 @@
             <xly-icon name="el:Operation" :size="16" />
           </template>
         </xly-button>
+        <slot name="toolbar-right" />
       </div>
     </div>
 
@@ -882,6 +885,19 @@ function handleRefresh() {
 function handleExport() {
   emit('export')
 }
+
+/* ====================================================
+   工具栏显示控制
+==================================================== */
+// 左侧是否有内容可显示
+const toolbarLeftVisible = computed(() => {
+  return !!(props.title || slots.toolbar || slots['toolbar-left'])
+})
+
+// 右侧是否有内容可显示
+const toolbarRightVisible = computed(() => {
+  return !!(props.showRefresh || props.showExport || props.showColumnSettings || slots['toolbar-right'])
+})
 
 /* ====================================================
    样式
@@ -1780,23 +1796,27 @@ defineExpose({
 
 <style scoped lang="scss">
 /* ========== 设计令牌 ========== */
-$primary: #5e6ad2;
-$primary-light: #f0f1ff;
-$text-primary: #1a1a2e;
-$text-primary: #1a1a2e;
-$text-regular: #4a4a6a;
-$text-secondary: #8e8ea0;
-$text-disabled: #c0c0d0;
-$border-color: #e8e8f0;
-$border-strong: #d0d0e0;
-$bg-header: #f8f9fc;
-$bg-hover: #f0f2f8;
-$bg-selected: #e8ebf5;
+$primary: #4f6ef7;
+$primary-strong: #3d5ce5;
+$primary-light: rgba(79, 110, 247, 0.08);
+$text-primary: #1b2430;
+$text-regular: #364152;
+$text-secondary: #66758a;
+$text-disabled: #b8c2d1;
+$border-color: #e5eaf1;
+$border-strong: #d7e0ea;
+$bg-toolbar: #ffffff;
+$bg-header: #f8fafc;
+$bg-hover: #f8fbff;
+$bg-stripe: #fcfdff;
+$bg-selected: #f0f7ff;
+$bg-summary: #f8fafc;
 $radius-sm: 4px;
 $radius-md: 6px;
 $radius-lg: 8px;
-$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+$shadow-sm: 0 6px 18px rgba(16, 24, 40, 0.04);
+$shadow-md: 0 12px 28px rgba(16, 24, 40, 0.08);
+$shadow-sticky: 10px 0 24px rgba(15, 23, 42, 0.06);
 $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 /* ========== 容器 ========== */
@@ -1812,6 +1832,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 0;
   line-height: 1.5;
   overflow: hidden;
+  position: relative;
 
   &:hover {
     box-shadow: $shadow-md;
@@ -1837,7 +1858,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &--loading {
-    opacity: 0.5;
+    opacity: 0.72;
     pointer-events: none;
   }
 }
@@ -1847,11 +1868,13 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px;
-  background: #fff;
+  padding: 16px 20px;
+  background: $bg-toolbar;
+  border-bottom: 1px solid $border-color;
 }
 
 .xly-table__toolbar-left {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -1864,16 +1887,33 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .xly-table__title {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
   color: $text-primary;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 /* ========== 容器 ========== */
 .xly-table__container {
   overflow-x: auto;
   overflow-y: auto;
+  background: #fff;
+  scrollbar-width: thin;
+  scrollbar-color: #c7d1df transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c7d1df;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
 
 /* ========== 表格主体 ========== */
@@ -1891,21 +1931,21 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .xly-table__th {
-  padding: 12px 16px;
+  padding: 12px 14px;
   text-align: left;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: $text-primary;
   background: $bg-header;
-  border-bottom: 2px solid $border-strong;
+  border-bottom: 1px solid $border-strong;
   border-right: none;
   white-space: nowrap;
   user-select: none;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: none;
   line-height: 1.5;
   letter-spacing: 0;
   position: relative;
+  box-shadow: none;
 
   &:last-child {
     border-right: none;
@@ -1943,6 +1983,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.is-sorted {
     color: $primary;
+    background: #f5f9ff;
   }
 }
 
@@ -1956,7 +1997,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 .xly-table__sort-icons {
   display: inline-flex;
   flex-direction: column;
-  gap: -2px;
+  gap: 0;
   margin-left: 4px;
 }
 
@@ -1977,20 +2018,16 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   transition: $transition;
   cursor: default;
 
-  &:hover {
-    background: $bg-hover;
-  }
-
-  .xly-table--highlight &:hover {
-    background: $bg-hover;
-  }
-
   &.is-stripe {
-    background: #f5f6fa;
+    > .xly-table__td {
+      background: $bg-stripe;
+    }
   }
 
   &.is-selected {
-    background: $bg-selected !important;
+    > .xly-table__td {
+      background: $bg-selected !important;
+    }
   }
 
   &.is-clickable {
@@ -1998,19 +2035,23 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
+.xly-table--highlight .xly-table__tbody .xly-table__tr:hover > .xly-table__td {
+  background: $bg-hover;
+}
+
 /* ========== 单元格 ========== */
 .xly-table__td {
-  padding: 12px 16px;
+  padding: 12px 14px;
   color: $text-regular;
   border-bottom: 1px solid $border-color;
   border-right: none;
   vertical-align: middle;
   line-height: 1.5;
-  font-weight: 500;
+  font-weight: 400;
   transition: $transition;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
-  background: transparent;
+  background: #fff;
 
   &:last-child {
     border-right: none;
@@ -2071,11 +2112,12 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-block;
     width: 18px;
     height: 18px;
-    border: 1.5px solid #d0d5dc;
-    border-radius: 4px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 6px;
     background: #fff;
     transition: $transition;
     position: relative;
+    box-shadow: none;
 
     &::after {
       content: '';
@@ -2093,7 +2135,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   input:checked ~ .xly-table__checkbox-inner {
-    background-color: $primary;
+    background: $primary;
     border-color: $primary;
     &::after {
       display: block;
@@ -2101,7 +2143,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   input:indeterminate ~ .xly-table__checkbox-inner {
-    background-color: $primary;
+    background: $primary;
     border-color: $primary;
     &::after {
       display: block;
@@ -2129,7 +2171,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-block;
     width: 18px;
     height: 18px;
-    border: 1.5px solid #d0d5dc;
+    border: 1.5px solid #cbd5e1;
     border-radius: 50%;
     background: #fff;
     transition: $transition;
@@ -2149,7 +2191,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     &.is-checked {
-      background-color: $primary;
+      background: $primary;
       border-color: $primary;
       &::after {
         display: block;
@@ -2218,7 +2260,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 .xly-table__empty-icon {
   width: 120px;
   height: 90px;
-  opacity: 0.25;
+  opacity: 0.38;
 }
 
 .xly-table__empty-text {
@@ -2232,9 +2274,11 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 .xly-table__pagination {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   padding: 20px 24px;
   background: #fff;
+  border-top: 1px solid $border-color;
 
   &--left {
     justify-content: flex-start;
@@ -2254,6 +2298,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   color: $text-secondary;
   font-weight: 500;
   white-space: nowrap;
+  padding-right: 4px;
 }
 
 .xly-table__pagination-pages {
@@ -2269,7 +2314,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 36px;
   height: 36px;
   padding: 0 10px;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   border: 1px solid $border-color;
   background: #fff;
   color: $text-regular;
@@ -2278,11 +2323,12 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   transition: $transition;
   user-select: none;
+  box-shadow: none;
 
   &:hover:not(:disabled):not(.is-current):not(.is-ellipsis) {
     border-color: $primary;
     color: $primary;
-    background: $primary-light;
+    background: rgba(79, 110, 247, 0.1);
   }
 
   &--prev,
@@ -2295,6 +2341,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     border-color: $primary;
     color: #fff;
     font-weight: 600;
+    box-shadow: 0 4px 10px rgba(79, 110, 247, 0.28);
   }
 
   &.is-ellipsis {
@@ -2315,7 +2362,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:disabled:not(.is-ellipsis) {
-    opacity: 0.3;
+    opacity: 0.45;
     cursor: not-allowed;
   }
 }
@@ -2339,13 +2386,14 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   height: 36px;
   padding: 0 10px;
   border: 1px solid $border-color;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   font-size: 14px;
   color: $text-regular;
   text-align: center;
   outline: none;
   transition: $transition;
   font-weight: 500;
+  background: #fff;
 
   &:hover,
   &:focus {
@@ -2361,7 +2409,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   height: 36px;
   padding: 0 16px;
   border: 1px solid $border-color;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   background: #fff;
   color: $text-regular;
   font-size: 13px;
@@ -2372,6 +2420,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   &:hover {
     border-color: $primary;
     color: $primary;
+    background: rgba(79, 110, 247, 0.08);
   }
 
   &:active {
@@ -2387,7 +2436,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(15, 23, 42, 0.24);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -2414,6 +2463,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   animation: xly-slide-up 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid $border-strong;
 }
 
 @keyframes xly-slide-up {
@@ -2433,6 +2483,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   justify-content: space-between;
   padding: 20px 24px;
   border-bottom: 1px solid $border-color;
+  background: #fff;
 
   h3 {
     margin: 0;
@@ -2465,6 +2516,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 1;
   overflow-y: auto;
   padding: 12px 24px;
+  background: #fff;
 }
 
 .xly-table__column-settings-item {
@@ -2573,9 +2625,10 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 .xly-table__column-settings-btn--confirm {
   background: $primary;
   color: #fff;
+  box-shadow: 0 6px 14px rgba(79, 110, 247, 0.2);
 
   &:hover {
-    background: #4a54b8;
+    background: $primary-strong;
   }
 }
 
@@ -2608,6 +2661,8 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   &.xly-table__th--fixed-left,
   &.xly-table__td--fixed-left {
     // left 值由 JS 动态计算注入（fixedOffsets），支持多列 fixed-left 依次排列
+    box-shadow: 8px 0 14px rgba(16, 24, 40, 0.06);
+
     &::after {
       right: -1px;
     }
@@ -2616,6 +2671,8 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   &.xly-table__th--fixed-right,
   &.xly-table__td--fixed-right {
     // right 值由 JS 动态计算注入（fixedOffsets），支持多列 fixed-right 依次排列
+    box-shadow: -8px 0 14px rgba(16, 24, 40, 0.06);
+
     &::after {
       left: -1px;
     }
@@ -2634,20 +2691,20 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .xly-table__summary-row {
-  background: var(--xly-table-summary-bg, #f5f7fa);
-  border-top: 2px solid $border-color;
+  background: var(--xly-table-summary-bg, #{$bg-summary});
+  border-top: 1px solid $border-strong;
 
   .xly-table__td {
     font-weight: 600;
     font-size: 13px;
     color: $text-primary;
-    padding: 10px 12px;
+    padding: 12px 16px;
     white-space: nowrap;
   }
 
   // 合计行中的固定列也需要 sticky + 正确背景色（覆盖默认 #fff）
   .xly-table__td--fixed {
-    background: var(--xly-table-summary-bg, #f5f7fa);
+    background: var(--xly-table-summary-bg, #{$bg-summary});
     z-index: 2;
   }
 }
@@ -2683,10 +2740,10 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 .xly-table__summary-badge {
   display: inline-block;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
-  padding: 2px 5px;
-  border-radius: 3px;
+  padding: 3px 7px;
+  border-radius: 999px;
   margin-right: 5px;
   vertical-align: middle;
 
@@ -2710,9 +2767,10 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 13px;
   line-height: 1.6;
   color: #fff;
-  background: rgba(30, 30, 40, 0.9);
+  background: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(4px);
-  border-radius: 6px;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22);
   white-space: pre-wrap;
   word-break: break-all;
   pointer-events: none;
@@ -2737,7 +2795,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   justify-content: center;
   width: 24px;
   height: 24px;
-  border-radius: 4px;
+  border-radius: 8px;
   color: $text-secondary;
   transition: all 0.25s ease;
   cursor: pointer;
@@ -2777,7 +2835,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   justify-content: center;
   width: 20px;
   height: 20px;
-  border-radius: 4px;
+  border-radius: 8px;
   color: $text-secondary;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -2831,7 +2889,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 /* ========== 展开行 ========== */
 .xly-table__expand-row {
-  background: #fafafa;
+  background: #fafbfd;
 
   td {
     padding: 0 !important;
@@ -2839,13 +2897,14 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:hover > td {
-    background: #f5f5f5;
+    background: $bg-hover;
   }
 }
 
 .xly-table__expand-cell {
-  padding: 12px 16px;
+  padding: 16px 20px;
   transition: all 0.3s ease;
+  background: #fbfcfe;
 
   // Element Plus 风格的展开内容容器
   > :deep(*:first-child) {

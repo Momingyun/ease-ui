@@ -89,6 +89,13 @@
         "key": "list",
         "path": "/basic/list",
         "component": "basic/list"
+      },
+      {
+        "id": "2-12",
+        "name": "CRUD 完整示例",
+        "key": "crud-demo",
+        "path": "/basic/crud-demo",
+        "component": "basic/crud-demo"
       }
     ]
   },
