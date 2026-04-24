@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../layouts/index.vue'
-import { generateRoutes } from './utils'
+import { generateLocalRoutes } from './utils'
 import { useUserStore } from '@/stores/user'
 
-// 动态生成的路由
-const dynamicRoutes = generateRoutes()
+// 动态生成的路由（同步版本，快速加载）
+const dynamicRoutes = generateLocalRoutes()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,22 +17,22 @@ const router = createRouter({
       meta: { public: true },
     },
     {
+      path: '/404',
+      name: '404',
+      component: () => import('../views/exception/404.vue'),
+      meta: { public: true },
+    },
+    {
       path: '/',
       component: MainLayout,
       children: [
         ...dynamicRoutes,
-        // 404 页面 - 放在最后
+        // 404 页面 - 放在最后捕获所有未匹配路由
         {
           path: ':pathMatch(.*)*',
           redirect: '/404',
         },
       ],
-    },
-    {
-      path: '/404',
-      name: '404',
-      component: () => import('../views/exception/404.vue'),
-      meta: { public: true },
     },
   ],
 })

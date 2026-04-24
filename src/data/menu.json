@@ -96,6 +96,13 @@
         "key": "crud-demo",
         "path": "/basic/crud-demo",
         "component": "basic/crud-demo"
+      },
+      {
+        "id": "2-13",
+        "name": "菜单使用指南",
+        "key": "menu-doc",
+        "path": "/basic/menu-doc",
+        "component": "basic/menu-doc"
       }
     ]
   },
@@ -473,6 +480,96 @@
         "key": "dict-tag",
         "path": "/business/dict-tag",
         "component": "business/dict-tag"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "name": "菜单演示",
+    "key": "system",
+    "icon": "Tools",
+    "children": [
+      {
+        "id": "9-1",
+        "name": "用户管理",
+        "key": "user",
+        "path": "/system/user",
+        "component": "system/user"
+      },
+      {
+        "id": "9-2",
+        "name": "角色管理",
+        "key": "role",
+        "path": "/system/role",
+        "component": "system/role"
+      },
+      {
+        "id": "9-3",
+        "name": "菜单权限",
+        "key": "menu-permission",
+        "children": [
+          {
+            "id": "9-3-1",
+            "name": "功能权限",
+            "key": "func-permission"
+          },
+          {
+            "id": "9-3-2",
+            "name": "数据权限",
+            "key": "data-permission"
+          },
+          {
+            "id": "9-3-3",
+            "name": "字段权限",
+            "key": "field-permission"
+          }
+        ]
+      },
+      {
+        "id": "9-4",
+        "name": "机构管理",
+        "key": "org-management",
+        "children": [
+          {
+            "id": "9-4-1",
+            "name": "部门设置",
+            "key": "dept-setting"
+          },
+          {
+            "id": "9-4-2",
+            "name": "岗位设置",
+            "key": "post-setting"
+          },
+          {
+            "id": "9-4-3",
+            "name": "人员管理",
+            "key": "person-management"
+          }
+        ]
+      },
+      {
+        "id": "9-5",
+        "name": "系统参数",
+        "key": "system-param",
+        "children": [
+          {
+            "id": "9-5-1",
+            "name": "参数配置",
+            "key": "param-config"
+          },
+          {
+            "id": "9-5-2",
+            "name": "字典管理",
+            "key": "dict-management"
+          }
+        ]
+      },
+      {
+        "id": "9-6",
+        "name": "操作日志",
+        "key": "oper-log",
+        "path": "/system/oper-log",
+        "component": "system/oper-log"
       }
     ]
   }

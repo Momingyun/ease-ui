@@ -1,13 +1,18 @@
 <template>
   <div class="layout-container">
-    <!-- 顶部导航 -->
+    <!-- 顶部导航（包含水平菜单） -->
     <HeaderLayout />
     <!-- 主体区域 -->
-    <div class="layout-body">
+    <div class="layout-body" :class="{ 'layout-body--horizontal': menuLayoutStore.currentLayout === 'horizontal' }">
       <!-- 左侧菜单 -->
-      <FixedSidebar ref="sidebarRef" class="layout-sidebar" />
+      <component
+        :is="currentMenuComponent"
+        ref="sidebarRef"
+        class="layout-sidebar"
+        v-if="menuLayoutStore.currentLayout !== 'horizontal'"
+      />
       <!-- 右侧内容 -->
-      <div class="layout-main">
+      <div class="layout-main" :class="{ 'layout-main--horizontal': menuLayoutStore.currentLayout === 'horizontal' }">
         <!-- 标签页 -->
         <XlyWorktab ref="worktabRef" />
         <!-- 页面内容（keep-alive 缓存） -->
@@ -24,18 +29,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import HeaderLayout from './components/HeaderLayout.vue'
 import FixedSidebar from './components/FixedSidebar.vue'
+import VerticalSidebar from './components/VerticalSidebar.vue'
 import XlyWorktab from '@/components/xly-worktab/index.vue'
 import { useTabsStore } from '@/stores/tabs'
+import { useMenuLayoutStore } from '@/stores/menuLayout'
 import menuData from '@/data/menu.json'
 
 const route = useRoute()
 const tabsStore = useTabsStore()
+const menuLayoutStore = useMenuLayoutStore()
 const worktabRef = ref<InstanceType<typeof XlyWorktab>>()
 const contentRef = ref<HTMLElement>()
+
+// 菜单组件映射（水平布局时不需要单独组件）
+const menuComponents = {
+  vertical: VerticalSidebar,
+  split: FixedSidebar,
+}
+
+// 当前菜单组件
+const currentMenuComponent = computed(() => {
+  return menuComponents[menuLayoutStore.currentLayout] || FixedSidebar
+})
 
 // 路由变化时重置内容区滚动位置
 watch(
@@ -96,10 +115,13 @@ $corner-radius: 20px;
   flex: 1;
   overflow: hidden;
   position: relative;
+
+  &--horizontal {
+    background-color: #eef1f8;
+  }
 }
 
 .layout-sidebar {
-  overflow: hidden;
   flex-shrink: 0;
 }
 
@@ -127,6 +149,10 @@ $corner-radius: 20px;
   }
   .layout-content::-webkit-scrollbar-track {
     background: transparent;
+  }
+
+  &--horizontal {
+    border-radius: $corner-radius $corner-radius 0 0;
   }
 }
 </style>

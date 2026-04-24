@@ -54,11 +54,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
-import menuData from '@/data/menu.json'
-import type { MenuItem } from '@/types/menu'
+import { getMenuData, type MenuItem } from '@/utils/menu'
 
 const router = useRouter()
 
@@ -68,6 +67,7 @@ interface SidebarMenuItem extends MenuItem {
   active?: boolean
   children?: SidebarMenuItem[]
 }
+
 /** 初始化菜单数据，附加交互状态 */
 function initMenuItems(items: MenuItem[]): SidebarMenuItem[] {
   return items.map((item) => ({
@@ -78,7 +78,12 @@ function initMenuItems(items: MenuItem[]): SidebarMenuItem[] {
   }))
 }
 
-const menuList = reactive<SidebarMenuItem[]>(initMenuItems(menuData))
+const menuList = reactive<SidebarMenuItem[]>([])
+
+onMounted(async () => {
+  const menuData = await getMenuData()
+  menuList.push(...initMenuItems(menuData))
+})
 
 /** 当前展开的一级菜单的子项 */
 const subMenuList = computed(() => {
