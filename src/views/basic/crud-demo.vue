@@ -26,6 +26,7 @@
       show-column-settings
       :selection-mode="'multiple'"
       pagination-position="right"
+      @refresh="handleRefresh"
       @selection-change="handleSelectionChange"
       @page-change="handlePageChange"
       @page-size-change="handlePageSizeChange"
@@ -210,6 +211,10 @@ function handleSelectionChange(rows: Record<string, any>[]) {
 
 function handlePageChange(page: number) {
   pagination.page = page
+  fetchTableData()
+}
+
+function handleRefresh() {
   fetchTableData()
 }
 
