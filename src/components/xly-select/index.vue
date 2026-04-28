@@ -289,10 +289,17 @@ const visibleLabels = computed(() => {
 })
 
 const filteredOptions = computed(() => {
-  if (props.remote && props.filterable) return remoteOptions.value
-  if (!props.filterable || !searchQuery.value) return normalizedOptions.value
-  const q = searchQuery.value.toLowerCase()
-  return normalizedOptions.value.filter(o => String(o[props.labelKey]).toLowerCase().includes(q))
+  // 优先使用 options prop（支持外部直接更新）
+  if (normalizedOptions.value.length > 0) {
+    if (!props.filterable || !searchQuery.value) return normalizedOptions.value
+    const q = searchQuery.value.toLowerCase()
+    return normalizedOptions.value.filter(o => String(o[props.labelKey]).toLowerCase().includes(q))
+  }
+  // 如果没有 options，使用 remoteOptions（远程搜索模式）
+  if (props.remote && props.filterable) {
+    return remoteOptions.value
+  }
+  return []
 })
 
 // 判断搜索内容是否已存在于选项中
@@ -537,10 +544,18 @@ watch(searchQuery, (val) => {
   hoverIndex.value = -1
   if (props.remote && props.remoteMethod) {
     if (debounceTimer) clearTimeout(debounceTimer)
-    debounceTimer = setTimeout(() => {
-      props.remoteMethod(val)
+    debounceTimer = setTimeout(async () => {
       emit('search', val)
+      // 如果 remoteMethod 返回 Promise，自动等待并更新 remoteOptions
+      const result = props.remoteMethod(val)
+      if (result instanceof Promise) {
+        const data = await result
+        remoteOptions.value = data || []
+      }
     }, props.debounce)
+  } else {
+    // 非远程模式：触发 search 事件让外部自行处理
+    emit('search', val)
   }
 })
 

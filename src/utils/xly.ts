@@ -4,6 +4,8 @@ import { setupXlyMessage } from '@/components/xly-message/install'
 import { XlyLoading } from '@/components/xly-loading/loading'
 import { XlyTour } from '@/components/xly-tour/tour'
 import { XlyBadge } from '@/components/xly-badge/badge'
+import { XlyMsgBox } from '@/components/xly-msgbox/msgbox'
+import { setupXlyMsgBox } from '@/components/xly-msgbox/install'
 
 /**
  * xly 全局工具对象
@@ -38,6 +40,8 @@ export const xly = {
   $tour: XlyTour,
   /** 徽标 */
   $badge: XlyBadge,
+  /** 消息弹出框 */
+  $msgbox: XlyMsgBox,
 }
 
 /**
@@ -56,6 +60,9 @@ export const xly = {
 export function setupXly(app: App) {
   // 挂载消息提示组件容器
   setupXlyMessage(app)
+
+  // 挂载消息弹出框容器
+  setupXlyMsgBox(app)
 
   // 同时挂载两处，确保 script setup 和模板都能访问 xly
   app.config.globalProperties.xly = xly
@@ -76,3 +83,4 @@ export type { MessageOptions } from '@/components/xly-message/message'
 export type { LoadingInstance, LoadingOptions } from '@/components/xly-loading/loading'
 export type { TourInstance, TourOptions } from '@/components/xly-tour/tour'
 export type { BadgeInstance, BadgeOptions } from '@/components/xly-badge/badge'
+export type { MsgBoxOptions, MsgBoxType, MsgBoxAction, MsgBoxInputConfig } from '@/components/xly-msgbox/msgbox'

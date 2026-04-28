@@ -372,6 +372,13 @@
         "key": "dict-select",
         "path": "/form/dict-select",
         "component": "form/dict-select"
+      },
+      {
+        "id": "4-16",
+        "name": "快速表单 SuperForm",
+        "key": "super-form",
+        "path": "/form/super-form",
+        "component": "form/super-form"
       }
     ]
   },
@@ -422,6 +429,13 @@
         "key": "progress",
         "path": "/feedback/progress",
         "component": "feedback/progress"
+      },
+      {
+        "id": "3-7",
+        "name": "消息弹出框 MsgBox",
+        "key": "msgbox",
+        "path": "/feedback/msgbox",
+        "component": "feedback/msgbox"
       }
     ]
   },
