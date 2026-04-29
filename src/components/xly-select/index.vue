@@ -201,6 +201,8 @@ const tick = ref(0)
 const remoteOptions = ref<SelectOption[]>([])
 const visibleLabelCount = ref(0)
 const hiddenCount = computed(() => Math.max(0, selectedLabels.value.length - visibleLabelCount.value))
+// 手动创建的选项，用于 allow-create 模式，确保新建值在列表和标签中可见
+const createdOptions = ref<SelectOption[]>([])
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 let calcTimeout: ReturnType<typeof setTimeout> | null = null
 
@@ -262,10 +264,12 @@ const formatModelValue = (arr: (string | number | boolean)[]): any => {
   return arr
 }
 
-// 合并远程搜索结果与本地选项，用于查找选中标签
+// 合并静态选项、远程选项和手动创建的选项，用于查找选中标签和过滤列表
 const allOptions = computed(() => {
-  if (props.remote && props.filterable) return remoteOptions.value
-  return normalizedOptions.value
+  if (props.remote && props.filterable) {
+    return [...remoteOptions.value, ...createdOptions.value]
+  }
+  return [...normalizedOptions.value, ...createdOptions.value]
 })
 
 const selectedLabels = computed(() => {
@@ -289,24 +293,21 @@ const visibleLabels = computed(() => {
 })
 
 const filteredOptions = computed(() => {
-  // 优先使用 options prop（支持外部直接更新）
-  if (normalizedOptions.value.length > 0) {
-    if (!props.filterable || !searchQuery.value) return normalizedOptions.value
+  const opts = allOptions.value
+  if (opts.length > 0) {
+    if (!props.filterable || !searchQuery.value) return opts
     const q = searchQuery.value.toLowerCase()
-    return normalizedOptions.value.filter(o => String(o[props.labelKey]).toLowerCase().includes(q))
-  }
-  // 如果没有 options，使用 remoteOptions（远程搜索模式）
-  if (props.remote && props.filterable) {
-    return remoteOptions.value
+    return opts.filter(o => String(o[props.labelKey]).toLowerCase().includes(q))
   }
   return []
 })
 
-// 判断搜索内容是否已存在于选项中
+// 判断搜索内容是否已存在于选项中（含手动创建的选项）
 const isQueryExisting = computed(() => {
   if (!searchQuery.value) return true
-  return normalizedOptions.value.some(
-    o => o[props.labelKey] === searchQuery.value || o[props.valueKey] === searchQuery.value
+  const q = searchQuery.value
+  return allOptions.value.some(
+    o => o[props.labelKey] === q || o[props.valueKey] === q
   )
 })
 
@@ -453,10 +454,9 @@ function handleCreateOption() {
 
   const query = searchQuery.value.trim()
 
-  // 如果选项已存在，不创建
+  // 如果选项已存在，不创建，直接选中
   if (isQueryExisting.value) {
-    // 找到对应的选项并选中
-    const existingOption = normalizedOptions.value.find(
+    const existingOption = allOptions.value.find(
       o => o[props.labelKey] === query || o[props.valueKey] === query
     )
     if (existingOption) {
@@ -465,14 +465,14 @@ function handleCreateOption() {
     return
   }
 
-  // 创建新选项
+  // 创建新选项并加入 createdOptions，确保后续能正确显示 label
   const newOption: SelectOption = {
     [props.valueKey]: query,
     [props.labelKey]: query,
   }
+  createdOptions.value.push(newOption)
 
   if (props.multiple) {
-    // 多选模式：直接添加到选中值
     const current = [...internalValue.value]
     if (!current.includes(query)) {
       current.push(query)
@@ -481,14 +481,12 @@ function handleCreateOption() {
       emit('create', query)
     }
   } else {
-    // 单选模式：选中新选项
     emit('update:modelValue', query)
     emit('change', query)
     emit('create', query)
     visible.value = false
   }
 
-  // 清空搜索框
   searchQuery.value = ''
 }
 
