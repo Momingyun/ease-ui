@@ -280,7 +280,12 @@ const selectedLabels = computed(() => {
     })
   }
   const opt = allOptions.value.find(o => o[props.valueKey] === props.modelValue)
-  return opt ? [opt[props.labelKey]] : []
+  // 如果找不到对应选项，显示传入的值本身
+  if (opt) return [opt[props.labelKey]]
+  if (props.modelValue !== undefined && props.modelValue !== null && props.modelValue !== '') {
+    return [String(props.modelValue)]
+  }
+  return []
 })
 
 const displayLabel = computed(() => {
