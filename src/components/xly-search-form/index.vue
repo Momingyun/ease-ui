@@ -364,8 +364,8 @@ const handleReset = () => {
     formData[item.prop] = item.defaultValue ?? null
   })
 
-  emit('reset')
   emit('update:modelValue', {})
+  emit('reset')
 }
 
 // 切换展开状态
