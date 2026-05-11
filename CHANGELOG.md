@@ -7,11 +7,30 @@
 ## [Unreleased]
 
 > 待发布和计划中的功能和修复
-
-### ✨ 新增
 - **xly-editor**（富文本编辑组件）`src/components/xly-editor/index.vue`
     - 基于 Quill 编辑器，支持富文本输入
     - 支持工具栏自定义、字数统计、图片上传等
+
+## [2026-05-11]
+### ✨ 新增
+- **xly-super-form**（超级表单组件）`src/components/xly-super-form/`
+    - 基于配置驱动的高效表单组件，支持双绑定数据同步
+    - 支持多种组件类型：`input` / `select` / `datePicker` / `dateRangePicker` / `dateTimePicker` / `dateTimeRangePicker` / `timePicker` / `timeRangePicker` / `cascader` / `switch` / `rate` / `imageUpload` / `user`
+    - 支持双绑定组件（日期范围等），自动绑定 `startProp` 和 `endProp`
+    - 内置表单校验：`required` / `email` / `phone` / `pattern` / `validator`
+    - 支持栅格布局控制（`span` 1-24）
+    - 支持标签宽度、必填标记、尺寸控制
+    - 支持远程搜索方法（`remoteMethod`）
+    - 暴露方法：`validate` / `validateField` / `resetFields` / `clearValidate` / `submit` / `getFormData`
+
+- **useFormFields**（表单字段生成器）`src/components/xly-super-form/useFormFields.ts`
+    - 链式调用风格的表单字段配置工具，简化表单定义
+    - 自动推断中文标签（如 `name` → "姓名"、"phone" → "手机号"）
+    - 支持四种参数风格：`input('name')` / `input('name', '用户名')` / `input('name', { required: true })` / `input('name', '用户名', { span: 12 })`
+    - 日期范围支持四种调用方式，自动生成 `startProp` / `endProp`
+    - 链式方法：`$required()` / `$span()` / `$label()` / `$noLabel()` / `$props()` / `$rule()` / `$options()` / `$dict()` / `$remote()` / `$range()`
+    - 内置校验规则工厂：`rules.required()` / `rules.email()` / `rules.phone()` / `rules.pattern()` / `rules.custom()`
+    - 工具函数：`pick()` 数据提取 / `divider()` 分隔线 / `title()` 标题
 
 ---
 
