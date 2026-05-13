@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import XlyIcon from '@/components/xly-icon/index.vue'
 
 defineOptions({ name: 'XlyInput' })
@@ -196,9 +196,19 @@ const showSuffix = computed(() => {
 
 function handleInput(e: Event) {
   if (isComposing.value) return
-  const value = (e.target as HTMLInputElement | HTMLTextAreaElement).value
+  const target = e.target as HTMLInputElement | HTMLTextAreaElement
+  const value = target.value
+  // 记录当前光标位置，避免 Vue 重新赋值 :value 时光标跳到末尾
+  const selectionStart = target.selectionStart
+  const selectionEnd = target.selectionEnd
   emit('update:modelValue', value)
   emit('input', value)
+  // 下一个 tick DOM 更新后恢复光标位置
+  nextTick(() => {
+    if (inputRef.value && selectionStart !== null && selectionEnd !== null) {
+      inputRef.value.setSelectionRange(selectionStart, selectionEnd)
+    }
+  })
 }
 
 function handleCompositionEnd(e: Event) {

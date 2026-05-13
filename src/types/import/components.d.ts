@@ -74,6 +74,7 @@ declare module 'vue' {
     XlyEmpty: typeof import('./../../components/xly-empty/index.vue')['default']
     XlyFilePreview: typeof import('./../../components/xly-file-preview/index.vue')['default']
     XlyFileUpload: typeof import('./../../components/xly-file-upload/index.vue')['default']
+    XlyFileView: typeof import('./../../components/xly-file-view/index.vue')['default']
     XlyFlowDesigner: typeof import('./../../components/xly-flow-designer/index.vue')['default']
     XlyForm: typeof import('./../../components/xly-form/index.vue')['default']
     XlyFormItem: typeof import('./../../components/xly-form/xly-form-item.vue')['default']
