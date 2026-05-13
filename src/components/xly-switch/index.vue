@@ -86,29 +86,31 @@ function handleClick() {
 </script>
 
 <style scoped lang="scss">
+@use 'sass:map';
+
 $xly-switch-width: (
   'large': 48px,
   'default': 40px,
-  'small': 32px
-) !default;
+  'small': 32px,
+);
 
 $xly-switch-height: (
   'large': 24px,
   'default': 20px,
-  'small': 16px
-) !default;
+  'small': 16px,
+);
 
 $xly-switch-dot-size: (
   'large': 18px,
   'default': 16px,
-  'small': 12px
-) !default;
+  'small': 12px,
+);
 
 $xly-switch-dot-offset: (
   'large': 3px,
   'default': 2px,
-  'small': 2px
-) !default;
+  'small': 2px,
+);
 
 .xly-switch {
   display: inline-flex;
@@ -131,8 +133,8 @@ $xly-switch-dot-offset: (
   position: relative;
   display: inline-flex;
   align-items: center;
-  width: map-get($xly-switch-width, 'default');
-  height: map-get($xly-switch-height, 'default');
+  width: map.get($xly-switch-width, 'default');
+  height: map.get($xly-switch-height, 'default');
   border-radius: 100px;
   background: #e2e4ed;
   transition: all 0.3s ease;
@@ -140,36 +142,36 @@ $xly-switch-dot-offset: (
   cursor: pointer;
 
   .xly-switch--large & {
-    width: map-get($xly-switch-width, 'large');
-    height: map-get($xly-switch-height, 'large');
+    width: map.get($xly-switch-width, 'large');
+    height: map.get($xly-switch-height, 'large');
   }
 
   .xly-switch--small & {
-    width: map-get($xly-switch-width, 'small');
-    height: map-get($xly-switch-height, 'small');
+    width: map.get($xly-switch-width, 'small');
+    height: map.get($xly-switch-height, 'small');
   }
 }
 
 .xly-switch__dot {
   position: absolute;
-  width: map-get($xly-switch-dot-size, 'default');
-  height: map-get($xly-switch-dot-size, 'default');
+  width: map.get($xly-switch-dot-size, 'default');
+  height: map.get($xly-switch-dot-size, 'default');
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-  left: map-get($xly-switch-dot-offset, 'default');
+  left: map.get($xly-switch-dot-offset, 'default');
 
   .xly-switch--large & {
-    width: map-get($xly-switch-dot-size, 'large');
-    height: map-get($xly-switch-dot-size, 'large');
-    left: map-get($xly-switch-dot-offset, 'large');
+    width: map.get($xly-switch-dot-size, 'large');
+    height: map.get($xly-switch-dot-size, 'large');
+    left: map.get($xly-switch-dot-offset, 'large');
   }
 
   .xly-switch--small & {
-    width: map-get($xly-switch-dot-size, 'small');
-    height: map-get($xly-switch-dot-size, 'small');
-    left: map-get($xly-switch-dot-offset, 'small');
+    width: map.get($xly-switch-dot-size, 'small');
+    height: map.get($xly-switch-dot-size, 'small');
+    left: map.get($xly-switch-dot-offset, 'small');
   }
 }
 
@@ -211,14 +213,14 @@ $xly-switch-dot-offset: (
 // 选中状态 - 颜色现在通过内联样式控制
 
 .xly-switch.is-checked .xly-switch__dot {
-  left: calc(100% - #{map-get($xly-switch-dot-size, 'default')} - #{map-get($xly-switch-dot-offset, 'default')});
+  left: calc(100% - #{map.get($xly-switch-dot-size, 'default')} - #{map.get($xly-switch-dot-offset, 'default')});
 
   .xly-switch--large & {
-    left: calc(100% - #{map-get($xly-switch-dot-size, 'large')} - #{map-get($xly-switch-dot-offset, 'large')});
+    left: calc(100% - #{map.get($xly-switch-dot-size, 'large')} - #{map.get($xly-switch-dot-offset, 'large')});
   }
 
   .xly-switch--small & {
-    left: calc(100% - #{map-get($xly-switch-dot-size, 'small')} - #{map-get($xly-switch-dot-offset, 'small')});
+    left: calc(100% - #{map.get($xly-switch-dot-size, 'small')} - #{map.get($xly-switch-dot-offset, 'small')});
   }
 }
 
