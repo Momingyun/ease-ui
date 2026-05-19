@@ -1,17 +1,15 @@
 import { setCommonStyle } from '@/components/xly-flow-designer/common/js/tool'
-import {CurvedEdge, CurvedEdgeModel} from "@logicflow/extension";
-import {h} from "@logicflow/core";
-import {getCurvedEdgePath} from "@logicflow/extension/src/materials/curved-edge";
+import { CurvedEdge, CurvedEdgeModel } from '@logicflow/extension'
+import { h } from '@logicflow/core'
+import { getCurvedEdgePath } from '@logicflow/extension/lib/materials/curved-edge'
 
-class SkipModel extends CurvedEdgeModel  {
-
+class SkipModel extends CurvedEdgeModel {
   setAttributes() {
     this.isHitable = false // 细粒度控制边是否对用户操作进行反应
   }
 
   getEdgeStyle() {
-    return setCommonStyle(super.getEdgeStyle(), this.properties, "skip", "mimic");
-
+    return setCommonStyle(super.getEdgeStyle(), this.properties, 'skip', 'mimic')
   }
 
   // getTextPosition() {
@@ -31,101 +29,111 @@ class SkipModel extends CurvedEdgeModel  {
   // }
 
   getTextStyle() {
-    const style = super.getTextStyle();
-    style.display = 'none';
-    style.background = {fill: "transparent"};
-    return style;
+    const style = super.getTextStyle()
+    style.display = 'none'
+    style.background = { fill: 'transparent' }
+    return style
   }
 
   /**
    * 重写此方法，使保存数据是能带上锚点数据。
    */
   getData() {
-    const data = super.getData();
-    data.sourceAnchorId = this.sourceAnchorId;
-    data.targetAnchorId = this.targetAnchorId;
-    return data;
+    const data = super.getData()
+    data.sourceAnchorId = this.sourceAnchorId
+    data.targetAnchorId = this.targetAnchorId
+    return data
   }
-
 }
 
 class SkipView extends CurvedEdge {
-
   getEdge(): h.JSX.Element {
-    const { model } = this.props;
-    const { points: pointsStr, isAnimation, arrowConfig, radius = 0 } = model;
-    const style = model.getEdgeStyle();
-    const animationStyle = model.getEdgeAnimationStyle();
-    let points = this.pointFilter(pointsStr.split(' ').map((p) => p.split(',').map((a) => +a)));
+    const { model } = this.props
+    const { points: pointsStr, isAnimation, arrowConfig, radius = 0 } = model
+    const style = model.getEdgeStyle()
+    const animationStyle = model.getEdgeAnimationStyle()
+    let points = this.pointFilter(pointsStr.split(' ').map((p) => p.split(',').map((a) => +a)))
 
     // 主路径
-    let mainPath = getCurvedEdgePath(points, radius as number);
-    let plusElements: h.JSX.Element[] = [];
+    let mainPath = getCurvedEdgePath(points, radius as number)
+    let plusElements: h.JSX.Element[] = []
 
     const offsetY = 30
 
     // 跳转线是直线
     if (points.length === 2) {
-      let nextEdge = model.graphModel.edges.filter(edge => edge.sourceNodeId ===  model.sourceNode.id);
+      let nextEdge = model.graphModel.edges.filter(
+        (edge) => edge.sourceNodeId === model.sourceNode.id,
+      )
       // 如果上一个节点是互斥网关，并且网关后节点大于1个，也就是说是互斥网关结束节点时
-      if ((model.sourceNode.type as string) === "serial" && nextEdge.length > 1) {
-        const midPoint = [points[0][0], points[0][1] + offsetY - 10];
-        plusElements = this.getForeignObject(midPoint, style.stroke, model.text.value);
+      if ((model.sourceNode.type as string) === 'serial' && nextEdge.length > 1) {
+        const midPoint = [points[0][0], points[0][1] + offsetY - 10]
+        plusElements = this.getForeignObject(midPoint, style.stroke, model.text.value)
       } else if (!model.properties.chartStatusColor) {
-        const midPoint = [points[0][0], points[0][1] + offsetY];
-        plusElements = this.getPlusElements(midPoint);
+        const midPoint = [points[0][0], points[0][1] + offsetY]
+        plusElements = this.getPlusElements(midPoint)
       }
     } else {
-      const p0 = points[0];
-      const p1 = points[1];
-      const p2 = points[2];
+      const p0 = points[0]
+      const p1 = points[1]
+      const p2 = points[2]
 
       // 判断是否由竖线变为横线
       if (p0[0] === p1[0] && p0[1] !== p1[1] && !model.properties.chartStatusColor) {
-        const midPoint = [p0[0] , p0[1] + offsetY];
-        plusElements = this.getPlusElements(midPoint);
+        const midPoint = [p0[0], p0[1] + offsetY]
+        plusElements = this.getPlusElements(midPoint)
       }
 
       // 判断是否由横线变为竖线，并且是互斥网关
-      if (model.sourceNode && (model.sourceNode.type as string) === "serial" && p0[1] === p1[1] && p0[0] !== p1[0]) {
-        const midPoint = [p2[0], p1[1] + offsetY];
-        plusElements = this.getForeignObject(midPoint, style.stroke, model.text.value);
+      if (
+        model.sourceNode &&
+        (model.sourceNode.type as string) === 'serial' &&
+        p0[1] === p1[1] &&
+        p0[0] !== p1[0]
+      ) {
+        const midPoint = [p2[0], p1[1] + offsetY]
+        plusElements = this.getForeignObject(midPoint, style.stroke, model.text.value)
       }
     }
 
     // 绘制主路径
-    let mainPathElement: h.JSX.Element[] = [];
-    mainPathElement.push(h('path', {
-      d: mainPath,
-      style: isAnimation ? animationStyle : {},
-      ...style,
-      ...arrowConfig,
-      fill: 'none',
-    }));
+    let mainPathElement: h.JSX.Element[] = []
+    mainPathElement.push(
+      h('path', {
+        d: mainPath,
+        style: isAnimation ? animationStyle : {},
+        ...style,
+        ...arrowConfig,
+        fill: 'none',
+      }),
+    )
 
     // 返回所有路径元素
-    return h('g', {}, [...mainPathElement, ...plusElements]);
+    return h('g', {}, [...mainPathElement, ...plusElements])
   }
 
   private getForeignObject(midPoint: number[], stroke: string, text: string) {
-    let elements: h.JSX.Element[] = [];
+    let elements: h.JSX.Element[] = []
     elements = [
       // 使用 SVG 图标代替原来的图形
-      h('foreignObject', {
-        x: midPoint[0] - 16,
-        y: midPoint[1] - 20,
-        width: 32,
-        height: 32,
-      }, [
-        h('div', {
-          style: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            height: '100%'
-          },
-          innerHTML: `
+      h(
+        'foreignObject',
+        {
+          x: midPoint[0] - 16,
+          y: midPoint[1] - 20,
+          width: 32,
+          height: 32,
+        },
+        [
+          h('div', {
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              height: '100%',
+            },
+            innerHTML: `
 <div style="width: 32px; height: 32px; transform: rotate(0deg); display: flex; align-items: center; justify-content: center;">
   <svg t="1751615394607" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11883">
     <path d="M853.5 960.7h-683c-59.3 0-106-46.8-106-106v-683c0-59.3 46.8-106 106-106h682.9c59.3 0 106 46.8 106 106v682.9c0.1 59.3-49.8 106.1-105.9 106.1z" fill="${stroke}" p-id="11884"></path>
@@ -134,52 +142,57 @@ class SkipView extends CurvedEdge {
   </svg>
 </div>
 `,
-        })
-      ])
-    ];
+          }),
+        ],
+      ),
+    ]
 
     // 只有当文本有值时才添加背景矩形和文本
     if (text && text.trim().length > 0) {
       // 由于我们无法直接在当前环境中测量文本，我们使用一个估算方法
       // 通常每个字符大约占用 8-10 像素宽度（取决于字体）
-      const charWidth = 8; // 每个字符的估计宽度
-      const padding = 10; // 左右内边距
-      const minWidth = 40; // 最小宽度
-      const textWidth = Math.max(minWidth, text.length * charWidth + padding);
+      const charWidth = 8 // 每个字符的估计宽度
+      const padding = 10 // 左右内边距
+      const minWidth = 40 // 最小宽度
+      const textWidth = Math.max(minWidth, text.length * charWidth + padding)
 
       // 添加背景矩形
       elements.push(
-          h('rect', {
-            x: midPoint[0] - textWidth / 2,
-            y: midPoint[1] + 10,
-            width: textWidth,
-            height: 20,
-            fill: "#fff", // 背景颜色
-            rx: 3, // 圆角
-            ry: 3
-          })
-      );
+        h('rect', {
+          x: midPoint[0] - textWidth / 2,
+          y: midPoint[1] + 10,
+          width: textWidth,
+          height: 20,
+          fill: '#fff', // 背景颜色
+          rx: 3, // 圆角
+          ry: 3,
+        }),
+      )
 
       // 添加文本
       elements.push(
-          h('text', {
+        h(
+          'text',
+          {
             x: midPoint[0],
             y: midPoint[1] + 25,
             fontSize: 13,
-            fill: "#000",
+            fill: '#000',
             style: {
               userSelect: 'none',
-              textAnchor: 'middle' // 文本居中对齐
-            }
-          }, `${text}`)
-      );
+              textAnchor: 'middle', // 文本居中对齐
+            },
+          },
+          `${text}`,
+        ),
+      )
     }
 
-    return this.getAddElements(midPoint, elements, true);
+    return this.getAddElements(midPoint, elements, true)
   }
 
   private getPlusElements(midPoint: number[]) {
-    return this.getAddElements(midPoint, null);
+    return this.getAddElements(midPoint, null)
   }
 
   private getAddElements(midPoint: number[], obj, isCondition: boolean = false) {
@@ -208,20 +221,24 @@ class SkipView extends CurvedEdge {
           y2: y + 8,
           stroke: 'white',
           'stroke-width': '2',
-        })
+        }),
       ]
     }
-    let plusElements: h.JSX.Element[] = [];
+    let plusElements: h.JSX.Element[] = []
     plusElements.push(
-        h('g', {
+      h(
+        'g',
+        {
           ...this.getEventHandlers(isCondition), // 根据 isCondition 动态选择事件处理器
           style: {
             pointerEvents: 'auto',
-            cursor: 'pointer'
-          }
-        }, obj)
-    );
-    return plusElements;
+            cursor: 'pointer',
+          },
+        },
+        obj,
+      ),
+    )
+    return plusElements
   }
 
   // 新增方法：根据 isCondition 返回不同的事件处理器
@@ -229,22 +246,25 @@ class SkipView extends CurvedEdge {
     if (isCondition) {
       return {
         onClick: () => {
-          this.props.graphModel.eventCenter.emit("show:EdgeSetting", { id: this.props.model.id });
-        }
-      };
+          this.props.graphModel.eventCenter.emit('show:EdgeSetting', { id: this.props.model.id })
+        },
+      }
     } else {
       return {
         onMouseEnter: (e) => {
-          this.props.graphModel.eventCenter.emit("show:EdgeTooltip", { e: e, id: this.props.model.id });
+          this.props.graphModel.eventCenter.emit('show:EdgeTooltip', {
+            e: e,
+            id: this.props.model.id,
+          })
         },
         onMouseLeave: (e) => {
           setTimeout(() => {
             if (!(window as any).isTooltipHovered) {
-              this.props.graphModel.eventCenter.emit("hide:EdgeTooltip", e);
+              this.props.graphModel.eventCenter.emit('hide:EdgeTooltip', e)
             }
-          }, 100);
-        }
-      };
+          }, 100)
+        },
+      }
     }
   }
 
@@ -266,7 +286,7 @@ class SkipView extends CurvedEdge {
 }
 
 export default {
-  type: "skip",
+  type: 'skip',
   view: SkipView,
   model: SkipModel,
-};
+}
