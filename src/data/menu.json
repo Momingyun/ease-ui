@@ -70,6 +70,13 @@
         "component": "basic/card"
       },
       {
+        "id": "2-8-1",
+        "name": "信息卡片 InfoCard",
+        "key": "info-card",
+        "path": "/basic/info-card",
+        "component": "basic/info-card"
+      },
+      {
         "id": "2-9",
         "name": "空状态 Empty",
         "key": "empty",
@@ -230,6 +237,27 @@
         "key": "flow-design",
         "path": "/data/flow-design",
         "component": "data/flow-design"
+      },
+      {
+        "id": "6-18",
+        "name": "二维码 Qrcode",
+        "key": "qrcode",
+        "path": "/data/qrcode",
+        "component": "data/qrcode"
+      },
+      {
+        "id": "6-19",
+        "name": "条码 Barcode",
+        "key": "barcode",
+        "path": "/data/barcode",
+        "component": "data/barcode"
+      },
+      {
+        "id": "6-20",
+        "name": "图片裁剪 ImageCropper",
+        "key": "image-cropper",
+        "path": "/data/image-cropper",
+        "component": "data/image-cropper"
       }
     ]
   },
@@ -379,6 +407,13 @@
         "key": "super-form",
         "path": "/form/super-form",
         "component": "form/super-form"
+      },
+      {
+        "id": "4-17",
+        "name": "签名板 Signature",
+        "key": "signature",
+        "path": "/form/signature",
+        "component": "form/signature"
       }
     ]
   },

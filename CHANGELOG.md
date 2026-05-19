@@ -10,6 +10,56 @@
 - **xly-editor**（富文本编辑组件）`src/components/xly-editor/index.vue`
     - 基于 Quill 编辑器，支持富文本输入
     - 支持工具栏自定义、字数统计、图片上传等
+  
+## [2026-05-19]
+
+### ✨ 新增
+
+- **xly-image-cropper**（图片裁剪组件）`src/components/xly-image-cropper/index.vue`
+    - 基于 [Cropper.js](https://github.com/fengyuanchen/cropperjs) v1.6.2 封装
+    - 支持自由裁剪和固定比例裁剪（1:1 / 16:9 / 9:16 等）
+    - 工具栏：左旋 / 右旋 / 镜像 / 翻转 / 放大 / 缩小 / 重置
+    - 支持旋转、翻转、缩放、重置等操作方法
+    - 支持获取裁剪结果：Canvas / Base64 / Blob
+    - 底部操作按钮：取消 / 确认裁剪
+    - Props：`src` / `aspect-ratio` / `toolbar` / `show-action` / `auto-crop-area` / `view-mode` / `output-type` / `output-quality` 等
+    - Expose：`crop()` / `getCroppedCanvas()` / `getCroppedBlob()` / `getCroppedDataURL()` / `reset()` / `rotate()` / `zoom()` / `scaleX()` / `scaleY()` / `replace()` / `destroy()`
+    - Events：`ready` / `cropped` / `confirm` / `cancel` / `destroyed`
+    - 文档页面：`src/views/data/image-cropper.vue`，菜单路径 `/data/image-cropper`
+
+- **xly-signature**（签名板组件）`src/components/xly-signature/index.vue`
+    - 基于 Canvas 的手写签名画板，支持鼠标和触摸绘制
+    - 工具栏：画笔粗细选择（1/2/4/6px）、画笔颜色选择（7 种预设色）
+    - 操作：撤销（最多 30 步历史记录）、清空、确认导出
+    - 支持纯画板模式（`showToolbar=false`），通过 `ref` 调用 `undo()` / `clear()` / `getDataUrl()` / `confirm()` 等方法
+    - 支持自定义画布背景色（`canvasBgColor`）、画笔颜色（`penColor`）、占位提示、圆角等
+    - 高清渲染（自动适配 devicePixelRatio）、窗口 resize 自适应
+    - 文档页面：`/form/signature`，含基础用法、自定义颜色、暗色画布、纯画板模式四个示例
+
+- **xly-info-card**（信息卡片组件）`src/components/xly-info-card/index.vue`
+    - 支持左侧图片（`image`）、图标（`icon`）、标题（`title`）、描述信息列表（`description`）、状态标签（`status`）
+    - 默认深色主题（`#1e1e2e`），支持通过 `backgroundColor` / `textColor` / `titleColor` / `descriptionColor` / `statusBackgroundColor` / `statusTextColor` 完全自定义配色
+    - 状态标签支持 5 种预设类型：`default` / `primary` / `success` / `warning` / `danger`
+    - 支持 `clickable` 悬浮上浮效果和 `click` 事件
+    - 提供 `action` 插槽用于右侧自定义操作区
+    - 支持 `bordered` 边框和 `radius` 圆角自定义
+    - 文档页面已同步更新：`/basic/card` 新增基础用法、白色背景、自定义颜色、可点击等示例
+- **xly-barcode**（条形码组件）`src/components/xly-barcode/index.vue`
+    - 基于 [JsBarcode](https://github.com/lindell/JsBarcode) 实现，支持 SVG 原生渲染
+    - 支持多种条码格式：CODE39 / CODE128（默认）/ EAN13 / EAN8 / UPC / CODE93 / ITF14 / MSI / POSTNET 等
+    - Props：`content`（条码内容）/ `format`（格式）/ `width`（条宽度）/ `height`（高度）/ `displayValue`（显示文本）/ `font` / `fontSize` / `textAlign` / `margin` / `background` / `lineColor`
+    - Expose：`getSvgElement()` / `toSVGString()` / `downloadSVG()` / `downloadPNG()`
+    - Events：`generated` / `error`
+    - 演示页面：`src/views/data/barcode.vue`，菜单路径 `/data/barcode`
+
+- **xly-qrcode**（二维码组件）`src/components/xly-qrcode/index.vue`
+    - 基于 [QRCode](https://github.com/soldair/node-qrcode) 实现，Canvas 渲染
+    - Props：`content`（内容）/ `size`（尺寸，默认 200px）/ `colorDark` / `colorLight` / `correctLevel`（纠错级别 L/M/Q/H，默认 M）/ `logo` / `logoSize` / `logoBackgroundColor` / `logoRadius` / `margin`
+    - 支持中心 Logo 插入，带白色背景和圆角效果
+    - Expose：`toDataURL()` / `toBlob()` / `download()`
+    - Events：`generated` / `error`
+    - 类型声明：`src/components/xly-qrcode/qrcode.d.ts`
+    - 演示页面：`src/views/data/qrcode.vue`，菜单路径 `/data/qrcode`
 
 ## [2026-05-11]
 ### ✨ 新增

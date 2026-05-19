@@ -3,12 +3,12 @@
     <!-- 页面标题 -->
     <div class="doc-header">
       <h1 class="doc-title">Card 卡片</h1>
-      <p class="doc-desc">简洁现代的卡片组件，用于组织和展示内容区块。</p>
+      <p class="doc-desc">简洁现代的卡片组件，用于组织和展示内容区块，支持头部、内容区、底部的灵活结构。</p>
     </div>
 
-    <!-- 基础用法 -->
+    <!-- Card 基础用法 -->
     <section class="doc-section">
-      <h2 class="doc-section__title">基础用法</h2>
+      <h2 class="doc-section__title">Card 基础用法</h2>
       <p class="doc-section__desc">包含头部、内容区和底部的卡片结构。</p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -54,9 +54,9 @@
       </div>
     </section>
 
-    <!-- 带标题的卡片 -->
+    <!-- Card 带标题的卡片 -->
     <section class="doc-section">
-      <h2 class="doc-section__title">带标题的卡片</h2>
+      <h2 class="doc-section__title">Card 带标题的卡片</h2>
       <p class="doc-section__desc">使用 <code>title</code> 属性快速设置标题，或使用 <code>icon</code> 添加图标。</p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -111,9 +111,9 @@
       </div>
     </section>
 
-    <!-- 阴影效果 -->
+    <!-- Card 阴影效果 -->
     <section class="doc-section">
-      <h2 class="doc-section__title">阴影效果</h2>
+      <h2 class="doc-section__title">Card 阴影效果</h2>
       <p class="doc-section__desc">通过 <code>shadow</code> 属性设置阴影显示时机。</p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -137,9 +137,9 @@
       </div>
     </section>
 
-    <!-- 悬浮效果 -->
+    <!-- Card 悬浮效果 -->
     <section class="doc-section">
-      <h2 class="doc-section__title">悬浮效果</h2>
+      <h2 class="doc-section__title">Card 悬浮效果</h2>
       <p class="doc-section__desc">使用 <code>hoverable</code> 属性使卡片可交互。</p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -163,9 +163,9 @@
       </div>
     </section>
 
-    <!-- 业务场景 -->
+    <!-- Card 业务场景 -->
     <section class="doc-section">
-      <h2 class="doc-section__title">业务场景</h2>
+      <h2 class="doc-section__title">Card 业务场景</h2>
 
       <h3 class="doc-subtitle">数据统计</h3>
       <div class="doc-preview">
@@ -246,9 +246,9 @@
       </div>
     </section>
 
-    <!-- 禁用状态 -->
+    <!-- Card 禁用状态 -->
     <section class="doc-section">
-      <h2 class="doc-section__title">禁用状态</h2>
+      <h2 class="doc-section__title">Card 禁用状态</h2>
       <p class="doc-section__desc">使用 <code>disabled</code> 属性禁用卡片。</p>
       <div class="doc-preview">
         <div class="doc-preview__body">
@@ -357,10 +357,10 @@
           </tbody>
         </table>
       </div>
+
     </section>
   </div>
 </template>
-
 <script setup lang="ts">
 import XlyButton from '@/components/xly-button/index.vue'
 import XlyCard from '@/components/xly-card/index.vue'
@@ -372,7 +372,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   padding: 8px 0 40px;
 }
 
-/* ========== 页面头部 ========== */
 .doc-header {
   margin-bottom: 32px;
 }
@@ -390,7 +389,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   margin: 0;
 }
 
-/* ========== 章节样式 ========== */
 .doc-section {
   margin-bottom: 28px;
 }
@@ -425,7 +423,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   margin: 24px 0 12px;
 }
 
-/* ========== 预览区域 ========== */
 .doc-preview {
   border: 1px solid #e4e4e7;
   border-radius: 10px;
@@ -456,7 +453,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   }
 }
 
-/* ========== 表格 ========== */
 .doc-table {
   overflow-x: auto;
 
@@ -492,7 +488,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   }
 }
 
-/* ========== 布局 ========== */
 .grid-2 {
   display: flex;
   gap: 16px;
@@ -503,7 +498,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   gap: 16px;
 }
 
-/* ========== 卡片内容样式 ========== */
 .header-title {
   font-weight: 600;
   font-size: 15px;
@@ -574,7 +568,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   }
 }
 
-/* ========== 徽章 ========== */
 .badge {
   font-size: 11px;
   font-weight: 500;
@@ -607,7 +600,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   }
 }
 
-/* ========== 统计卡片 ========== */
 .stat-grid {
   display: flex;
   gap: 16px;
@@ -663,7 +655,6 @@ import XlyIcon from '@/components/xly-icon/index.vue'
   margin-top: 4px;
 }
 
-/* ========== 任务卡片 ========== */
 .task-header {
   display: flex;
   justify-content: space-between;
